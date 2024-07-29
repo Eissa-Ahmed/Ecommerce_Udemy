@@ -1,10 +1,13 @@
-﻿namespace Ecommerce.Data.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Images
+namespace Ecommerce.Domain.Entities;
+
+public sealed class Images
 {
+    [Key]
     public string Name { get; set; } = null!;
     public double Size { get; set; }
     public string extension => Path.GetExtension(Name);
     public string ProductId { get; set; } = null!;
-    public Product Product { get; set; } = null!;
+    public Products Product { get; set; } = null!;
 }

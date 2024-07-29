@@ -2,7 +2,7 @@
 
 public static class RegisterModule
 {
-    public static IServiceCollection registerModule_Api(this IServiceCollection services, IConfigurationManager configuration)
+    public static IServiceCollection RegisterModule_Api(this IServiceCollection services, IConfigurationManager configuration)
     {
         return services;
     }

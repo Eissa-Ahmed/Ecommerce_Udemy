@@ -5,7 +5,7 @@ namespace Ecommerce.Core;
 
 public static class RegisterModule
 {
-    public static IServiceCollection registerModule_Core(this IServiceCollection services, IConfigurationManager configuration)
+    public static IServiceCollection RegisterModule_Core(this IServiceCollection services, IConfigurationManager configuration)
     {
         return services;
     }
