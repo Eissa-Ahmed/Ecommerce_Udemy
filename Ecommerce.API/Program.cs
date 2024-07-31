@@ -4,10 +4,9 @@ using Ecommerce.Infrastucture;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.RegisterModule_Api(builder.Configuration);
+builder.Services.RegisterModule_Api(builder);
 builder.Services.RegisterModule_Application(builder.Configuration);
 builder.Services.RegisterModule_Infrastructure(builder.Configuration);
-
 // Add services to the container.
 
 builder.Services.AddControllers();

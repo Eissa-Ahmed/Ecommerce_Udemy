@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-public sealed class Users : IdentityUser
+public class Users : IdentityUser
 {
     public Users()
     {
