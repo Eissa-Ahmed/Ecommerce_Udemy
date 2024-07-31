@@ -6,5 +6,4 @@ public sealed class Images
     public double Size { get; set; }
     public string extension => Path.GetExtension(Name);
     public string ProductId { get; set; } = null!;
-    public Products Product { get; set; } = null!;
 }

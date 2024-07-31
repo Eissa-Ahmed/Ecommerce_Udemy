@@ -18,6 +18,7 @@ public sealed class Products
     public string MainImage { get; set; } = null!;
     public int StockQuantity { get; set; }
     public decimal Price { get; set; }
+    public int Discount { get; set; }
     public bool IsShow { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
