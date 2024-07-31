@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Ecommerce.Domain.Entities;
+﻿namespace Ecommerce.Domain.Entities;
 
 public sealed class Brands
 {
-    [Key]
+    public Brands()
+    {
+        Products = new List<Products>();
+    }
     public string Name { get; set; } = null!;
+    public ICollection<Products> Products { get; set; }
 }

@@ -9,6 +9,8 @@ public sealed class Products
         IsShow = true;
         Images = new List<Images>();
         ProductAttributes = new List<ProductAttributes>();
+        Reviews = new List<Review>();
+        Ratings = new List<Rating>();
     }
     public string Id { get; set; }
     public string Name { get; set; } = null!;
@@ -23,8 +25,10 @@ public sealed class Products
     public Categories Category { get; set; } = null!;
     public string SubCategoryName { get; set; } = null!;
     public SubCategories SubCategory { get; set; } = null!;
-    public string BrandName { get; set; } = null!;
-    public Brands Brand { get; set; } = null!;
+    public string? BrandName { get; set; } = null;
+    public Brands? Brand { get; set; } = null;
     public ICollection<Images> Images { get; set; }
     public ICollection<ProductAttributes> ProductAttributes { get; set; }
+    public ICollection<Review> Reviews { get; set; }
+    public ICollection<Rating> Ratings { get; set; }
 }

@@ -22,59 +22,47 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Products>
             .HasPrecision(8, 2)
             .HasAnnotation("MinValue", 0.01m);
 
-        entity
-            .HasOne(p => p.Category)
-            .WithMany()
-            .HasForeignKey(i => i.CategoryName)
-            .OnDelete(DeleteBehavior.Restrict);
+        /* entity
+             .HasOne(o => o.Category)
+             .WithMany()
+             .HasForeignKey(i => i.CategoryName)
+             .OnDelete(DeleteBehavior.Restrict);
+
+         entity
+             .HasOne(o => o.SubCategory)
+             .WithMany()
+             .HasForeignKey(i => i.SubCategoryName)
+             .OnDelete(DeleteBehavior.Restrict);*/
 
         entity
-            .HasOne(p => p.SubCategory)
-            .WithMany()
-            .HasForeignKey(i => i.SubCategoryName)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        entity
-            .HasOne(p => p.Brand)
+            .HasOne(o => o.Brand)
             .WithMany()
             .HasForeignKey(i => i.BrandName)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.SetNull);
 
         entity
-            .HasMany(p => p.Images)
+            .HasMany(m => m.Images)
             .WithOne()
             .HasForeignKey(i => i.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
         entity
-            .HasMany(p => p.ProductAttributes)
+            .HasMany(m => m.ProductAttributes)
             .WithOne()
             .HasForeignKey(i => i.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
-    }
-}
 
-public sealed class ProductAttributeConfiguration : IEntityTypeConfiguration<ProductAttributes>
-{
-    public void Configure(EntityTypeBuilder<ProductAttributes> entity)
-    {
-        entity.ToTable(nameof(ProductAttributes));
-        entity.HasKey(k => new { k.ProductId, k.AttributeName });
-
-
-    }
-}
-public sealed class SubCategoriesConfiguration : IEntityTypeConfiguration<SubCategories>
-{
-    public void Configure(EntityTypeBuilder<SubCategories> entity)
-    {
-        entity.ToTable(nameof(ProductAttributes));
         entity
-            .HasOne(o => o.ParentSubcategory)
-            .WithMany()
-            .HasForeignKey(i => i.ParentSubcategoryName)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasMany(m => m.Ratings)
+            .WithOne()
+            .HasForeignKey(i => i.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
 
+        entity
+            .HasMany(m => m.Reviews)
+            .WithOne()
+            .HasForeignKey(i => i.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
 
     }
 }
