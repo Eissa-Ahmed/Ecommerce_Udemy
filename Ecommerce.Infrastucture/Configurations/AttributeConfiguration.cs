@@ -13,4 +13,6 @@ public sealed class AttributeConfiguration : IEntityTypeConfiguration<Attributes
             .HasForeignKey(i => i.SubCategoryName)
             .OnDelete(DeleteBehavior.Restrict);
     }
+
 }
+

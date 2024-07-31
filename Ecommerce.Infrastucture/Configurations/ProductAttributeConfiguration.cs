@@ -8,11 +8,5 @@ public sealed class ProductAttributeConfiguration : IEntityTypeConfiguration<Pro
 
         entity.HasKey(k => new { k.ProductId, k.AttributeName });
 
-        entity
-            .HasOne(o => o.Product)
-            .WithMany()
-            .HasForeignKey(i => i.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
-
     }
 }

@@ -22,18 +22,6 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Products>
             .HasPrecision(8, 2)
             .HasAnnotation("MinValue", 0.01m);
 
-        /* entity
-             .HasOne(o => o.Category)
-             .WithMany()
-             .HasForeignKey(i => i.CategoryName)
-             .OnDelete(DeleteBehavior.Restrict);
-
-         entity
-             .HasOne(o => o.SubCategory)
-             .WithMany()
-             .HasForeignKey(i => i.SubCategoryName)
-             .OnDelete(DeleteBehavior.Restrict);*/
-
         entity
             .HasOne(o => o.Brand)
             .WithMany()

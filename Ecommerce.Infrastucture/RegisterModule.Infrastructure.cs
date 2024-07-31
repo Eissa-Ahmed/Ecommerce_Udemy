@@ -6,7 +6,25 @@ public static class RegisterModule
     {
         registerStoreContext(services, configuration);
         registerDependencyInjection(services);
+        registerIdentity(services);
         return services;
+    }
+
+    private static void registerIdentity(IServiceCollection services)
+    {
+        services.AddIdentityCore<Users>();
+        services.Configure<IdentityOptions>(opt =>
+        {
+            opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            opt.User.RequireUniqueEmail = true;
+
+            opt.Password.RequireDigit = false;
+            opt.Password.RequireLowercase = false;
+            opt.Password.RequireNonAlphanumeric = false;
+            opt.Password.RequireUppercase = false;
+            opt.Password.RequiredLength = 6;
+            opt.Password.RequiredUniqueChars = 0;
+        });
     }
 
     private static void registerDependencyInjection(IServiceCollection services)

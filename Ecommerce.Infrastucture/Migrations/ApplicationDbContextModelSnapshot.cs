@@ -73,18 +73,12 @@ namespace Ecommerce.Infrastucture.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProductId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<double>("Size")
                         .HasColumnType("float");
 
                     b.HasKey("Name");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductId1");
 
                     b.ToTable("Images", (string)null);
                 });
@@ -97,17 +91,11 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Property<string>("AttributeName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProductId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductId", "AttributeName");
-
-                    b.HasIndex("ProductId1");
 
                     b.ToTable("ProductAttributes", (string)null);
                 });
@@ -123,10 +111,11 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Property<string>("BrandsName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CategoriesName")
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("CategoryName1")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -137,6 +126,12 @@ namespace Ecommerce.Infrastucture.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("FreeShipping")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsShow")
                         .HasColumnType("bit");
@@ -172,13 +167,52 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasIndex("BrandsName");
 
-                    b.HasIndex("CategoriesName");
-
                     b.HasIndex("CategoryName");
+
+                    b.HasIndex("CategoryName1");
 
                     b.HasIndex("SubCategoryName");
 
                     b.ToTable("Products", (string)null);
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Rating", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "UserId");
+
+                    b.ToTable("Rating", (string)null);
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Review", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProductId", "UserId");
+
+                    b.ToTable("Review", (string)null);
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategories", b =>
@@ -230,16 +264,8 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.HasOne("Ecommerce.Domain.Entities.Products", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Domain.Entities.Products", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductAttributes", b =>
@@ -247,16 +273,8 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.HasOne("Ecommerce.Domain.Entities.Products", null)
                         .WithMany("ProductAttributes")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Domain.Entities.Products", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Products", b =>
@@ -264,7 +282,7 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.HasOne("Ecommerce.Domain.Entities.Brands", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandName")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Ecommerce.Domain.Entities.Brands", null)
                         .WithMany("Products")
@@ -272,18 +290,20 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasOne("Ecommerce.Domain.Entities.Categories", null)
                         .WithMany("Products")
-                        .HasForeignKey("CategoriesName");
+                        .HasForeignKey("CategoryName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Ecommerce.Domain.Entities.Categories", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryName")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("CategoryName1")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Ecommerce.Domain.Entities.SubCategories", "SubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategoryName")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Brand");
@@ -291,6 +311,24 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Rating", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.Products", null)
+                        .WithMany("Ratings")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Review", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.Products", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategories", b =>
@@ -333,6 +371,10 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("ProductAttributes");
+
+                    b.Navigation("Ratings");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategories", b =>
