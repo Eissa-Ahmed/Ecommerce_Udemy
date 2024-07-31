@@ -20,6 +20,7 @@ public sealed class Products
     public decimal Price { get; set; }
     public int Discount { get; set; }
     public bool IsShow { get; set; }
+    public bool FreeShipping { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
     public string CategoryName { get; set; } = null!;
