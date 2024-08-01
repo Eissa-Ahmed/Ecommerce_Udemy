@@ -1,6 +1,7 @@
 using Ecommerce.API;
 using Ecommerce.Application;
 using Ecommerce.Infrastucture;
+using Ecommerce.Infrastucture.Seeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    ApplicationDbContext _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await _context.Database.MigrateAsync();
+    SeedCategory _seedCategory = new SeedCategory(_context);
+    SeedSubCategory _seedSubCategory = new SeedSubCategory(_context);
+    await _seedCategory.SeedData();
+    await _seedSubCategory.SeedData();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

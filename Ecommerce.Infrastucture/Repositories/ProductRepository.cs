@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Infrastucture.Repositories;
 
-public sealed class ProductRepository : BaseRepository<Products>, IProductRepository
+public sealed class ProductRepository : BaseRepository<Product>, IProductRepository
 {
     private readonly ApplicationDbContext _context;
     public ProductRepository(ApplicationDbContext context) : base(context)
@@ -8,7 +8,7 @@ public sealed class ProductRepository : BaseRepository<Products>, IProductReposi
         _context = context;
     }
 
-    public async Task<Products?> GetByIdAsync(string Id)
+    public async Task<Product?> GetByIdAsync(string Id)
     {
         return await _context.Products
             .Include(i => i.Category)

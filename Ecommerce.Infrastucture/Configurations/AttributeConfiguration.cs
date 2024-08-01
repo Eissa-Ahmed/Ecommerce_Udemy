@@ -9,7 +9,7 @@ public sealed class AttributeConfiguration : IEntityTypeConfiguration<Attributes
 
         entity
             .HasOne(o => o.SubCategory)
-            .WithMany()
+            .WithMany(m => m.Attributes)
             .HasForeignKey(i => i.SubCategoryName)
             .OnDelete(DeleteBehavior.Restrict);
     }

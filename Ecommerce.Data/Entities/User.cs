@@ -1,8 +1,8 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-public class Users : IdentityUser
+public class User : IdentityUser
 {
-    public Users()
+    public User()
     {
         Favorites = new List<Favorite>();
         Address = new List<Address>();

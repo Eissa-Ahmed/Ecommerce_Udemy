@@ -1,10 +1,10 @@
 ﻿namespace Ecommerce.Infrastucture.Configurations;
 
-public sealed class UserConfiguration : IEntityTypeConfiguration<Users>
+public sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<Users> entity)
+    public void Configure(EntityTypeBuilder<User> entity)
     {
-        entity.ToTable(nameof(Users));
+        entity.ToTable(nameof(User));
 
 
         entity

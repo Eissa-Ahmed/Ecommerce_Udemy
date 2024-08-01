@@ -1,7 +1,7 @@
 ﻿using Ecommerce.Domain.Entities;
 namespace Ecommerce.Domain.IRepositories;
 
-public interface IProductRepository : IBaseRepository<Products>
+public interface IProductRepository : IBaseRepository<Product>
 {
-    Task<Products?> GetByIdAsync(string Id);
+    Task<Product?> GetByIdAsync(string Id);
 }

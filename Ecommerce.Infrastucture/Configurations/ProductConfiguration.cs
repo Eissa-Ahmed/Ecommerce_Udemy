@@ -1,10 +1,10 @@
 ﻿namespace Ecommerce.Infrastucture.Configurations;
 
-public sealed class ProductConfiguration : IEntityTypeConfiguration<Products>
+public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
-    public void Configure(EntityTypeBuilder<Products> entity)
+    public void Configure(EntityTypeBuilder<Product> entity)
     {
-        entity.ToTable(nameof(Products));
+        entity.ToTable(nameof(Product));
         entity.HasKey(k => k.Id);
 
         entity.Property(p => p.Name)
@@ -24,7 +24,7 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Products>
 
         entity
             .HasOne(o => o.Brand)
-            .WithMany()
+            .WithMany(m => m.Products)
             .HasForeignKey(i => i.BrandName)
             .OnDelete(DeleteBehavior.SetNull);
 

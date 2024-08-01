@@ -1,8 +1,8 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-public sealed class Products
+public sealed class Product
 {
-    public Products()
+    public Product()
     {
         Id = Guid.NewGuid().ToString();
         CreatedDate = DateTime.UtcNow;
@@ -24,11 +24,11 @@ public sealed class Products
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
     public string CategoryName { get; set; } = null!;
-    public Categories Category { get; set; } = null!;
+    public Category Category { get; set; } = null!;
     public string SubCategoryName { get; set; } = null!;
-    public SubCategories SubCategory { get; set; } = null!;
+    public SubCategory SubCategory { get; set; } = null!;
     public string? BrandName { get; set; } = null;
-    public Brands? Brand { get; set; } = null;
+    public Brand? Brand { get; set; } = null;
     public ICollection<Images> Images { get; set; }
     public ICollection<ProductAttributes> ProductAttributes { get; set; }
     public ICollection<Review> Reviews { get; set; }

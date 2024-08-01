@@ -12,7 +12,7 @@ public static class RegisterModule
     }
     private static void registerIdentity(WebApplicationBuilder builder)
     {
-        builder.Services.AddIdentity<Users, IdentityRole>()
+        builder.Services.AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
         builder.Services.Configure<IdentityOptions>(opt =>

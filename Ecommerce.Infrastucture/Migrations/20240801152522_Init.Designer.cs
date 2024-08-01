@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastucture.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240731131105_Init2")]
-    partial class Init2
+    [Migration("20240801152522_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,8 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.Property<string>("Address1")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Address2")
                         .HasColumnType("nvarchar(max)");
@@ -57,7 +58,6 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -76,37 +76,31 @@ namespace Ecommerce.Infrastucture.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SubCategoryName1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Name");
 
                     b.HasIndex("SubCategoryName");
 
-                    b.HasIndex("SubCategoryName1");
-
                     b.ToTable("Attributes", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Brands", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Brand", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Name");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brand", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Categories", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Category", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Name");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Favorite", b =>
@@ -146,24 +140,7 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.ToTable("Images", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductAttributes", b =>
-                {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AttributeName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ProductId", "AttributeName");
-
-                    b.ToTable("ProductAttributes", (string)null);
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Products", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Product", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -171,14 +148,7 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Property<string>("BrandName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BrandsName")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoryName1")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -228,15 +198,28 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasIndex("BrandName");
 
-                    b.HasIndex("BrandsName");
-
                     b.HasIndex("CategoryName");
-
-                    b.HasIndex("CategoryName1");
 
                     b.HasIndex("SubCategoryName");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Product", (string)null);
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductAttributes", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AttributeName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductId", "AttributeName");
+
+                    b.ToTable("ProductAttributes", (string)null);
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Rating", b =>
@@ -278,12 +261,9 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.ToTable("Review", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategories", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategory", b =>
                 {
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoriesName")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryName")
@@ -291,21 +271,18 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ParentSubcategoryName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Name");
-
-                    b.HasIndex("CategoriesName");
 
                     b.HasIndex("CategoryName");
 
                     b.HasIndex("ParentSubcategoryName");
 
-                    b.ToTable("SubCategories", (string)null);
+                    b.ToTable("SubCategory", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Users", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -376,7 +353,7 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -514,7 +491,7 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Address", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Users", null)
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
                         .WithMany("Address")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -523,16 +500,10 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Attributes", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.SubCategories", null)
+                    b.HasOne("Ecommerce.Domain.Entities.SubCategory", "SubCategory")
                         .WithMany("Attributes")
                         .HasForeignKey("SubCategoryName")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Domain.Entities.SubCategories", "SubCategory")
-                        .WithMany()
-                        .HasForeignKey("SubCategoryName1")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("SubCategory");
@@ -540,7 +511,7 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Favorite", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Users", null)
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
                         .WithMany("Favorites")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -549,46 +520,27 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Images", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Products", null)
+                    b.HasOne("Ecommerce.Domain.Entities.Product", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductAttributes", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Products", null)
-                        .WithMany("ProductAttributes")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Products", b =>
-                {
-                    b.HasOne("Ecommerce.Domain.Entities.Brands", "Brand")
-                        .WithMany()
+                    b.HasOne("Ecommerce.Domain.Entities.Brand", "Brand")
+                        .WithMany("Products")
                         .HasForeignKey("BrandName")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Ecommerce.Domain.Entities.Brands", null)
-                        .WithMany("Products")
-                        .HasForeignKey("BrandsName");
-
-                    b.HasOne("Ecommerce.Domain.Entities.Categories", null)
+                    b.HasOne("Ecommerce.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryName")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Domain.Entities.Categories", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryName1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Domain.Entities.SubCategories", "SubCategory")
+                    b.HasOne("Ecommerce.Domain.Entities.SubCategory", "SubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategoryName")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -601,9 +553,18 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("SubCategory");
                 });
 
+            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductAttributes", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.Product", null)
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Ecommerce.Domain.Entities.Rating", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Products", null)
+                    b.HasOne("Ecommerce.Domain.Entities.Product", null)
                         .WithMany("Ratings")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -612,30 +573,25 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Review", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Products", null)
+                    b.HasOne("Ecommerce.Domain.Entities.Product", null)
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategories", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategory", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Categories", null)
+                    b.HasOne("Ecommerce.Domain.Entities.Category", "Category")
                         .WithMany("SubCategories")
-                        .HasForeignKey("CategoriesName");
-
-                    b.HasOne("Ecommerce.Domain.Entities.Categories", "Category")
-                        .WithMany()
                         .HasForeignKey("CategoryName")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Domain.Entities.SubCategories", "ParentSubcategory")
+                    b.HasOne("Ecommerce.Domain.Entities.SubCategory", "ParentSubcategory")
                         .WithMany("SubCategorys")
                         .HasForeignKey("ParentSubcategoryName")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Category");
 
@@ -653,7 +609,7 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Users", null)
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -662,7 +618,7 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Users", null)
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -677,7 +633,7 @@ namespace Ecommerce.Infrastucture.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Domain.Entities.Users", null)
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -686,26 +642,26 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Users", null)
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Brands", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Brand", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Categories", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
 
                     b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Products", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Images");
 
@@ -716,14 +672,14 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategories", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.SubCategory", b =>
                 {
                     b.Navigation("Attributes");
 
                     b.Navigation("SubCategorys");
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Users", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.User", b =>
                 {
                     b.Navigation("Address");
 

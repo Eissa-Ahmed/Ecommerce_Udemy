@@ -1,4 +1,5 @@
-﻿namespace Ecommerce.Infrastucture.Repositories.Base;
+﻿
+namespace Ecommerce.Infrastucture.Repositories.Base;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
@@ -8,18 +9,44 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync(int take = 0, int skip = 0, Expression<Func<T, bool>>? filter = null)
+    public async Task<T> CreateAsync(T entity)
     {
-        return filter is null
-                    ? await _context.Set<T>().AsNoTracking().Skip(skip).Take(take).ToListAsync()
-                    : await _context.Set<T>().AsNoTracking().Where(filter).Skip(skip).Take(take).ToListAsync();
+        await _context.AddAsync(entity);
+        await _context.SaveChangesAsync();
+        return entity;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
+    public async Task CreateManyAsync(List<T> entities)
     {
-        return filter is null
-                  ? await _context.Set<T>().AsNoTracking().ToListAsync()
-                  : await _context.Set<T>().AsNoTracking().Where(filter).ToListAsync();
+        await _context.AddRangeAsync(entities);
+        await _context.SaveChangesAsync();
     }
 
+    public async Task DeleteAsync(T entity)
+    {
+        _context.Remove(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<IReadOnlyList<T>> GetAllAsync(ISpecification<T> specification)
+    {
+        return await ApplySpecification(specification).ToListAsync();
+    }
+
+    public async Task<T?> GetByIdAsync(ISpecification<T> specification)
+    {
+        return await ApplySpecification(specification).FirstOrDefaultAsync();
+    }
+
+    public async Task<T> UpdateAsync(T entity)
+    {
+        _context.Update(entity);
+        await _context.SaveChangesAsync();
+        return entity;
+    }
+
+    private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+    {
+        return SpecificationEvaliator<T>.GetQuery(_context.Set<T>().AsNoTracking(), spec);
+    }
 }

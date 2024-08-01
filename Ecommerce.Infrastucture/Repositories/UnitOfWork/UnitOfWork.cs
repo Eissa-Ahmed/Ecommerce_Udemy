@@ -4,10 +4,17 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
     public IProductRepository ProductRepository { get; private set; }
+
+    public ICategoryRepository CategoryRepository { get; private set; }
+
+    public ISubCategoryRepository SubCategoryRepository { get; private set; }
+
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
         ProductRepository = new ProductRepository(context);
+        CategoryRepository = new CategoryRepository(context);
+        SubCategoryRepository = new SubCategoryRepository(context);
     }
 
     public async Task<int> SaveChangesAsync()

@@ -1,16 +1,16 @@
 ﻿namespace Ecommerce.Infrastucture.Configurations;
 
-public sealed class SubCategoriesConfiguration : IEntityTypeConfiguration<SubCategories>
+public sealed class SubCategoriesConfiguration : IEntityTypeConfiguration<SubCategory>
 {
-    public void Configure(EntityTypeBuilder<SubCategories> entity)
+    public void Configure(EntityTypeBuilder<SubCategory> entity)
     {
-        entity.ToTable(nameof(SubCategories));
+        entity.ToTable(nameof(SubCategory));
 
         entity.HasKey(k => k.Name);
 
         entity
             .HasOne(o => o.Category)
-            .WithMany()
+            .WithMany(m => m.SubCategories)
             .HasForeignKey(i => i.CategoryName)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -23,7 +23,7 @@ public sealed class SubCategoriesConfiguration : IEntityTypeConfiguration<SubCat
 
         entity
            .HasMany(m => m.Attributes)
-           .WithOne()
+           .WithOne(o => o.SubCategory)
            .HasForeignKey(i => i.SubCategoryName)
            .OnDelete(DeleteBehavior.Restrict);
     }

@@ -1,15 +1,15 @@
 ﻿namespace Ecommerce.Infrastucture.Context;
 
-public sealed class ApplicationDbContext : IdentityDbContext<Users>
+public sealed class ApplicationDbContext : IdentityDbContext<User>
 {
-    public DbSet<Products> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
     public DbSet<Favorite> Favorite { get; set; }
-    public DbSet<Brands> Brands { get; set; }
+    public DbSet<Brand> Brands { get; set; }
     public DbSet<Review> Review { get; set; }
     public DbSet<Rating> Rating { get; set; }
-    public DbSet<Categories> Categories { get; set; }
-    public DbSet<SubCategories> SubCategories { get; set; }
-    public DbSet<Attributes> Attributes { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<SubCategory> SubCategories { get; set; }
+    public DbSet<Domain.Entities.Attributes> Attributes { get; set; }
     public DbSet<ProductAttributes> ProductAttributes { get; set; }
     public DbSet<Images> Images { get; set; }
     public ApplicationDbContext(DbContextOptions options) : base(options) { }

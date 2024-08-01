@@ -13,7 +13,7 @@ public sealed class Address
     public string City { get; set; } = null!;
     public string State { get; set; } = null!;
     public string Country { get; set; } = null!;
-    public string ZipCode { get; set; } = null!;
+    public string? ZipCode { get; set; } = null;
     public bool IsDefault { get; set; }
     public string UserId { get; set; } = null!;
 
