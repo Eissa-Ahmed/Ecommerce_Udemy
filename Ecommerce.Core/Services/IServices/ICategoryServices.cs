@@ -1,6 +1,8 @@
-﻿namespace Ecommerce.Application.Services.IServices;
+﻿using Ecommerce.Application.Model;
+
+namespace Ecommerce.Application.Services.IServices;
 
 public interface ICategoryServices
 {
-    Task<IReadOnlyList<Category>> GetAllAsync();
+    Task<IReadOnlyList<CategoryModel>> GetAllAsync();
 }

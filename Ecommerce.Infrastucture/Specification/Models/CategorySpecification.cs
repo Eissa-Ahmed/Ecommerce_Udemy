@@ -5,6 +5,6 @@ public sealed class CategorySpecification : Specification<Category>
     public CategorySpecification()
     {
         AddInclude(i => i.SubCategories);
-        //AddInclude(i => i.SubCategories.Select(i => i.SubCategorys));
+        AddInclude(i => i.SubCategories);
     }
 }
