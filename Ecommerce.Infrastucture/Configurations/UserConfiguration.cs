@@ -18,5 +18,17 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne()
             .HasForeignKey(i => i.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+            .HasMany(m => m.Rating)
+            .WithOne()
+            .HasForeignKey(i => i.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+            .HasMany(m => m.Review)
+            .WithOne()
+            .HasForeignKey(i => i.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
