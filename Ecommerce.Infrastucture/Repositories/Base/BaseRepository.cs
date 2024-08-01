@@ -47,6 +47,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
-        return SpecificationEvaliator<T>.GetQuery(_context.Set<T>().AsNoTracking(), spec);
+        return SpecificationEvaliator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
     }
 }

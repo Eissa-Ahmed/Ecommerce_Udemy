@@ -11,5 +11,7 @@ public static class RegisterModule
     private static void registerDependencyInjection(IServiceCollection services)
     {
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICategoryServices, CategoryServices>();
+        services.AddScoped<ISubCategoryServices, SubCategoryServices>();
     }
 }
