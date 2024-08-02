@@ -18,6 +18,7 @@ public class Specification<T> : ISpecification<T> where T : class
 
     public bool IsPagingEnabled { get; private set; }
 
+    public bool AsTracking { get; private set; } = false;
 
     protected void AddInclude(Expression<Func<T, object>> includeExpression)
     {
@@ -33,5 +34,9 @@ public class Specification<T> : ISpecification<T> where T : class
         Skip = skip;
         Take = take;
         IsPagingEnabled = true;
+    }
+    public void ApplyTracking()
+    {
+        AsTracking = true;
     }
 }

@@ -30,7 +30,10 @@ public static class RegisterModule
     private static void registerDependencyInjection(IServiceCollection services)
     {
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProductValidation, ProductValidation>();
         services.AddScoped<ICategoryServices, CategoryServices>();
+        services.AddScoped<ICategoryValidation, CategoryValidation>();
         services.AddScoped<ISubCategoryServices, SubCategoryServices>();
+        services.AddScoped<ISubCategoryValidation, SubCategoryValidation>();
     }
 }

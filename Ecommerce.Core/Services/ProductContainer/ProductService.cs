@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Application.Services;
+﻿namespace Ecommerce.Application.Services.ProductContainer;
 
 public sealed class ProductService : IProductService
 {

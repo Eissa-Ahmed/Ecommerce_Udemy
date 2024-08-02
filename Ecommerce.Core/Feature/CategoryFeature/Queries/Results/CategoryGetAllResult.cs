@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Application.Feature.CategoryFeature.Queries.Result;
+﻿namespace Ecommerce.Application.Feature.CategoryFeature.Queries.Results;
 
 public sealed class CategoryGetAllResult
 {

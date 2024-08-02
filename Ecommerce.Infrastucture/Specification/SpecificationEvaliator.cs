@@ -5,6 +5,10 @@ public class SpecificationEvaliator<T> where T : class
     public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> spec)
     {
         var query = inputQuery;
+
+        if (spec.AsTracking)
+            query = query.AsTracking();
+
         if (spec.Criteria != null)
         {
             query = query.Where(spec.Criteria);

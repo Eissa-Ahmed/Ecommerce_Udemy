@@ -9,4 +9,8 @@ public sealed class CategorySpecification : Specification<Category>
             .ThenInclude(sc => sc.SubCategorys)
             .ThenInclude(sc => sc.SubCategorys));
     }
+    public CategorySpecification(string name) : base(i => i.Name == name)
+    {
+
+    }
 }
