@@ -1,15 +1,43 @@
-﻿using Ecommerce.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-
-namespace Ecommerce.API;
+﻿namespace Ecommerce.API;
 
 public static class RegisterModule
 {
     public static IServiceCollection RegisterModule_Api(this IServiceCollection services, WebApplicationBuilder builder)
     {
+        builder.Services.AddControllers();
+
+        registerSwaggerGen(builder);
         registerIdentity(builder);
+        registerVersioning(builder);
         return services;
     }
+
+    private static void registerSwaggerGen(WebApplicationBuilder builder)
+    {
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "API v1", Version = "v1.0", Description = "API v1" });
+            c.SwaggerDoc("v2", new OpenApiInfo { Title = "API v2", Version = "v2.0", Description = "API v2" });
+        });
+    }
+
+    private static void registerVersioning(WebApplicationBuilder builder)
+    {
+        builder.Services.AddApiVersioning(options =>
+        {
+            options.ReportApiVersions = true;
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.ApiVersionReader = new UrlSegmentApiVersionReader();
+        }).AddApiExplorer(
+         options =>
+         {
+             options.GroupNameFormat = "'v'VVV";
+             options.SubstituteApiVersionInUrl = true;
+         });
+    }
+
     private static void registerIdentity(WebApplicationBuilder builder)
     {
         builder.Services.AddIdentity<User, IdentityRole>()

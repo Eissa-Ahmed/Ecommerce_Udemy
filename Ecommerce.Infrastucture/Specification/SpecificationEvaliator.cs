@@ -16,6 +16,7 @@ public class SpecificationEvaliator<T> where T : class
         }
 
         query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+        query = spec.IIncludes.Aggregate(query, (current, include) => include(current));
 
         return query;
     }

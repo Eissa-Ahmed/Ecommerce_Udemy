@@ -1,6 +1,4 @@
 ﻿
-using System.Reflection;
-
 namespace Ecommerce.Application;
 
 public static class RegisterModule
@@ -8,11 +6,23 @@ public static class RegisterModule
     public static IServiceCollection RegisterModule_Application(this IServiceCollection services, IConfigurationManager configuration)
     {
         registerDependencyInjection(services);
-        registerAuutoMapper(services);
+        registerAutoMapper(services);
+        registerMediator(services);
+        registerFluentValidation(services);
         return services;
     }
 
-    private static void registerAuutoMapper(IServiceCollection services)
+    private static void registerFluentValidation(IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    private static void registerMediator(IServiceCollection services)
+    {
+        services.AddMediatR(opt => opt.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+    }
+
+    private static void registerAutoMapper(IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }

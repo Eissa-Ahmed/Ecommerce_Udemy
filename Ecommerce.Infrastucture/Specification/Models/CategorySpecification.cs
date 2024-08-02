@@ -4,7 +4,9 @@ public sealed class CategorySpecification : Specification<Category>
 {
     public CategorySpecification()
     {
-        AddInclude(i => i.SubCategories);
-        AddInclude(i => i.SubCategories);
+        AddIInclude(i => i.Include(c => c.SubCategories
+            .Where(sc => sc.ParentSubcategoryName == null))
+            .ThenInclude(sc => sc.SubCategorys)
+            .ThenInclude(sc => sc.SubCategorys));
     }
 }
