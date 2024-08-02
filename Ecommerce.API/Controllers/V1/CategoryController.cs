@@ -11,6 +11,12 @@ public class CategoryController : ApplicationBaseController
         var result = await _mediator.Send(new CategoryGetAllModel());
         return BaseResponse(result);
     }
+    [HttpGet(CategoryRoutes.GetById)]
+    public async Task<IActionResult> GetByIdAsync(string Name)
+    {
+        var result = await _mediator.Send(new CategoryGetByIdModel(Name));
+        return BaseResponse(result);
+    }
     [HttpPost(CategoryRoutes.Create)]
     public async Task<IActionResult> CreateAsync([FromBody] CategoryCreateModel model)
     {

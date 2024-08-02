@@ -1,12 +1,12 @@
 ﻿namespace Ecommerce.Application.Mapper.CategoryMapper;
+
 public partial class CategoryProfile
 {
-    private void ApplyCategoryGetAllMapper()
+    private void ApplyCategoryGetByIdMapper()
     {
-        CreateMap<Category, CategoryGetAllResult>()
+        CreateMap<Category, CategoryGetByIdResult>()
            .ForMember(des => des.SubCategories, opt => opt.MapFrom(src => src.SubCategories));
-        CreateMap<SubCategory, CategoryGetAllResult_SubCategory>()
+        CreateMap<SubCategory, CategoryGetByIdResult_SubCategory>()
             .ForMember(des => des.SubCategories, opt => opt.MapFrom(src => src.SubCategorys));
     }
 }
-

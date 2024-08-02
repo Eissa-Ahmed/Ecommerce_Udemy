@@ -11,6 +11,9 @@ public sealed class CategorySpecification : Specification<Category>
     }
     public CategorySpecification(string name) : base(i => i.Name == name)
     {
-
+        AddIInclude(i => i.Include(c => c.SubCategories.Where(i => i.ParentSubcategoryName == null))
+            .ThenInclude(sc => sc.SubCategorys)
+            .ThenInclude(sc => sc.SubCategorys)
+            .ThenInclude(sc => sc.SubCategorys));
     }
 }

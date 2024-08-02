@@ -27,6 +27,14 @@ public sealed class CategoryServices : ICategoryServices
         return await _unitOfWork.CategoryRepository.GetAllAsync(specification);
     }
 
+    public async Task<Category> GetByIdAsync(string name)
+    {
+        //ISpecification<Category> specification = new CategorySpecification(name);
+        //Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
+        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync2(name);
+        return category!;
+    }
+
     public async Task<Category> UpdateAsync(Category category)
     {
         await _unitOfWork.CategoryRepository.UpdateAsync(category);

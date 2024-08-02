@@ -18,3 +18,5 @@ public sealed class CategoryGetAllResult_SubCategory
     public string Name { get; set; } = null!;
     public List<CategoryGetAllResult_SubCategory> SubCategories { get; set; }
 }
+
+
