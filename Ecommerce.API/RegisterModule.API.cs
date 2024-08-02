@@ -4,7 +4,10 @@ public static class RegisterModule
 {
     public static IServiceCollection RegisterModule_Api(this IServiceCollection services, WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(opt =>
+        {
+            opt.Filters.Add<ValidationFilter>();
+        });
 
         registerSwaggerGen(builder);
         registerIdentity(builder);

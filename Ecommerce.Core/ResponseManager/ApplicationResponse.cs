@@ -2,6 +2,7 @@
 
 public sealed class ApplicationResponse<T>
 {
+    public ApplicationResponse() { }
     public ApplicationResponse(bool success, HttpStatusCode statusCode, T? data, string? message = null)
     {
         Success = success;

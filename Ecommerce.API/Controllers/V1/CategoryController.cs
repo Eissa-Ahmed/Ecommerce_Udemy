@@ -4,9 +4,9 @@
 public class CategoryController : ApplicationBaseController
 {
     [HttpGet(CategoryRoutes.GetAll)]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync(int count)
     {
-        var result = await _mediator.Send(new CategoryGetAllModel());
+        var result = await _mediator.Send(new CategoryGetAllModel(count));
         return BaseResponse(result);
     }
 }

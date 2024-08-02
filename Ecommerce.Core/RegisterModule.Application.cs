@@ -1,5 +1,4 @@
-﻿
-namespace Ecommerce.Application;
+﻿namespace Ecommerce.Application;
 
 public static class RegisterModule
 {
@@ -15,6 +14,7 @@ public static class RegisterModule
     private static void registerFluentValidation(IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 
     private static void registerMediator(IServiceCollection services)
