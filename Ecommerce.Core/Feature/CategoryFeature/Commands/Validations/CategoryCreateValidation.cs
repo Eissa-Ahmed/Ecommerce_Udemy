@@ -3,11 +3,9 @@
 public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateModel>
 {
     private readonly ICategoryValidation _categoryValidation;
-    private readonly ISubCategoryValidation _subCategoryValidation;
-    public CategoryCreateValidation(ICategoryValidation categoryValidation, ISubCategoryValidation subCategoryValidation)
+    public CategoryCreateValidation(ICategoryValidation categoryValidation)
     {
         _categoryValidation = categoryValidation;
-        _subCategoryValidation = subCategoryValidation;
         ApplyValidation();
     }
 
@@ -22,7 +20,7 @@ public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateM
         When(i => i.SubCategories.Any(), () =>
         {
             RuleForEach(i => i.SubCategories)
-            .SetValidator(new CategoryCreateValidation_SubCategory(_subCategoryValidation));
+            .SetValidator(new CategoryCreateValidation_SubCategory(_categoryValidation));
         });
 
     }
@@ -35,12 +33,12 @@ public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateM
 
 public class CategoryCreateValidation_SubCategory : AbstractValidator<string>
 {
-    private readonly ISubCategoryValidation _subCategoryValidation;
+    private readonly ICategoryValidation _categoryValidation;
 
-    public CategoryCreateValidation_SubCategory(ISubCategoryValidation subCategoryValidation)
+    public CategoryCreateValidation_SubCategory(ICategoryValidation categoryValidation)
     {
-        _subCategoryValidation = subCategoryValidation;
         ApplyValidation();
+        _categoryValidation = categoryValidation;
     }
 
     private void ApplyValidation()
@@ -52,6 +50,6 @@ public class CategoryCreateValidation_SubCategory : AbstractValidator<string>
 
     private async Task<bool> SubCategoryIsExist(string arg1, CancellationToken token)
     {
-        return !(await _subCategoryValidation.SubCategoryIsExist(arg1));
+        return !(await _categoryValidation.CategoryIsExist(arg1));
     }
 }

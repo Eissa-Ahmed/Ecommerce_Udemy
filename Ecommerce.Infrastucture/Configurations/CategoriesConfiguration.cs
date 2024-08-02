@@ -10,10 +10,15 @@ public sealed class CategoriesConfiguration : IEntityTypeConfiguration<Category>
 
         entity
             .HasMany(o => o.SubCategories)
-            .WithOne(o => o.Category)
-            .HasForeignKey(i => i.CategoryName)
+            .WithOne(o => o.ParentCategory)
+            .HasForeignKey(i => i.ParentCategoryName)
             .OnDelete(DeleteBehavior.Restrict);
 
+        entity
+           .HasMany(o => o.Attributes)
+           .WithOne(o => o.Category)
+           .HasForeignKey(i => i.CategoryName)
+           .OnDelete(DeleteBehavior.Cascade);
 
         entity
            .HasMany(o => o.Products)

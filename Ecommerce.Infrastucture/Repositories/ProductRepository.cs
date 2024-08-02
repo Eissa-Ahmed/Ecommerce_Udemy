@@ -12,7 +12,6 @@ public sealed class ProductRepository : BaseRepository<Product>, IProductReposit
     {
         return await _context.Products
             .Include(i => i.Category)
-            .Include(i => i.SubCategory)
             .Include(i => i.Brand)
             .Include(i => i.Images)
             .Include(i => i.ProductAttributes)

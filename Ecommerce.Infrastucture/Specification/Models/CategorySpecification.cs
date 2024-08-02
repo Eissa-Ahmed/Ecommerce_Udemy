@@ -5,15 +5,12 @@ public sealed class CategorySpecification : Specification<Category>
     public CategorySpecification()
     {
         AddIInclude(i => i.Include(c => c.SubCategories
-            .Where(sc => sc.ParentSubcategoryName == null))
-            .ThenInclude(sc => sc.SubCategorys)
-            .ThenInclude(sc => sc.SubCategorys));
+            .Where(sc => sc.ParentCategoryName == null))
+            .ThenInclude(sc => sc.SubCategories));
     }
     public CategorySpecification(string name) : base(i => i.Name == name)
     {
-        AddIInclude(i => i.Include(c => c.SubCategories.Where(i => i.ParentSubcategoryName == null))
-            .ThenInclude(sc => sc.SubCategorys)
-            .ThenInclude(sc => sc.SubCategorys)
-            .ThenInclude(sc => sc.SubCategorys));
+        AddIInclude(i => i.Include(c => c.SubCategories.Where(i => i.ParentCategoryName == null))
+            .ThenInclude(sc => sc.SubCategories));
     }
 }

@@ -25,12 +25,11 @@ public sealed class Product
     public DateTime UpdatedDate { get; set; }
     public string CategoryName { get; set; } = null!;
     public Category Category { get; set; } = null!;
-    public string SubCategoryName { get; set; } = null!;
-    public SubCategory SubCategory { get; set; } = null!;
     public string? BrandName { get; set; } = null;
     public Brand? Brand { get; set; } = null;
     public ICollection<Images> Images { get; set; }
     public ICollection<ProductAttributes> ProductAttributes { get; set; }
+    public ICollection<Favorite> Favorite { get; set; }
     public ICollection<Review> Reviews { get; set; }
     public ICollection<Rating> Ratings { get; set; }
 }

@@ -36,19 +36,25 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         entity
             .HasMany(m => m.ProductAttributes)
-            .WithOne()
+            .WithOne(o => o.Product)
             .HasForeignKey(i => i.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
         entity
             .HasMany(m => m.Ratings)
-            .WithOne()
+            .WithOne(o => o.Product)
             .HasForeignKey(i => i.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
         entity
             .HasMany(m => m.Reviews)
-            .WithOne()
+            .WithOne(o => o.Product)
+            .HasForeignKey(i => i.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+            .HasMany(m => m.Favorite)
+            .WithOne(o => o.Product)
             .HasForeignKey(i => i.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 

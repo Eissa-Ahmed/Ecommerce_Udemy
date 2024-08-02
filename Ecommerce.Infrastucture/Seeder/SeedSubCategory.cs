@@ -9,11 +9,11 @@ public class SeedSubCategory
     }
     public async Task SeedData()
     {
-        if (!(await _context.SubCategories.AnyAsync()))
-        {
-            List<SubCategory> subCategories = SubCategories_SD.GetSubCategories();
-            await _context.SubCategories.AddRangeAsync(subCategories);
-            await _context.SaveChangesAsync();
-        }
+        /* if (!(await _context.SubCategories.AnyAsync()))
+         {
+             List<SubCategory> subCategories = SubCategories_SD.GetSubCategories();
+             await _context.SubCategories.AddRangeAsync(subCategories);
+             await _context.SaveChangesAsync();
+         }*/
     }
 }

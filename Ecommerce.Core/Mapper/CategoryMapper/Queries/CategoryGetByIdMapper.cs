@@ -6,7 +6,7 @@ public partial class CategoryProfile
     {
         CreateMap<Category, CategoryGetByIdResult>()
            .ForMember(des => des.SubCategories, opt => opt.MapFrom(src => src.SubCategories));
-        CreateMap<SubCategory, CategoryGetByIdResult_SubCategory>()
-            .ForMember(des => des.SubCategories, opt => opt.MapFrom(src => src.SubCategorys));
+        CreateMap<Category, CategoryGetByIdResult_SubCategory>()
+            .ForMember(des => des.SubCategories, opt => opt.MapFrom(src => src.SubCategories));
     }
 }

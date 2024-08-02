@@ -40,11 +40,18 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ParentCategoryName = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Category", x => x.Name);
+                    table.ForeignKey(
+                        name: "FK_Category_Category_ParentCategoryName",
+                        column: x => x.ParentCategoryName,
+                        principalTable: "Category",
+                        principalColumn: "Name",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,26 +104,54 @@ namespace Ecommerce.Infrastucture.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubCategory",
+                name: "Attributes",
                 columns: table => new
                 {
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ParentSubcategoryName = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CategoryName = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubCategory", x => x.Name);
+                    table.PrimaryKey("PK_Attributes", x => x.Name);
                     table.ForeignKey(
-                        name: "FK_SubCategory_Category_CategoryName",
+                        name: "FK_Attributes_Category_CategoryName",
                         column: x => x.CategoryName,
                         principalTable: "Category",
                         principalColumn: "Name",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    MainImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
+                    Discount = table.Column<int>(type: "int", nullable: false),
+                    IsShow = table.Column<bool>(type: "bit", nullable: false),
+                    FreeShipping = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CategoryName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BrandName = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubCategory_SubCategory_ParentSubcategoryName",
-                        column: x => x.ParentSubcategoryName,
-                        principalTable: "SubCategory",
+                        name: "FK_Product_Brand_BrandName",
+                        column: x => x.BrandName,
+                        principalTable: "Brand",
+                        principalColumn: "Name",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Product_Category_CategoryName",
+                        column: x => x.CategoryName,
+                        principalTable: "Category",
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -243,70 +278,16 @@ namespace Ecommerce.Infrastucture.Migrations
                 {
                     table.PrimaryKey("PK_Favorite", x => new { x.ProductId, x.UserId });
                     table.ForeignKey(
+                        name: "FK_Favorite_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Favorite_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Attributes",
-                columns: table => new
-                {
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SubCategoryName = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Attributes", x => x.Name);
-                    table.ForeignKey(
-                        name: "FK_Attributes_SubCategory_SubCategoryName",
-                        column: x => x.SubCategoryName,
-                        principalTable: "SubCategory",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    MainImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StockQuantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
-                    Discount = table.Column<int>(type: "int", nullable: false),
-                    IsShow = table.Column<bool>(type: "bit", nullable: false),
-                    FreeShipping = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SubCategoryName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    BrandName = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Product_Brand_BrandName",
-                        column: x => x.BrandName,
-                        principalTable: "Brand",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_Product_Category_CategoryName",
-                        column: x => x.CategoryName,
-                        principalTable: "Category",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Product_SubCategory_SubCategoryName",
-                        column: x => x.SubCategoryName,
-                        principalTable: "SubCategory",
-                        principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -433,9 +414,14 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Attributes_SubCategoryName",
+                name: "IX_Attributes_CategoryName",
                 table: "Attributes",
-                column: "SubCategoryName");
+                column: "CategoryName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Category_ParentCategoryName",
+                table: "Category",
+                column: "ParentCategoryName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Favorite_UserId",
@@ -458,11 +444,6 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "CategoryName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_SubCategoryName",
-                table: "Product",
-                column: "SubCategoryName");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Rating_UserId",
                 table: "Rating",
                 column: "UserId");
@@ -471,16 +452,6 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "IX_Review_UserId",
                 table: "Review",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubCategory_CategoryName",
-                table: "SubCategory",
-                column: "CategoryName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubCategory_ParentSubcategoryName",
-                table: "SubCategory",
-                column: "ParentSubcategoryName");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -545,9 +516,6 @@ namespace Ecommerce.Infrastucture.Migrations
 
             migrationBuilder.DropTable(
                 name: "Brand");
-
-            migrationBuilder.DropTable(
-                name: "SubCategory");
 
             migrationBuilder.DropTable(
                 name: "Category");
