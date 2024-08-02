@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Ecommerce.Infrastucture\Ecommerce.Infrastucture.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Feature\CategoryFeature\Queries\Validation\" />
+  </ItemGroup>
+
 </Project>

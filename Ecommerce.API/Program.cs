@@ -1,3 +1,5 @@
+using Ecommerce.Application.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.RegisterModule_Api(builder);
@@ -32,6 +34,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseAuthorization();
 

@@ -6,7 +6,7 @@ public static class RegisterModule
     {
         builder.Services.AddControllers(opt =>
         {
-            opt.Filters.Add<ValidationFilter>();
+            //opt.Filters.Add<ValidationFilter>();
         });
 
         registerSwaggerGen(builder);
