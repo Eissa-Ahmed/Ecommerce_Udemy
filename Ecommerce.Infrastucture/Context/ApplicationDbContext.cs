@@ -8,7 +8,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Review> Review { get; set; }
     public DbSet<Rating> Rating { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Domain.Entities.Attributes> Attributes { get; set; }
+    public DbSet<Attributes> Attributes { get; set; }
     public DbSet<ProductAttributes> ProductAttributes { get; set; }
     public DbSet<Images> Images { get; set; }
     public ApplicationDbContext(DbContextOptions options) : base(options) { }

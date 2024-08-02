@@ -1,12 +1,16 @@
-﻿namespace Ecommerce.Application.Services.CategoryContainer;
+﻿using Ecommerce.Infrastucture.Context;
+
+namespace Ecommerce.Application.Services.CategoryContainer;
 
 public sealed class CategoryServices : ICategoryServices
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ApplicationDbContext _dbContext;
 
-    public CategoryServices(IUnitOfWork unitOfWork)
+    public CategoryServices(IUnitOfWork unitOfWork, ApplicationDbContext dbContext)
     {
         _unitOfWork = unitOfWork;
+        _dbContext = dbContext;
     }
 
     public async Task<Category> CreateAsync(Category category)
@@ -25,6 +29,11 @@ public sealed class CategoryServices : ICategoryServices
     {
         ISpecification<Category> specification = new CategorySpecification();
         return await _unitOfWork.CategoryRepository.GetAllAsync(specification);
+        /* return await _dbContext.Categories.Where(i => i.ParentCategoryName == null)
+             .Include(i => i.SubCategories)
+             .ThenInclude(i => i.SubCategories)
+             .ThenInclude(i => i.SubCategories)
+             .ToListAsync();*/
     }
 
     public async Task<Category> GetByIdAsync(string name)
