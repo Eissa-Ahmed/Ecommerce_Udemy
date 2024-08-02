@@ -366,6 +366,12 @@ namespace Ecommerce.Infrastucture.Migrations
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rating_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -384,6 +390,12 @@ namespace Ecommerce.Infrastucture.Migrations
                         name: "FK_Review_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Review_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -451,6 +463,16 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "SubCategoryName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rating_UserId",
+                table: "Rating",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Review_UserId",
+                table: "Review",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubCategory_CategoryName",
                 table: "SubCategory",
                 column: "CategoryName");
@@ -516,10 +538,10 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Brand");

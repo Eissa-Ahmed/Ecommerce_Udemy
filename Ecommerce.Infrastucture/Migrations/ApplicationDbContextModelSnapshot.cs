@@ -235,6 +235,8 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasKey("ProductId", "UserId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Rating", (string)null);
                 });
 
@@ -254,6 +256,8 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ProductId", "UserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Review", (string)null);
                 });
@@ -566,6 +570,12 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
+                        .WithMany("Rating")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Review", b =>
@@ -573,6 +583,12 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.HasOne("Ecommerce.Domain.Entities.Product", null)
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ecommerce.Domain.Entities.User", null)
+                        .WithMany("Review")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -681,6 +697,10 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Favorites");
+
+                    b.Navigation("Rating");
+
+                    b.Navigation("Review");
                 });
 #pragma warning restore 612, 618
         }

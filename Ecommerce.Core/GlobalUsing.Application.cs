@@ -1,7 +1,7 @@
 ﻿global using AutoMapper;
 global using Ecommerce.Application.ApplicationValidation;
-global using Ecommerce.Application.Commands.Models;
-global using Ecommerce.Application.Commands.Result;
+global using Ecommerce.Application.Feature.CategoryFeature.Commands.Models;
+global using Ecommerce.Application.Feature.CategoryFeature.Commands.Results;
 global using Ecommerce.Application.Feature.CategoryFeature.Queries.Models;
 global using Ecommerce.Application.Feature.CategoryFeature.Queries.Results;
 global using Ecommerce.Application.ResponseManager;

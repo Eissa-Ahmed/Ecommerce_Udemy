@@ -2,16 +2,16 @@
 
 public sealed class SubCategoryValidation : ISubCategoryValidation
 {
-    private readonly ISubCategoryRepository _subCategoryRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public SubCategoryValidation(ISubCategoryRepository subCategoryRepository)
+    public SubCategoryValidation(IUnitOfWork unitOfWork)
     {
-        _subCategoryRepository = subCategoryRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<bool> SubCategoryIsExist(string subCategoryName)
     {
         ISpecification<SubCategory> specification = new SubCategorySpecification(subCategoryName);
-        return await _subCategoryRepository.GetByIdAsync(specification) != null;
+        return await _unitOfWork.SubCategoryRepository.GetByIdAsync(specification) != null;
     }
 }
