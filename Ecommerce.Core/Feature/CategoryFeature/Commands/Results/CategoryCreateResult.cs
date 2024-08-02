@@ -4,13 +4,13 @@ public sealed class CategoryCreateResult
 {
     public CategoryCreateResult()
     {
-        subCattegories = new List<CategoryCreateResult_SubCattegory>();
+        subCattegories = new List<CategoryCreateResult_SubCategory>();
     }
     public string Name { get; set; } = null!;
-    public IEnumerable<CategoryCreateResult_SubCattegory> subCattegories { get; set; }
+    public IEnumerable<CategoryCreateResult_SubCategory> subCattegories { get; set; }
 }
 
-public class CategoryCreateResult_SubCattegory
+public class CategoryCreateResult_SubCategory
 {
     public string? Name { get; set; } = null;
     public string? CategoryName { get; set; } = null;

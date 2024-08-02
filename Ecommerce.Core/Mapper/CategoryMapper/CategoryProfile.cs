@@ -6,5 +6,6 @@ public partial class CategoryProfile : Profile
     {
         ApplyCategoryGetAllMapper();
         ApplyCategoryCreateMapper();
+        ApplyCategoryUpdateMapper();
     }
 }
