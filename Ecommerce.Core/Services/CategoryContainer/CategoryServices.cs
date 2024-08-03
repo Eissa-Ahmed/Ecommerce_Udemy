@@ -1,17 +1,12 @@
-﻿using Ecommerce.Infrastucture.ApplicationHelper;
-using Ecommerce.Infrastucture.Context;
-
-namespace Ecommerce.Application.Services.CategoryContainer;
+﻿namespace Ecommerce.Application.Services.CategoryContainer;
 
 public sealed class CategoryServices : ICategoryServices
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ApplicationDbContext _dbContext;
 
-    public CategoryServices(IUnitOfWork unitOfWork, ApplicationDbContext dbContext)
+    public CategoryServices(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _dbContext = dbContext;
     }
 
     public async Task<Category> CreateAsync(Category category)
@@ -21,8 +16,7 @@ public sealed class CategoryServices : ICategoryServices
 
     public async Task DeleteAsync(string name)
     {
-        ISpecification<Category> specification = new CategorySpecification(i => i.Name == name);
-        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
+        Category? category = await GetByIdAsync(name);
         await _unitOfWork.CategoryRepository.DeleteAsync(category!);
     }
 

@@ -8,6 +8,8 @@ public class SpecificationEvaliator<T> where T : class
 
         if (spec.AsTracking)
             query = query.AsTracking();
+        else
+            query = query.AsNoTracking();
 
         if (spec.Criteria != null)
         {

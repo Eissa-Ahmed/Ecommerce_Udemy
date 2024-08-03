@@ -12,6 +12,7 @@ global using Ecommerce.Application.Services.ProductContainer;
 global using Ecommerce.Domain.Entities;
 global using Ecommerce.Domain.IRepositories.IUnitOfWork;
 global using Ecommerce.Domain.ISpecification;
+global using Ecommerce.Infrastucture.ApplicationHelper;
 global using Ecommerce.Infrastucture.Specification.Models;
 global using FluentValidation;
 global using MediatR;
