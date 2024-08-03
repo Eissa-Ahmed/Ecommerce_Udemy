@@ -23,4 +23,10 @@ public class CategoryController : ApplicationBaseController
         var result = await _mediator.Send(model);
         return BaseResponse(result);
     }
+    [HttpDelete(CategoryRoutes.Delete)]
+    public async Task<IActionResult> DeleteAsync(string Name)
+    {
+        var result = await _mediator.Send(new CategoryDeleteModel(Name));
+        return BaseResponse(result);
+    }
 }

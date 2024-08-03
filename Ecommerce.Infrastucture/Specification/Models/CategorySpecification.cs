@@ -2,16 +2,12 @@
 
 public sealed class CategorySpecification : Specification<Category>
 {
-    public CategorySpecification() : base(i => i.ParentCategoryName == null)
+    public CategorySpecification()
     {
-        AddIInclude(i => i.Include(c => c.SubCategories)
-        .ThenInclude(sc => sc.SubCategories)
-        .ThenInclude(sc => sc.SubCategories));
+
     }
-    public CategorySpecification(string name) : base(i => i.Name == name)
+    public CategorySpecification(Expression<Func<Category, bool>> criteria) : base(criteria)
     {
-        AddIInclude(i => i.Include(c => c.SubCategories.Where(i => i.ParentCategoryName == null))
-            .ThenInclude(sc => sc.SubCategories)
-            .ThenInclude(sc => sc.SubCategories));
     }
+
 }

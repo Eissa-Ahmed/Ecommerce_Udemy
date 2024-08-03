@@ -1,4 +1,5 @@
-﻿using Ecommerce.Infrastucture.Context;
+﻿using Ecommerce.Infrastucture.ApplicationHelper;
+using Ecommerce.Infrastucture.Context;
 
 namespace Ecommerce.Application.Services.CategoryContainer;
 
@@ -20,7 +21,7 @@ public sealed class CategoryServices : ICategoryServices
 
     public async Task DeleteAsync(string name)
     {
-        ISpecification<Category> specification = new CategorySpecification(name);
+        ISpecification<Category> specification = new CategorySpecification(i => i.Name == name);
         Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
         await _unitOfWork.CategoryRepository.DeleteAsync(category!);
     }
@@ -28,20 +29,17 @@ public sealed class CategoryServices : ICategoryServices
     public async Task<IReadOnlyList<Category>> GetAllAsync()
     {
         ISpecification<Category> specification = new CategorySpecification();
-        return await _unitOfWork.CategoryRepository.GetAllAsync(specification);
-        /* return await _dbContext.Categories.Where(i => i.ParentCategoryName == null)
-             .Include(i => i.SubCategories)
-             .ThenInclude(i => i.SubCategories)
-             .ThenInclude(i => i.SubCategories)
-             .ToListAsync();*/
+        IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specification);
+        return Helper.GetCategories(categories.ToList());
     }
 
     public async Task<Category> GetByIdAsync(string name)
     {
-        //ISpecification<Category> specification = new CategorySpecification(name);
-        //Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
-        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync2(name);
-        return category!;
+        ISpecification<Category> specificationCategory = new CategorySpecification(i => i.Name == name);
+        ISpecification<Category> specificationCategories = new CategorySpecification();
+        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specificationCategory);
+        IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specificationCategories);
+        return Helper.GetCategory(category!, categories.ToList());
     }
 
     public async Task<Category> UpdateAsync(Category category)

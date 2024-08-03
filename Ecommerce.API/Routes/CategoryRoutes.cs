@@ -6,4 +6,5 @@ public static class CategoryRoutes
     public const string GetAll = Base;
     public const string GetById = Base + "/{Name}";
     public const string Create = Base;
+    public const string Delete = Base + "/{Name}";
 }

@@ -11,6 +11,7 @@ public sealed class Product
         ProductAttributes = new List<ProductAttributes>();
         Reviews = new List<Review>();
         Ratings = new List<Rating>();
+        Favorite = new List<Favorite>();
     }
     public string Id { get; set; }
     public string Name { get; set; } = null!;
@@ -22,7 +23,7 @@ public sealed class Product
     public bool IsShow { get; set; }
     public bool FreeShipping { get; set; }
     public DateTime CreatedDate { get; set; }
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; } = null;
     public string CategoryName { get; set; } = null!;
     public Category Category { get; set; } = null!;
     public string? BrandName { get; set; } = null;
