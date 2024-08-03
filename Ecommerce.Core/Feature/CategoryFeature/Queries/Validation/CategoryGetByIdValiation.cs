@@ -12,9 +12,9 @@ public sealed class CategoryGetByIdValiation : AbstractValidator<CategoryGetById
 
     private void ApplyValidation()
     {
-        RuleFor(i => i.Name)
+        RuleFor(i => i.Id)
             .NotEmpty()
-            .WithMessage("Name is required")
+            .WithMessage("Id is required")
             .MustAsync(CategoryIsExist)
             .WithMessage("Category is not exist");
     }

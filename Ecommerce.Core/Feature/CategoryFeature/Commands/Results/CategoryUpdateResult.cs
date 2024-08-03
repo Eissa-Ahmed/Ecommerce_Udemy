@@ -12,7 +12,7 @@ public sealed class CategoryUpdateResult
 
 public class CategoryUpdateResult_SubCategory
 {
-    public string? Name { get; set; } = null;
-    public string? CategoryName { get; set; } = null;
+    public string Name { get; set; } = null!;
+    public string CategoryId { get; set; } = null!;
 }
 

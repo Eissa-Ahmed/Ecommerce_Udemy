@@ -6,7 +6,8 @@ public sealed class ImageConfiguration : IEntityTypeConfiguration<Images>
     {
         entity.ToTable(nameof(Images));
 
-        entity.HasKey(k => k.Name);
+        entity.HasKey(k => k.Id);
+        entity.HasIndex(i => i.Name).IsUnique();
 
     }
 }

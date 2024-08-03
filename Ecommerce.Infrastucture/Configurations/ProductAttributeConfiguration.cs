@@ -6,7 +6,9 @@ public sealed class ProductAttributeConfiguration : IEntityTypeConfiguration<Pro
     {
         entity.ToTable(nameof(ProductAttributes));
 
-        entity.HasKey(k => new { k.ProductId, k.AttributeName });
+        entity.HasKey(k => k.Id);
+        entity.HasIndex(i => new { i.ProductId, i.AttributeId }).IsUnique();
+
 
     }
 }

@@ -6,6 +6,8 @@ public sealed class CategoryGetByIdResult
     {
         SubCategories = new List<CategoryGetByIdResult_SubCategory>();
     }
+
+    public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
     public List<CategoryGetByIdResult_SubCategory> SubCategories { get; set; }
 }
@@ -16,6 +18,7 @@ public sealed class CategoryGetByIdResult_SubCategory
     {
         SubCategories = new List<CategoryGetByIdResult_SubCategory>();
     }
+    public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
     public List<CategoryGetByIdResult_SubCategory> SubCategories { get; set; }
 }

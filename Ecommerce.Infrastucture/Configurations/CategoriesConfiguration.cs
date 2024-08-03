@@ -6,26 +6,28 @@ public sealed class CategoriesConfiguration : IEntityTypeConfiguration<Category>
     {
         entity.ToTable(nameof(Category));
 
-        entity.HasKey(k => k.Name);
+        entity.HasKey(k => k.Id);
+        entity.HasIndex(i => i.Name).IsUnique();
 
+        //entity.Property(i => i.RowVersion).IsRowVersion();
         //entity.Navigation(n => n.SubCategories).AutoInclude(false);
 
         entity
             .HasMany(o => o.SubCategories)
             .WithOne(o => o.ParentCategory)
-            .HasForeignKey(i => i.ParentCategoryName)
+            .HasForeignKey(i => i.ParentCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
         entity
            .HasMany(o => o.Attributes)
            .WithOne(o => o.Category)
-           .HasForeignKey(i => i.CategoryName)
+           .HasForeignKey(i => i.CategoryId)
            .OnDelete(DeleteBehavior.Cascade);
 
         entity
            .HasMany(o => o.Products)
            .WithOne(o => o.Category)
-           .HasForeignKey(i => i.CategoryName)
+           .HasForeignKey(i => i.CategoryId)
            .OnDelete(DeleteBehavior.Restrict);
 
     }

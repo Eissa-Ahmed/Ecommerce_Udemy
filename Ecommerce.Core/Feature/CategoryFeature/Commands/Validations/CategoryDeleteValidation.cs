@@ -11,10 +11,10 @@ public sealed class CategoryDeleteValidation : AbstractValidator<CategoryDeleteM
 
     private void ApplyValidation()
     {
-        RuleFor(i => i.Name)
+        RuleFor(i => i.Id)
             .NotEmpty()
             .MustAsync(CategoryIsExist)
-            .WithMessage("Category not found")
+            .WithMessage("Category Id not found")
             .MustAsync(CategoryHasSubCategory_Or_Product)
             .WithMessage("Category has products");
     }

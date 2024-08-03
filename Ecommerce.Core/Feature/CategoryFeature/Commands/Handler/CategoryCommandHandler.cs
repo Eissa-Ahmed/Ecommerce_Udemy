@@ -2,6 +2,7 @@
 
 public sealed class CategoryCommandHandler : ResponseHandler,
     IRequestHandler<CategoryCreateModel, ApplicationResponse<CategoryCreateResult>>,
+    IRequestHandler<CategoryUpdateModel, ApplicationResponse<CategoryUpdateResult>>,
     IRequestHandler<CategoryDeleteModel, ApplicationResponse<string>>
 {
     private readonly ICategoryServices _categoryService;
@@ -20,7 +21,13 @@ public sealed class CategoryCommandHandler : ResponseHandler,
 
     public async Task<ApplicationResponse<string>> Handle(CategoryDeleteModel request, CancellationToken cancellationToken)
     {
-        await _categoryService.DeleteAsync(request.Name);
+        await _categoryService.DeleteAsync(request.Id);
         return Success();
+    }
+
+    public async Task<ApplicationResponse<CategoryUpdateResult>> Handle(CategoryUpdateModel request, CancellationToken cancellationToken)
+    {
+        Category result = await _categoryService.UpdateAsync(request.CategoryName, request.NewCategoryName);
+        return Success(_mapper.Map<CategoryUpdateResult>(result));
     }
 }

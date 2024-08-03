@@ -13,5 +13,5 @@ public sealed class CategoryCreateResult
 public class CategoryCreateResult_SubCategory
 {
     public string? Name { get; set; } = null;
-    public string? CategoryName { get; set; } = null;
+    public string? CategoryId { get; set; } = null;
 }

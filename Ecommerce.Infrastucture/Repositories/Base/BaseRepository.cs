@@ -24,7 +24,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public virtual async Task DeleteAsync(T entity)
     {
-        _context.Remove(entity);
+        _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync();
     }
 
@@ -33,14 +33,14 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return await ApplySpecification(specification).ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(ISpecification<T> specification)
+    public async Task<T> GetByIdAsync(ISpecification<T> specification)
     {
-        return await ApplySpecification(specification).FirstOrDefaultAsync();
+        return await ApplySpecification(specification).FirstAsync();
     }
 
     public async Task<T> UpdateAsync(T entity)
     {
-        _context.Update(entity);
+        _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();
         return entity;
     }

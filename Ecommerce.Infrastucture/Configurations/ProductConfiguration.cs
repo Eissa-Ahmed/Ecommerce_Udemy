@@ -25,7 +25,7 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
         entity
             .HasOne(o => o.Brand)
             .WithMany(m => m.Products)
-            .HasForeignKey(i => i.BrandName)
+            .HasForeignKey(i => i.BrandId)
             .OnDelete(DeleteBehavior.SetNull);
 
         entity

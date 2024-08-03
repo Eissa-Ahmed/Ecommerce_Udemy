@@ -24,9 +24,9 @@ public sealed class Product
     public bool FreeShipping { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; } = null;
-    public string CategoryName { get; set; } = null!;
+    public string CategoryId { get; set; } = null!;
     public Category Category { get; set; } = null!;
-    public string? BrandName { get; set; } = null;
+    public string? BrandId { get; set; } = null;
     public Brand? Brand { get; set; } = null;
     public ICollection<Images> Images { get; set; }
     public ICollection<ProductAttributes> ProductAttributes { get; set; }

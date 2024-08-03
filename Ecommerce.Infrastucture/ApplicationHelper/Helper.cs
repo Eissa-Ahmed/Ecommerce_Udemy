@@ -2,30 +2,35 @@
 
 public static class Helper
 {
-    private static List<Category> GetSubCategoriesHierarchy(List<Category> category, string? parentCateoryName)
+    public static List<Category> GetSubCategoriesHierarchy(List<Category> category, string? ParentCategoryId)
     {
-        return category.Where(i => i.ParentCategoryName == parentCateoryName)
+        return category.Where(i => i.ParentCategoryId == ParentCategoryId)
             .Select(i => new Category
             {
+                Id = i.Id,
                 Name = i.Name,
-                ParentCategoryName = i.ParentCategoryName,
-                SubCategories = GetSubCategoriesHierarchy(category, i.Name)
+                ParentCategoryId = i.ParentCategoryId,
+                RowVersion = i.RowVersion,
+                SubCategories = GetSubCategoriesHierarchy(category, i.Id)
             }).ToList();
     }
     public static Category GetCategory(Category category, List<Category> categories)
     {
-        category.SubCategories = GetSubCategoriesHierarchy(categories, category.Name);
-        return category;
+        Category result = category;
+        result.SubCategories = GetSubCategoriesHierarchy(categories, category.Id);
+        return result;
     }
     public static List<Category> GetCategories(List<Category> categories)
     {
         return categories
-            .Where(i => i.ParentCategoryName == null)
+            .Where(i => i.ParentCategoryId == null)
             .Select(i => new Category
             {
+                Id = i.Id,
                 Name = i.Name,
-                ParentCategoryName = i.ParentCategoryName,
-                SubCategories = GetSubCategoriesHierarchy(categories, i.Name)
+                ParentCategoryId = i.ParentCategoryId,
+                RowVersion = i.RowVersion,
+                SubCategories = GetSubCategoriesHierarchy(categories, i.Id)
             })
             .ToList();
     }

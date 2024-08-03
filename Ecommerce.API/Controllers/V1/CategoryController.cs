@@ -12,9 +12,9 @@ public class CategoryController : ApplicationBaseController
         return BaseResponse(result);
     }
     [HttpGet(CategoryRoutes.GetById)]
-    public async Task<IActionResult> GetByIdAsync(string Name)
+    public async Task<IActionResult> GetByIdAsync(string Id)
     {
-        var result = await _mediator.Send(new CategoryGetByIdModel(Name));
+        var result = await _mediator.Send(new CategoryGetByIdModel(Id));
         return BaseResponse(result);
     }
     [HttpPost(CategoryRoutes.Create)]
@@ -24,9 +24,15 @@ public class CategoryController : ApplicationBaseController
         return BaseResponse(result);
     }
     [HttpDelete(CategoryRoutes.Delete)]
-    public async Task<IActionResult> DeleteAsync(string Name)
+    public async Task<IActionResult> DeleteAsync(string Id)
     {
-        var result = await _mediator.Send(new CategoryDeleteModel(Name));
+        var result = await _mediator.Send(new CategoryDeleteModel(Id));
+        return BaseResponse(result);
+    }
+    [HttpPut(CategoryRoutes.Update)]
+    public async Task<IActionResult> UpdateAsync([FromBody] CategoryUpdateModel model)
+    {
+        var result = await _mediator.Send(model);
         return BaseResponse(result);
     }
 }

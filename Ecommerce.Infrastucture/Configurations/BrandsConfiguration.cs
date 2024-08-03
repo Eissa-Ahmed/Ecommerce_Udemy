@@ -6,12 +6,13 @@ public sealed class BrandsConfiguration : IEntityTypeConfiguration<Brand>
     {
         entity.ToTable(nameof(Brand));
 
-        entity.HasKey(k => k.Name);
+        entity.HasKey(k => k.Id);
+        entity.HasIndex(i => i.Name).IsUnique();
 
         entity
             .HasMany(m => m.Products)
             .WithOne(o => o.Brand)
-            .HasForeignKey(i => i.BrandName)
+            .HasForeignKey(i => i.BrandId)
             .OnDelete(DeleteBehavior.SetNull);
     }
 }

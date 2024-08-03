@@ -20,6 +20,6 @@ public sealed class CategoryQueryHandler : ResponseHandler,
 
     public async Task<ApplicationResponse<CategoryGetByIdResult>> Handle(CategoryGetByIdModel request, CancellationToken cancellationToken)
     {
-        return Success(_mapper.Map<CategoryGetByIdResult>(await _categoryServices.GetByIdAsync(request.Name)));
+        return Success(_mapper.Map<CategoryGetByIdResult>(await _categoryServices.GetByIdAsync(request.Id)));
     }
 }

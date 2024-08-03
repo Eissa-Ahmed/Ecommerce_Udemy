@@ -2,5 +2,5 @@
 
 public interface ICategoryRepository : IBaseRepository<Category>
 {
-    public Task<bool> CategoryHasProduct(string name);
+    public Task<bool> CategoryHasProduct(string Id);
 }

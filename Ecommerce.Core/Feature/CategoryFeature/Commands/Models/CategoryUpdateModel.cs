@@ -2,11 +2,7 @@
 
 public sealed class CategoryUpdateModel : IRequest<ApplicationResponse<CategoryUpdateResult>>
 {
-    public CategoryUpdateModel()
-    {
-        SubCategories = new List<string>();
-    }
     public string CategoryName { get; set; } = null!;
-    public IEnumerable<string> SubCategories { get; set; }
+    public string NewCategoryName { get; set; } = null!;
 
 }

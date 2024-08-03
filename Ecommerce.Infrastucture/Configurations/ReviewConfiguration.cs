@@ -6,7 +6,8 @@ public sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
     {
         entity.ToTable(nameof(Review));
 
-        entity.HasKey(k => new { k.ProductId, k.UserId });
+        entity.HasKey(k => k.Id);
+        entity.HasIndex(i => new { i.ProductId, i.UserId }).IsUnique();
 
     }
 }

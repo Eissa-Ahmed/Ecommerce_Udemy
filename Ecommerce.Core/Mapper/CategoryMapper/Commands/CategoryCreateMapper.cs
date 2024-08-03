@@ -13,7 +13,7 @@ public partial class CategoryProfile
             .ForMember(dest => dest.subCattegories, opt => opt.MapFrom(src => src.SubCategories));
 
         CreateMap<Category, CategoryCreateResult_SubCategory>()
-            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.ParentCategoryName));
+            .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.ParentCategoryId));
 
     }
 }
