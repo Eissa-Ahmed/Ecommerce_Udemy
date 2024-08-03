@@ -11,7 +11,12 @@ public sealed class CategoryServices : ICategoryServices
 
     public async Task<Category> CreateAsync(Category category)
     {
-        return await _unitOfWork.CategoryRepository.CreateAsync(category);
+        Category result = await _unitOfWork.CategoryRepository.CreateAsync(category);
+        /*foreach (var subCategory in result.SubCategories)
+        {
+            subCategory.cat = result.Name;
+        }*/
+        return result;
     }
 
     public async Task DeleteAsync(string name)
