@@ -10,7 +10,9 @@ public static class Helper
                 Id = i.Id,
                 Name = i.Name,
                 ParentCategoryId = i.ParentCategoryId,
-                RowVersion = i.RowVersion,
+                Products = i.Products,
+                Attributes = i.Attributes,
+                ParentCategory = i.ParentCategory,
                 SubCategories = GetSubCategoriesHierarchy(category, i.Id)
             }).ToList();
     }
@@ -29,7 +31,9 @@ public static class Helper
                 Id = i.Id,
                 Name = i.Name,
                 ParentCategoryId = i.ParentCategoryId,
-                RowVersion = i.RowVersion,
+                Products = i.Products,
+                Attributes = i.Attributes,
+                ParentCategory = i.ParentCategory,
                 SubCategories = GetSubCategoriesHierarchy(categories, i.Id)
             })
             .ToList();

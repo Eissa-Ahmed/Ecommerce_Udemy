@@ -9,8 +9,6 @@ public sealed class CategoriesConfiguration : IEntityTypeConfiguration<Category>
         entity.HasKey(k => k.Id);
         entity.HasIndex(i => i.Name).IsUnique();
 
-        //entity.Property(i => i.RowVersion).IsRowVersion();
-        //entity.Navigation(n => n.SubCategories).AutoInclude(false);
 
         entity
             .HasMany(o => o.SubCategories)
