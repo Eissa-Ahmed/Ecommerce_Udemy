@@ -19,6 +19,8 @@ public sealed class CategoryValidation : ICategoryValidation
     public async Task<bool> CategoryHasSubCategory_Or_Product(string Id)
     {
         Category? category = await _categoryServices.GetByIdAsync(Id);
+        if (category is null) return false;
+
         bool categoryIsHas = await CategoryHasProduct(category.Id);
         if (categoryIsHas) return categoryIsHas;
 
@@ -30,9 +32,15 @@ public sealed class CategoryValidation : ICategoryValidation
         return false;
     }
 
-    public async Task<bool> CategoryIsExist(string Id)
+    public async Task<bool> CategoryIsExist_ById(string Id)
     {
         ISpecification<Category> specification = new CategorySpecification(i => i.Id == Id);
         return await _unitOfWork.CategoryRepository.GetByIdAsync(specification) != null;
+    }
+    public async Task<bool> CategoryIsExist_ByName(string name)
+    {
+        ISpecification<Category> specification = new CategorySpecification(i => i.Name == name);
+        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
+        return category != null;
     }
 }

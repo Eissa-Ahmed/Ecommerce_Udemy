@@ -35,8 +35,8 @@ public class Specification<T> : ISpecification<T> where T : class
         Take = take;
         IsPagingEnabled = true;
     }
-    public void ApplyTracking()
+    public void ApplyTracking(bool tracking)
     {
-        AsTracking = true;
+        AsTracking = tracking;
     }
 }

@@ -8,4 +8,5 @@ public static class CategoryRoutes
     public const string Create = Base;
     public const string Update = Base;
     public const string Delete = Base + "/{Id}";
+    public const string AddSubCategory = Base + "/subcategory";
 }

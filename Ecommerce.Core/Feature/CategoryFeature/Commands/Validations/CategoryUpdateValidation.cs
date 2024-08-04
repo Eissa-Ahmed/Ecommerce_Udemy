@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Application.Feature.CategoryFeature.Commands.Validations;
 
-public sealed class CategoryUpdateValidation : AbstractValidator<CategoryUpdateModel>
+public sealed class CategoryUpdateValidation : AbstractValidator<CategoryUpdateNameModel>
 {
     private readonly ICategoryValidation _categoryValidation;
     public CategoryUpdateValidation(ICategoryValidation categoryValidation)
@@ -11,22 +11,26 @@ public sealed class CategoryUpdateValidation : AbstractValidator<CategoryUpdateM
 
     private void ApplyValidation()
     {
-        RuleFor(x => x.CategoryName)
+        RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Category name is required")
-            .MustAsync(CategoryIsExist)
+            .WithMessage("Category id is required")
+            .MustAsync(CategoryIsExist_ById)
             .WithMessage("Category not found");
 
-        RuleFor(x => x.NewCategoryName)
+        RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("New category name is required")
-            .MustAsync(async (model, key, cancel) => !await CategoryIsExist(key, cancel))
+            .MustAsync(CategoryIsExist_ByName)
             .WithMessage("Category already exist");
 
     }
 
-    private async Task<bool> CategoryIsExist(string arg1, CancellationToken token)
+    private async Task<bool> CategoryIsExist_ById(string arg1, CancellationToken token)
     {
-        return await _categoryValidation.CategoryIsExist(arg1);
+        return await _categoryValidation.CategoryIsExist_ById(arg1);
+    }
+    private async Task<bool> CategoryIsExist_ByName(string arg1, CancellationToken token)
+    {
+        return !(await _categoryValidation.CategoryIsExist_ByName(arg1));
     }
 }

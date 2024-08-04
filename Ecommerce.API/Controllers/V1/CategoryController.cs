@@ -1,6 +1,4 @@
-﻿using Ecommerce.Application.Feature.CategoryFeature.Commands.Models;
-
-namespace Ecommerce.API.Controllers.V1;
+﻿namespace Ecommerce.API.Controllers.V1;
 
 [ApiVersion("1.0")]
 public class CategoryController : ApplicationBaseController
@@ -30,9 +28,15 @@ public class CategoryController : ApplicationBaseController
         return BaseResponse(result);
     }
     [HttpPut(CategoryRoutes.Update)]
-    public async Task<IActionResult> UpdateAsync([FromBody] CategoryUpdateModel model)
+    public async Task<IActionResult> UpdateAsync(string Id, string Name)
     {
-        var result = await _mediator.Send(model);
+        var result = await _mediator.Send(new CategoryUpdateNameModel(Id, Name));
+        return BaseResponse(result);
+    }
+    [HttpPut(CategoryRoutes.AddSubCategory)]
+    public async Task<IActionResult> AddSubCategoryToCategoryAsync(string IdParent, string SubCategoryName)
+    {
+        var result = await _mediator.Send(new CategoryAddSubCategoryModel(IdParent, SubCategoryName));
         return BaseResponse(result);
     }
 }

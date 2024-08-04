@@ -8,5 +8,6 @@ public partial class CategoryProfile : Profile
         ApplyCategoryGetByIdMapper();
         ApplyCategoryCreateMapper();
         ApplyCategoryUpdateMapper();
+        ApplyCategoryAddSubCategoryMapper();
     }
 }

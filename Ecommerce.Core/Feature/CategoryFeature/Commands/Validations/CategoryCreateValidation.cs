@@ -17,7 +17,7 @@ public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateM
             .MustAsync(CategoryIsExist)
             .WithMessage("Category already exist");
 
-        When(i => i.SubCategories.Any(), () =>
+        When(i => i.SubCategories.Count() > 0, () =>
         {
             RuleForEach(i => i.SubCategories)
             .SetValidator(new CategoryCreateValidation_SubCategory(_categoryValidation));
@@ -27,7 +27,7 @@ public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateM
 
     private async Task<bool> CategoryIsExist(string arg1, CancellationToken token)
     {
-        return !(await _categoryValidation.CategoryIsExist(arg1));
+        return !(await _categoryValidation.CategoryIsExist_ByName(arg1));
     }
 }
 
@@ -50,6 +50,6 @@ public class CategoryCreateValidation_SubCategory : AbstractValidator<string>
 
     private async Task<bool> SubCategoryIsExist(string arg1, CancellationToken token)
     {
-        return !(await _categoryValidation.CategoryIsExist(arg1));
+        return !(await _categoryValidation.CategoryIsExist_ByName(arg1));
     }
 }

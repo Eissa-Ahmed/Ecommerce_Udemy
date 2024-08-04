@@ -2,7 +2,8 @@
 
 public sealed class CategoryCommandHandler : ResponseHandler,
     IRequestHandler<CategoryCreateModel, ApplicationResponse<CategoryCreateResult>>,
-    IRequestHandler<CategoryUpdateModel, ApplicationResponse<CategoryUpdateResult>>,
+    IRequestHandler<CategoryUpdateNameModel, ApplicationResponse<CategoryUpdateResult>>,
+    IRequestHandler<CategoryAddSubCategoryModel, ApplicationResponse<CategoryAddSubCategoryResult>>,
     IRequestHandler<CategoryDeleteModel, ApplicationResponse<string>>
 {
     private readonly ICategoryServices _categoryService;
@@ -25,9 +26,16 @@ public sealed class CategoryCommandHandler : ResponseHandler,
         return Success();
     }
 
-    public async Task<ApplicationResponse<CategoryUpdateResult>> Handle(CategoryUpdateModel request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<CategoryUpdateResult>> Handle(CategoryUpdateNameModel request, CancellationToken cancellationToken)
     {
-        Category result = await _categoryService.UpdateAsync(request.CategoryName, request.NewCategoryName);
+        Category result = await _categoryService.UpdateNameAsync(request.Id, request.Name);
         return Success(_mapper.Map<CategoryUpdateResult>(result));
+    }
+
+    public async Task<ApplicationResponse<CategoryAddSubCategoryResult>> Handle(CategoryAddSubCategoryModel request, CancellationToken cancellationToken)
+    {
+        Category category = new Category() { Name = request.SubCategoryName, ParentCategoryId = request.IdParent };
+        Category result = await _categoryService.AddSubCategoryInCategoryAsync(category);
+        return Created(_mapper.Map<CategoryAddSubCategoryResult>(result));
     }
 }

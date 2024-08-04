@@ -26,6 +26,6 @@ public sealed class CategoryDeleteValidation : AbstractValidator<CategoryDeleteM
 
     private async Task<bool> CategoryIsExist(string arg1, CancellationToken token)
     {
-        return await _categoryValidation.CategoryIsExist(arg1);
+        return await _categoryValidation.CategoryIsExist_ById(arg1);
     }
 }
