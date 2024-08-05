@@ -5,7 +5,7 @@ public sealed class CategorySpecification : Specification<Category>
     public CategorySpecification()
     {
     }
-    public CategorySpecification(Expression<Func<Category, bool>> criteria, bool applyTracking = false) : base(criteria)
+    public CategorySpecification(List<Expression<Func<Category, bool>>> criterias, bool applyTracking = false) : base(criterias)
     {
         ApplyTracking(applyTracking);
     }

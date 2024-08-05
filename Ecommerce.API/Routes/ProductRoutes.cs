@@ -1,13 +1,12 @@
 ﻿namespace Ecommerce.API.Routes;
 
-public static class CategoryRoutes
+public static class ProductRoutes
 {
-    private const string Base = "api/v{version:apiVersion}/categories";
+    private const string Base = "api/v{version:apiVersion}/products";
     public const string GetAll = Base;
     public const string GetById = Base + "/{Id}";
     public const string Create = Base;
     public const string Update = Base;
     public const string Delete = Base + "/{Id}";
-    public const string AddSubCategory = Base + "/subcategory";
 }
 

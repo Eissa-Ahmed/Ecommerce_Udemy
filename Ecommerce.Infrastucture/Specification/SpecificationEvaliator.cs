@@ -11,9 +11,9 @@ public class SpecificationEvaliator<T> where T : class
         else
             query = query.AsNoTracking();
 
-        if (spec.Criteria != null)
+        if (spec.Criterias.Count > 0)
         {
-            query = query.Where(spec.Criteria);
+            query = spec.Criterias.Aggregate(query, (current, criteria) => current.Where(criteria));
         }
 
         if (spec.IsPagingEnabled)

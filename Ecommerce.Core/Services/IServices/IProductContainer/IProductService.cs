@@ -2,6 +2,7 @@
 
 public interface IProductService
 {
-    Task<IReadOnlyList<Product>> GetAllProducts(int skip, int take);
-    Task<Product?> GetProductById(string id);
+    Task<Product> CreateAsync(Product product, IEnumerable<IFormFile> images, IEnumerable<ProductAttributes> productAttributes);
+    Task<IReadOnlyList<Product>> GetAllAsync(int skip, int take, IEnumerable<Expression<Func<Product, bool>>> criterias);
+    Task<Product?> GetByIdAsync(string id);
 }

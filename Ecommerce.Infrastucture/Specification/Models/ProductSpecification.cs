@@ -6,5 +6,20 @@ public sealed class ProductSpecification : Specification<Product>
     {
         ApplyPaging(skip, take);
     }
-    public ProductSpecification(string id) : base(i => i.Id == id) { }
+    public ProductSpecification(int skip, int take, List<Expression<Func<Product, bool>>> criterias) : base(criterias)
+    {
+        ApplyPaging(skip, take);
+        AddInclude(x => x.Ratings);
+
+    }
+    public ProductSpecification(List<Expression<Func<Product, bool>>> criterias, bool applyTracking = false) : base(criterias)
+    {
+        ApplyTracking(applyTracking);
+        AddInclude(x => x.Category);
+        AddInclude(x => x.Brand);
+        AddInclude(x => x.Images);
+        AddInclude(x => x.ProductAttributes);
+        AddInclude(x => x.Reviews);
+        AddInclude(x => x.Ratings);
+    }
 }

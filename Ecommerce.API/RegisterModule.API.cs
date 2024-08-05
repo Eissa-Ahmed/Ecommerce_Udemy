@@ -7,12 +7,20 @@ public static class RegisterModule
         builder.Services.AddControllers(opt =>
         {
             //opt.Filters.Add<ValidationFilter>();
-        });
+
+        }).AddJsonOptions(option => option.JsonSerializerOptions.PropertyNamingPolicy = null);
 
         registerSwaggerGen(builder);
         registerIdentity(builder);
         registerVersioning(builder);
+        readFilesFromAppSettings(builder);
         return services;
+    }
+
+    private static void readFilesFromAppSettings(WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<FileSettings>(builder.Configuration.GetSection(nameof(FileSettings)));
+        builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection(nameof(ApplicationSettings)));
     }
 
     private static void registerSwaggerGen(WebApplicationBuilder builder)

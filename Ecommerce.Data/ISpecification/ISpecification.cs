@@ -2,7 +2,7 @@
 
 public interface ISpecification<T>
 {
-    Expression<Func<T, bool>> Criteria { get; }
+    List<Expression<Func<T, bool>>> Criterias { get; }
     List<Expression<Func<T, object>>> Includes { get; }
     List<Func<IQueryable<T>, IIncludableQueryable<T, object>>> IIncludes { get; }
     int Take { get; }
