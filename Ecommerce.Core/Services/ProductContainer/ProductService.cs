@@ -26,10 +26,15 @@ public sealed class ProductService : IProductService
         }
     }
 
-    public Task<IReadOnlyList<Product>> GetAllAsync(int skip, int take, IEnumerable<Expression<Func<Product, bool>>> criterias)
+    public async Task<Pagination<Product>> GetAllAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Product, bool>>>? criterias = null)
     {
-        ISpecification<Product> ProductSpecification = new ProductSpecification(skip, take, criterias.ToList());
-        return _unitOfWork.ProductRepository.GetAllAsync(ProductSpecification);
+        ISpecification<Product> ProductSpecification = criterias is null ?
+            new ProductSpecification(pageNumber, pageSize) :
+            new ProductSpecification(pageNumber, pageSize, criterias.ToList());
+
+        IReadOnlyList<Product> products = await _unitOfWork.ProductRepository.GetAllAsync(ProductSpecification);
+        int totalCount = await _unitOfWork.ProductRepository.CountAsync();
+        return new Pagination<Product>(products.ToList(), pageNumber, pageSize, totalCount);
     }
 
     public async Task<Product?> GetByIdAsync(string id)

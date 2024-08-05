@@ -2,13 +2,14 @@
 
 public sealed class ProductSpecification : Specification<Product>
 {
-    public ProductSpecification(int skip, int take)
+    public ProductSpecification(int pageNumber, int pageSize)
     {
-        ApplyPaging(skip, take);
+        ApplyPaging(pageNumber, pageSize);
+        AddInclude(x => x.Ratings);
     }
-    public ProductSpecification(int skip, int take, List<Expression<Func<Product, bool>>> criterias) : base(criterias)
+    public ProductSpecification(int pageNumber, int pageSize, List<Expression<Func<Product, bool>>> criterias) : base(criterias)
     {
-        ApplyPaging(skip, take);
+        ApplyPaging(pageNumber, pageSize);
         AddInclude(x => x.Ratings);
 
     }

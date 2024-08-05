@@ -11,9 +11,9 @@ public class Specification<T> : ISpecification<T> where T : class
     public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
 
     public List<Func<IQueryable<T>, IIncludableQueryable<T, object>>> IIncludes { get; } = new List<Func<IQueryable<T>, IIncludableQueryable<T, object>>>();
-    public int Take { get; private set; }
+    public int PageNumber { get; private set; }
 
-    public int Skip { get; private set; }
+    public int PageSize { get; private set; }
 
     public bool IsPagingEnabled { get; private set; }
 
@@ -29,10 +29,10 @@ public class Specification<T> : ISpecification<T> where T : class
         IIncludes.Add(includeExpression);
     }
 
-    public void ApplyPaging(int skip, int take)
+    public void ApplyPaging(int pageNumber, int pageSize)
     {
-        Skip = skip;
-        Take = take;
+        PageSize = pageSize;
+        PageNumber = pageNumber;
         IsPagingEnabled = true;
     }
     public void ApplyTracking(bool tracking)

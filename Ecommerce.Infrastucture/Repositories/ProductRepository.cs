@@ -1,4 +1,5 @@
-﻿namespace Ecommerce.Infrastucture.Repositories;
+﻿
+namespace Ecommerce.Infrastucture.Repositories;
 
 public sealed class ProductRepository : BaseRepository<Product>, IProductRepository
 {
@@ -8,13 +9,8 @@ public sealed class ProductRepository : BaseRepository<Product>, IProductReposit
         _context = context;
     }
 
-    public async Task<Product?> GetByIdAsync(string Id)
+    public async Task<int> CountAsync()
     {
-        return await _context.Products
-            .Include(i => i.Category)
-            .Include(i => i.Brand)
-            .Include(i => i.Images)
-            .Include(i => i.ProductAttributes)
-            .FirstOrDefaultAsync(i => i.Id == Id);
+        return await _context.Products.CountAsync();
     }
 }

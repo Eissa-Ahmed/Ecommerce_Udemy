@@ -1,7 +1,6 @@
-﻿using Ecommerce.Domain.Entities;
-namespace Ecommerce.Domain.IRepositories;
+﻿namespace Ecommerce.Domain.IRepositories;
 
 public interface IProductRepository : IBaseRepository<Product>
 {
-    Task<Product?> GetByIdAsync(string Id);
+    public Task<int> CountAsync();
 }
