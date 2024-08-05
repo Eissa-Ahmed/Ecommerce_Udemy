@@ -17,7 +17,12 @@ public sealed class ProductService : IProductService
         {
             product.Images.Add(new Images { Name = _fileFactory.GetFileService(image).SaveFileAsync(image), Size = image.Length });
         }
-        product.ProductAttributes = productAttributes.ToList();
+        foreach (var productAttribute in productAttributes)
+        {
+            productAttribute.ProductId = product.Id;
+            product.ProductAttributes.Add(productAttribute);
+        }
+
         product.MainImage = product.Images.First().Name;
         Product result = await _unitOfWork.ProductRepository.CreateAsync(product);
         return result;

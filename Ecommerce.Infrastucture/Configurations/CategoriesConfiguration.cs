@@ -17,7 +17,7 @@ public sealed class CategoriesConfiguration : IEntityTypeConfiguration<Category>
             .OnDelete(DeleteBehavior.Restrict);
 
         entity
-           .HasMany(o => o.Attributes)
+           .HasMany(o => o.CategoryAttributes)
            .WithOne(o => o.Category)
            .HasForeignKey(i => i.CategoryId)
            .OnDelete(DeleteBehavior.Cascade);

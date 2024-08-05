@@ -26,6 +26,19 @@ namespace Ecommerce.Infrastucture.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Attributes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CategoryId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attributes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Brand",
                 columns: table => new
                 {
@@ -106,18 +119,24 @@ namespace Ecommerce.Infrastucture.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Attributes",
+                name: "CategoryAttributes",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AttributesId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attributes", x => x.Id);
+                    table.PrimaryKey("PK_CategoryAttributes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Attributes_Category_CategoryId",
+                        name: "FK_CategoryAttributes_Attributes_AttributesId",
+                        column: x => x.AttributesId,
+                        principalTable: "Attributes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryAttributes_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
                         principalColumn: "Id",
@@ -322,15 +341,14 @@ namespace Ecommerce.Infrastucture.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AttributeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AttributesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductAttributes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductAttributes_Attributes_AttributesId",
-                        column: x => x.AttributesId,
+                        name: "FK_ProductAttributes_Attributes_AttributeId",
+                        column: x => x.AttributeId,
                         principalTable: "Attributes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -429,11 +447,6 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Attributes_CategoryId",
-                table: "Attributes",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Attributes_Name",
                 table: "Attributes",
                 column: "Name",
@@ -455,6 +468,17 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "IX_Category_ParentCategoryId",
                 table: "Category",
                 column: "ParentCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryAttributes_AttributesId",
+                table: "CategoryAttributes",
+                column: "AttributesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryAttributes_CategoryId_AttributesId",
+                table: "CategoryAttributes",
+                columns: new[] { "CategoryId", "AttributesId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Favorite_ProductId_UserId",
@@ -489,9 +513,9 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductAttributes_AttributesId",
+                name: "IX_ProductAttributes_AttributeId",
                 table: "ProductAttributes",
-                column: "AttributesId");
+                column: "AttributeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductAttributes_ProductId_AttributeId",
@@ -554,6 +578,9 @@ namespace Ecommerce.Infrastucture.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "CategoryAttributes");
 
             migrationBuilder.DropTable(
                 name: "Favorite");

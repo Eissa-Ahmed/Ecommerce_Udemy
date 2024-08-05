@@ -8,7 +8,29 @@ public sealed class AttributeConfiguration : IEntityTypeConfiguration<Attributes
         entity.HasKey(k => k.Id);
         entity.HasIndex(i => i.Name).IsUnique();
 
+        entity.HasMany(m => m.ProductAttributes)
+            .WithOne(o => o.Attributes)
+            .HasForeignKey(i => i.AttributeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+        entity
+           .HasMany(o => o.CategoryAttributes)
+           .WithOne(o => o.Attributes)
+           .HasForeignKey(i => i.AttributesId)
+           .OnDelete(DeleteBehavior.Cascade);
     }
 
 }
 
+public sealed class CategoryAttributesConfiguration : IEntityTypeConfiguration<CategoryAttributes>
+{
+    public void Configure(EntityTypeBuilder<CategoryAttributes> entity)
+    {
+        entity.ToTable(nameof(CategoryAttributes));
+        entity.HasKey(k => k.Id);
+        entity.HasIndex(i => new { i.CategoryId, i.AttributesId }).IsUnique();
+
+    }
+
+}
