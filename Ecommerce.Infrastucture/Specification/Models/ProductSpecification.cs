@@ -18,7 +18,7 @@ public sealed class ProductSpecification : Specification<Product>
         AddInclude(x => x.Category);
         AddInclude(x => x.Brand);
         AddInclude(x => x.Images);
-        AddInclude(x => x.ProductAttributes);
+        AddIInclude(x => x.Include(i => i.ProductAttributes).ThenInclude(i => i.Attributes));
         AddInclude(x => x.Reviews);
         AddInclude(x => x.Ratings);
     }

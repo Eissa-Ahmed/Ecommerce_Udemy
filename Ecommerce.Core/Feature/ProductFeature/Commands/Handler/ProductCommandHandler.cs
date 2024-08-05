@@ -16,7 +16,7 @@ public sealed class ProductCommandHandler : ResponseHandler,
     {
         Product product = _mapper.Map<Product>(request);
         IEnumerable<ProductAttributes> productAttributes = _mapper.Map<IEnumerable<ProductAttributes>>(request.ProductAttributes);
-        Product results = await _productService.CreateAsync(product, request.Images, productAttributes);
+        Product results = await _productService.CreateAsync(product);
         return Created(_mapper.Map<ProductCreateResult>(results));
     }
 }

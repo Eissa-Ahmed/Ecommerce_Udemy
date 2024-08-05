@@ -11,21 +11,19 @@ public sealed class ProductService : IProductService
         _fileFactory = fileFactory;
     }
 
-    public async Task<Product> CreateAsync(Product product, IEnumerable<IFormFile> images, IEnumerable<ProductAttributes> productAttributes)
+    public async Task<Product> CreateAsync(Product product)
     {
-        foreach (var image in images)
+        try
         {
-            product.Images.Add(new Images { Name = _fileFactory.GetFileService(image).SaveFileAsync(image), Size = image.Length });
+            product.MainImage = product.Images.First().Name;
+            await _unitOfWork.ProductRepository.CreateAsync(product);
+            Product? result = await GetByIdAsync(product.Id);
+            return result!;
         }
-        foreach (var productAttribute in productAttributes)
+        catch (Exception ex)
         {
-            productAttribute.ProductId = product.Id;
-            product.ProductAttributes.Add(productAttribute);
+            throw ex;
         }
-
-        product.MainImage = product.Images.First().Name;
-        Product result = await _unitOfWork.ProductRepository.CreateAsync(product);
-        return result;
     }
 
     public Task<IReadOnlyList<Product>> GetAllAsync(int skip, int take, IEnumerable<Expression<Func<Product, bool>>> criterias)

@@ -6,6 +6,7 @@ global using Ecommerce.Application.Feature.CategoryFeature.Queries.Models;
 global using Ecommerce.Application.Feature.CategoryFeature.Queries.Results;
 global using Ecommerce.Application.Feature.ProductFeature.Commands.Models;
 global using Ecommerce.Application.Feature.ProductFeature.Commands.Results;
+global using Ecommerce.Application.Mapper.ProductMapper.Resolver;
 global using Ecommerce.Application.ResponseManager;
 global using Ecommerce.Application.Services.CategoryContainer;
 global using Ecommerce.Application.Services.FileContainer;

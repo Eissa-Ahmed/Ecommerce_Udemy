@@ -17,16 +17,17 @@ public sealed class CategoriesConfiguration : IEntityTypeConfiguration<Category>
             .OnDelete(DeleteBehavior.Restrict);
 
         entity
-           .HasMany(o => o.CategoryAttributes)
-           .WithOne(o => o.Category)
-           .HasForeignKey(i => i.CategoryId)
-           .OnDelete(DeleteBehavior.Cascade);
-
-        entity
            .HasMany(o => o.Products)
            .WithOne(o => o.Category)
            .HasForeignKey(i => i.CategoryId)
            .OnDelete(DeleteBehavior.Restrict);
+
+        entity.HasMany(m => m.Attributes)
+              .WithMany(m => m.Categories)
+              .UsingEntity<CategoryAttributes>(
+                    i => i.HasOne(m => m.Attributes).WithMany(m => m.CategoryAttributes).HasForeignKey(i => i.AttributesId),
+                    j => j.HasOne(m => m.Category).WithMany(m => m.CategoryAttributes).HasForeignKey(i => i.CategoryId)
+              );
 
     }
 }

@@ -7,8 +7,11 @@ public sealed class ProductAttributeConfiguration : IEntityTypeConfiguration<Pro
         entity.ToTable(nameof(ProductAttributes));
 
         entity.HasKey(k => k.Id);
-        entity.HasIndex(i => new { i.ProductId, i.AttributeId }).IsUnique();
+        //entity.HasIndex(i => new { i.ProductId, i.AttributeId }).IsUnique();
 
-
+        entity.HasOne(m => m.Attributes)
+           .WithMany()
+           .HasForeignKey(i => i.AttributeId)
+           .OnDelete(DeleteBehavior.Cascade);
     }
 }

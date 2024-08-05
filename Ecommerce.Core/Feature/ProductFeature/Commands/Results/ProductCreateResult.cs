@@ -19,6 +19,7 @@ public sealed class ProductCreateResult
     public DateTime CreatedDate { get; set; }
     public string CategoryId { get; set; } = null!;
     public string? BrandId { get; set; } = null;
+    public string? BrandName { get; set; } = null;
     public ICollection<ProductCreateResult_Images> Images { get; set; }
     public ICollection<ProductCreateResult_ProductAttributes> ProductAttributes { get; set; }
 }
@@ -35,6 +36,7 @@ public sealed class ProductCreateResult_ProductAttributes
 {
     public string Id { get; set; } = null!;
     public string ProductId { get; set; } = null!;
+    public string Name { get; set; } = null!;
     public string AttributeId { get; set; } = null!;
     public string Value { get; set; } = null!;
 }

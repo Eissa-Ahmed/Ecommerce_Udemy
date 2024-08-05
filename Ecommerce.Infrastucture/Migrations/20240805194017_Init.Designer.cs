@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastucture.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240805125240_Init")]
+    [Migration("20240805194017_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -71,10 +71,6 @@ namespace Ecommerce.Infrastucture.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoryId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -639,7 +635,7 @@ namespace Ecommerce.Infrastucture.Migrations
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductAttributes", b =>
                 {
                     b.HasOne("Ecommerce.Domain.Entities.Attributes", "Attributes")
-                        .WithMany("ProductAttributes")
+                        .WithMany()
                         .HasForeignKey("AttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -743,8 +739,6 @@ namespace Ecommerce.Infrastucture.Migrations
             modelBuilder.Entity("Ecommerce.Domain.Entities.Attributes", b =>
                 {
                     b.Navigation("CategoryAttributes");
-
-                    b.Navigation("ProductAttributes");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Brand", b =>
