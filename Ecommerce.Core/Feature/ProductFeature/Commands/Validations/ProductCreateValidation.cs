@@ -1,5 +1,4 @@
-﻿
-namespace Ecommerce.Application.Feature.ProductFeature.Commands.Validations;
+﻿namespace Ecommerce.Application.Feature.ProductFeature.Commands.Validations;
 
 public sealed class ProductCreateValidation : AbstractValidator<ProductCreateModel>
 {
@@ -70,12 +69,20 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
              .Must(images => images != null && images.Count() > 1)
              .WithMessage("The number of images must be greater than 1.");
 
-        When(i => !i.ProductAttributes.IsNullOrEmpty(), () =>
+        When(i => i.ProductColors.Count() > 0, () =>
         {
-            RuleForEach(i => i.ProductAttributes)
-            .SetValidator(new ProductCreateValidation_ProductAttribute(_attributeValidation));
-
+            RuleFor(i => i.ProductColors)
+            .Must((model, item, cancel) => CheckCountProductColorEqualCountProduct(model))
+            .WithMessage("The number of product colors must be equal to the number of colors");
         });
+
+        When(i => i.ProductSizes.Count() > 0, () =>
+        {
+            RuleFor(i => i.ProductSizes)
+            .Must((model, item, cancel) => CheckCountProductSizeEqualCountProduct(model))
+            .WithMessage("The number of product sizes must be equal to the number of sizes");
+        });
+
 
         When(i => i.Features.Count() > 0, () =>
         {
@@ -105,6 +112,20 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
 
 
     }
+
+    private bool CheckCountProductSizeEqualCountProduct(ProductCreateModel model)
+    {
+        int count = model.ProductSizes.Sum(x => x.Count);
+        return count == model.StockQuantity;
+    }
+
+    private bool CheckCountProductColorEqualCountProduct(ProductCreateModel model)
+    {
+        int count = model.ProductColors.Sum(x => x.Count);
+        return count == model.StockQuantity;
+    }
+
+
 
     private async Task<bool> BrandExistAsync(string arg1, CancellationToken token)
     {

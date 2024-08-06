@@ -8,6 +8,8 @@ public sealed class ProductCreateModel : IRequest<ApplicationResponse<ProductCre
         ProductAttributes = new List<ProductCreateModel_ProductAttributes>();
         Features = new List<ProductCreateModel_Features>();
         CareInstructions = new List<ProductCreateModel_CareInstructions>();
+        ProductSizes = new List<ProductCreateModel_ProductSizes>();
+        ProductColors = new List<ProductCreateModel_ProductColors>();
     }
     public string Name { get; set; } = null!;
     public string? Description { get; set; } = null;
@@ -21,6 +23,8 @@ public sealed class ProductCreateModel : IRequest<ApplicationResponse<ProductCre
     public IEnumerable<ProductCreateModel_ProductAttributes> ProductAttributes { get; set; }
     public IEnumerable<ProductCreateModel_Features> Features { get; set; }
     public IEnumerable<ProductCreateModel_CareInstructions> CareInstructions { get; set; }
+    public IEnumerable<ProductCreateModel_ProductSizes> ProductSizes { get; set; }
+    public IEnumerable<ProductCreateModel_ProductColors> ProductColors { get; set; }
 }
 public sealed class ProductCreateModel_ProductAttributes
 {
@@ -34,4 +38,15 @@ public sealed class ProductCreateModel_Features
 public sealed class ProductCreateModel_CareInstructions
 {
     public string Text { get; set; } = null!;
+}
+public sealed class ProductCreateModel_ProductColors
+{
+    public string Colors { get; set; } = null!;
+    public int Count { get; set; }
+}
+
+public sealed class ProductCreateModel_ProductSizes
+{
+    public string Size { get; set; } = null!;
+    public int Count { get; set; }
 }

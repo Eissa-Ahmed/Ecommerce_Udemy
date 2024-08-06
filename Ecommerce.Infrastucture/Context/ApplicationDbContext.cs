@@ -13,6 +13,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Images> Images { get; set; }
     public DbSet<CareInstructions> CareInstructions { get; set; }
     public DbSet<Features> Features { get; set; }
+    public DbSet<ProductColors> ProductColors { get; set; }
+    public DbSet<ProductSizes> ProductSizes { get; set; }
     public ApplicationDbContext(DbContextOptions options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
