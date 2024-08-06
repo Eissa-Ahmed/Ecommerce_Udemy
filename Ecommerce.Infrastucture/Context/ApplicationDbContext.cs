@@ -11,6 +11,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Attributes> Attributes { get; set; }
     public DbSet<ProductAttributes> ProductAttributes { get; set; }
     public DbSet<Images> Images { get; set; }
+    public DbSet<CareInstructions> CareInstructions { get; set; }
+    public DbSet<Features> Features { get; set; }
     public ApplicationDbContext(DbContextOptions options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -18,7 +18,7 @@ public class SpecificationEvaliator<T> where T : class
 
         if (spec.IsPagingEnabled)
         {
-            query = query.Skip((spec.pageNumber - 1) * spec.pageSize).Take(spec.pageSize);
+            query = query.Skip((spec.PageNumber - 1) * spec.PageSize).Take(spec.PageSize);
         }
 
         query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));

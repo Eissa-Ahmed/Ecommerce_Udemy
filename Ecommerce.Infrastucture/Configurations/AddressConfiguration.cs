@@ -19,6 +19,6 @@ public sealed class AddressConfiguration : IEntityTypeConfiguration<Address>
             .IsRequired();
 
         entity.Property(i => i.Country)
-            .IsRequired();
+        .IsRequired();
     }
 }

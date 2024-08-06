@@ -2,10 +2,12 @@
 
 public sealed class ProductCreateResult
 {
-    public ProductCreateResult(ICollection<ProductCreateResult_Images> images, ICollection<ProductCreateResult_ProductAttributes> productAttributes)
+    public ProductCreateResult()
     {
-        Images = images;
-        ProductAttributes = productAttributes;
+        Images = new List<ProductCreateResult_Images>();
+        ProductAttributes = new List<ProductCreateResult_ProductAttributes>();
+        Features = new List<ProductCreateResult_Features>();
+        CareInstructions = new List<ProductCreateResult_CareInstructions>();
     }
     public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
@@ -21,6 +23,8 @@ public sealed class ProductCreateResult
     public string? BrandName { get; set; } = null;
     public ICollection<ProductCreateResult_Images> Images { get; set; }
     public ICollection<ProductCreateResult_ProductAttributes> ProductAttributes { get; set; }
+    public ICollection<ProductCreateResult_Features> Features { get; set; }
+    public ICollection<ProductCreateResult_CareInstructions> CareInstructions { get; set; }
 }
 
 public sealed class ProductCreateResult_Images
@@ -38,6 +42,14 @@ public sealed class ProductCreateResult_ProductAttributes
     public string Name { get; set; } = null!;
     public string AttributeId { get; set; } = null!;
     public string Value { get; set; } = null!;
+}
+public sealed class ProductCreateResult_Features
+{
+    public string Text { get; set; } = null!;
+}
+public sealed class ProductCreateResult_CareInstructions
+{
+    public string Text { get; set; } = null!;
 }
 
 

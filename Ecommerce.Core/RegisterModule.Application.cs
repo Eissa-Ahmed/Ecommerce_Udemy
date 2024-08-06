@@ -35,5 +35,11 @@ public static class RegisterModule
         services.AddScoped<ICategoryValidation, CategoryValidation>();
         services.AddScoped<IFileFactory, FileFactory>();
         services.AddScoped<IFileValidation, FileValidation>();
+        services.AddScoped<IProductAttributeService, ProductAttributeService>();
+        services.AddScoped<IProductAttributeValidation, ProductAttributeValidation>();
+        services.AddScoped<IAttributeService, AttributeService>();
+        services.AddScoped<IAttributeValidation, AttributeValidation>();
+        services.AddScoped<IBrandService, BrandService>();
+        services.AddScoped<IBrandValidation, BrandValidation>();
     }
 }

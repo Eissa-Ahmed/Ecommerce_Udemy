@@ -1,4 +1,5 @@
 ﻿
+
 namespace Ecommerce.Application.Feature.ProductFeature.Queries.Handler;
 
 public sealed class ProductQueryHandler : ResponseHandler,
@@ -11,8 +12,13 @@ public sealed class ProductQueryHandler : ResponseHandler,
         _productService = productService;
         _mapper = mapper;
     }
-    public async Task<ApplicationResponse<Pagination<IEnumerable<ProductGetAllResult>>>> Handle(ProductGetAllModel request, CancellationToken cancellationToken)
+
+    public Task<ApplicationResponse<Pagination<IEnumerable<ProductGetAllResult>>>> Handle(ProductGetAllModel request, CancellationToken cancellationToken)
     {
-        Pagination<Product> pagination = await _productService.GetAllAsync(request.PageNumber, request.PageSize);
+        throw new NotImplementedException();
     }
+    /* public async Task<ApplicationResponse<Pagination<IEnumerable<ProductGetAllResult>>>> Handle(ProductGetAllModel request, CancellationToken cancellationToken)
+{
+    Pagination<Product> pagination = await _productService.GetAllAsync(request.PageNumber, request.PageSize);
+}*/
 };

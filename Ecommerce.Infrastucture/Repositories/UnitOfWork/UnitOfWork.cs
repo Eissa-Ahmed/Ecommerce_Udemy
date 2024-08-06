@@ -7,12 +7,16 @@ public class UnitOfWork : IUnitOfWork
 
     public ICategoryRepository CategoryRepository { get; private set; }
 
+    public IBrandRepository BrandRepository { get; private set; }
+    public IAttributesRepository AttributesRepository { get; private set; }
 
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
         ProductRepository = new ProductRepository(context);
         CategoryRepository = new CategoryRepository(context);
+        BrandRepository = new BrandRepository(context);
+        AttributesRepository = new AttributesRepository(context);
     }
 
     public async Task<int> SaveChangesAsync()

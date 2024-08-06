@@ -12,6 +12,8 @@ public sealed class Product
         Reviews = new List<Review>();
         Ratings = new List<Rating>();
         Favorite = new List<Favorite>();
+        CareInstructions = new List<CareInstructions>();
+        Features = new List<Features>();
     }
     public string Id { get; set; }
     public string Name { get; set; } = null!;
@@ -33,4 +35,6 @@ public sealed class Product
     public ICollection<Favorite> Favorite { get; set; }
     public ICollection<Review> Reviews { get; set; }
     public ICollection<Rating> Ratings { get; set; }
+    public ICollection<Features> Features { get; set; }
+    public ICollection<CareInstructions> CareInstructions { get; set; }
 }
