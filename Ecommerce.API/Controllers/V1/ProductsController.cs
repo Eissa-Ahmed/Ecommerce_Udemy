@@ -10,8 +10,8 @@ public class ProductsController : ApplicationBaseController
     }
 
     [HttpGet(ProductRoutes.GetAll)]
-    public async Task<IActionResult> GetAllAsync([FromBody] ProductGetAllModel model)
+    public async Task<IActionResult> GetAllAsync(int PageNumber, int PageSize, string? CategoryId = null, string? BrandId = null)
     {
-        return BaseResponse(await _mediator.Send(model));
+        return BaseResponse(await _mediator.Send(new ProductGetAllModel(PageNumber, PageSize, CategoryId, BrandId)));
     }
 }
