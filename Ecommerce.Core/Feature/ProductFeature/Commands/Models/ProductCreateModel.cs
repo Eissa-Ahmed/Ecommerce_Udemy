@@ -41,7 +41,7 @@ public sealed class ProductCreateModel_CareInstructions
 }
 public sealed class ProductCreateModel_ProductColors
 {
-    public string Colors { get; set; } = null!;
+    public string Color { get; set; } = null!;
     public int Count { get; set; }
 }
 

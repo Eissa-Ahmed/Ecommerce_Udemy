@@ -91,7 +91,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
                 features.RuleFor(i => i.Text)
                 .NotEmpty()
                 .WithMessage("Value is required")
-                .Length(100)
+                .MaximumLength(100)
                 .WithMessage("Value must be less than 100 characters");
             });
 
@@ -104,7 +104,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
                 careInstruction.RuleFor(i => i.Text)
                 .NotEmpty()
                 .WithMessage("Value is required")
-                .Length(150)
+                .MaximumLength(150)
                 .WithMessage("Value must be less than 150 characters");
             });
 

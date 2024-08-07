@@ -8,4 +8,10 @@ public class ProductsController : ApplicationBaseController
     {
         return BaseResponse(await _mediator.Send(model));
     }
+
+    [HttpGet(ProductRoutes.GetAll)]
+    public async Task<IActionResult> GetAllAsync([FromBody] ProductGetAllModel model)
+    {
+        return BaseResponse(await _mediator.Send(model));
+    }
 }

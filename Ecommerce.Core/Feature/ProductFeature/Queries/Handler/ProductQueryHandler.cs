@@ -1,9 +1,7 @@
-﻿
-
-namespace Ecommerce.Application.Feature.ProductFeature.Queries.Handler;
+﻿namespace Ecommerce.Application.Feature.ProductFeature.Queries.Handler;
 
 public sealed class ProductQueryHandler : ResponseHandler,
-    IRequestHandler<ProductGetAllModel, ApplicationResponse<Pagination<IEnumerable<ProductGetAllResult>>>>
+    IRequestHandler<ProductGetAllModel, ApplicationResponse<Pagination<ProductGetAllResult>>>
 {
     private readonly IProductService _productService;
     private readonly IMapper _mapper;
@@ -13,12 +11,18 @@ public sealed class ProductQueryHandler : ResponseHandler,
         _mapper = mapper;
     }
 
-    public Task<ApplicationResponse<Pagination<IEnumerable<ProductGetAllResult>>>> Handle(ProductGetAllModel request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<Pagination<ProductGetAllResult>>> Handle(ProductGetAllModel request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        List<Expression<Func<Product, bool>>> expressions = new List<Expression<Func<Product, bool>>>();
+        if (request.CategoryId != null)
+            expressions.Add(x => x.CategoryId == request.CategoryId);
+
+        if (request.BrandId != null)
+            expressions.Add(x => x.BrandId == request.BrandId);
+
+        Pagination<Product> pagination = await _productService.GetAllAsync(request.PageNumber, request.PageSize, expressions);
+        Pagination<ProductGetAllResult> result = _mapper.Map<Pagination<ProductGetAllResult>>(pagination);
+        return Success(result);
     }
-    /* public async Task<ApplicationResponse<Pagination<IEnumerable<ProductGetAllResult>>>> Handle(ProductGetAllModel request, CancellationToken cancellationToken)
-{
-    Pagination<Product> pagination = await _productService.GetAllAsync(request.PageNumber, request.PageSize);
-}*/
+
 };

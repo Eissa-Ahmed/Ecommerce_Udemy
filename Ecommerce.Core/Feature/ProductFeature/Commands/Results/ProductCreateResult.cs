@@ -58,7 +58,7 @@ public sealed class ProductCreateResult_CareInstructions
 
 public sealed class ProductCreateResult_ProductColors
 {
-    public string Colors { get; set; } = null!;
+    public string Color { get; set; } = null!;
     public int Count { get; set; }
 }
 

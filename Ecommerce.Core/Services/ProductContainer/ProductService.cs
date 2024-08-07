@@ -13,17 +13,12 @@ public sealed class ProductService : IProductService
 
     public async Task<Product> CreateAsync(Product product)
     {
-        try
-        {
-            product.MainImage = product.Images.First().Name;
-            await _unitOfWork.ProductRepository.CreateAsync(product);
-            Product? result = await GetByIdAsync(product.Id);
-            return result!;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+
+        product.MainImage = product.Images.First().Name;
+        await _unitOfWork.ProductRepository.CreateAsync(product);
+        Product? result = await GetByIdAsync(product.Id);
+        return result!;
+
     }
 
     public async Task<Pagination<Product>> GetAllAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Product, bool>>>? criterias = null)

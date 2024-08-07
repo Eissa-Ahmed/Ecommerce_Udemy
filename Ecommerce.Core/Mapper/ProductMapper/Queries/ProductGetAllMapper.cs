@@ -4,6 +4,9 @@ public partial class ProductProfile
 {
     private void ApplyProductGetAllMapper()
     {
+        CreateMap<Pagination<Product>, Pagination<ProductGetAllResult>>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data));
+
         CreateMap<Product, ProductGetAllResult>()
             .ForMember(dest => dest.Rating, opt => opt.MapFrom<RatingProductResolver>());
     }
