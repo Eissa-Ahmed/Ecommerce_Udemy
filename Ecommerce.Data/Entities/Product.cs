@@ -14,7 +14,6 @@ public sealed class Product
         Favorite = new List<Favorite>();
         CareInstructions = new List<CareInstructions>();
         Features = new List<Features>();
-        ProductSizes = new List<ProductSizes>();
         ProductColors = new List<ProductColors>();
     }
     public string Id { get; set; }
@@ -40,5 +39,4 @@ public sealed class Product
     public ICollection<Features> Features { get; set; }
     public ICollection<CareInstructions> CareInstructions { get; set; }
     public ICollection<ProductColors> ProductColors { get; set; }
-    public ICollection<ProductSizes> ProductSizes { get; set; }
 }

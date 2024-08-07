@@ -418,26 +418,6 @@ namespace Ecommerce.Infrastucture.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSizes",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Count = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductSizes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductSizes_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Rating",
                 columns: table => new
                 {
@@ -487,6 +467,26 @@ namespace Ecommerce.Infrastucture.Migrations
                         name: "FK_Review_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductSizes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    ProductColorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSizes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_ProductColors_ProductColorId",
+                        column: x => x.ProductColorId,
+                        principalTable: "ProductColors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -615,9 +615,9 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSizes_ProductId",
+                name: "IX_ProductSizes_ProductColorId",
                 table: "ProductSizes",
-                column: "ProductId");
+                column: "ProductColorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rating_ProductId_UserId",
@@ -694,9 +694,6 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "ProductAttributes");
 
             migrationBuilder.DropTable(
-                name: "ProductColors");
-
-            migrationBuilder.DropTable(
                 name: "ProductSizes");
 
             migrationBuilder.DropTable(
@@ -712,10 +709,13 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "Attributes");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "ProductColors");
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Brand");

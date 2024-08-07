@@ -11,7 +11,10 @@ public sealed class ProductColorsConfiguration : IEntityTypeConfiguration<Produc
         entity.Property(i => i.Color)
             .IsRequired();
 
-        entity.Property(i => i.Count)
-            .IsRequired();
+        entity
+           .HasMany(m => m.ProductSizes)
+           .WithOne(o => o.ProductColors)
+           .HasForeignKey(i => i.ProductColorId)
+           .OnDelete(DeleteBehavior.Cascade);
     }
 }

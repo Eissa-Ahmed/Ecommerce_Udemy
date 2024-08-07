@@ -6,6 +6,10 @@ public sealed class RatingProductResolver : IValueResolver<Product, ProductGetAl
     {
         double sum = source.Ratings.Sum(r => r.Score);
         double count = source.Ratings.ToList().Count();
+
+        if (sum == 0 || count == 0)
+            return 0;
+
         return sum / count;
     }
 }

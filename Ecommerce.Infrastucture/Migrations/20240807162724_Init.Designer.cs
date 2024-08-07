@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastucture.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240806220654_Init")]
+    [Migration("20240807162724_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -356,7 +356,7 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductId")
+                    b.Property<string>("ProductColorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -366,7 +366,7 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductColorId");
 
                     b.ToTable("ProductSizes", (string)null);
                 });
@@ -773,13 +773,13 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductSizes", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Product", "Product")
+                    b.HasOne("Ecommerce.Domain.Entities.ProductColors", "ProductColors")
                         .WithMany("ProductSizes")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductColors");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Rating", b =>
@@ -900,11 +900,14 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.Navigation("ProductColors");
 
-                    b.Navigation("ProductSizes");
-
                     b.Navigation("Ratings");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductColors", b =>
+                {
+                    b.Navigation("ProductSizes");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.User", b =>

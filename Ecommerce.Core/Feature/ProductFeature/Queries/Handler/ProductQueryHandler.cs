@@ -1,4 +1,5 @@
-﻿namespace Ecommerce.Application.Feature.ProductFeature.Queries.Handler;
+﻿
+namespace Ecommerce.Application.Feature.ProductFeature.Queries.Handler;
 
 public sealed class ProductQueryHandler : ResponseHandler,
     IRequestHandler<ProductGetAllModel, ApplicationResponse<Pagination<ProductGetAllResult>>>

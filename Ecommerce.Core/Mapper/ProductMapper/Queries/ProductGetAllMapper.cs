@@ -8,6 +8,7 @@ public partial class ProductProfile
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data));
 
         CreateMap<Product, ProductGetAllResult>()
-            .ForMember(dest => dest.Rating, opt => opt.MapFrom<RatingProductResolver>());
+            .ForMember(dest => dest.Rating, opt => opt.MapFrom<RatingProductResolver>())
+            .ForMember(dest => dest.MainImage, opt => opt.MapFrom<ProductGetAllMapper_Resolver>());
     }
 }

@@ -14,7 +14,15 @@ public sealed class Pagination<T>
         TotalCount = totalCount;
     }
 
-    public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
+    //public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
+    public int TotalPages
+    {
+        get
+        {
+            if (PageSize == 0) return 0; // لتجنب القسمة على صفر
+            return (int)Math.Ceiling(TotalCount / (double)PageSize);
+        }
+    }
     public bool HasPreviousPage => PageNumber > 1;
     public bool HasNextPage => PageNumber < TotalPages;
     public List<T> Data { get; set; }

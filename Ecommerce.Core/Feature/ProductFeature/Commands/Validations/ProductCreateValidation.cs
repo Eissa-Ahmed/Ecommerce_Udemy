@@ -1,4 +1,8 @@
-﻿namespace Ecommerce.Application.Feature.ProductFeature.Commands.Validations;
+﻿
+
+
+
+namespace Ecommerce.Application.Feature.ProductFeature.Commands.Validations;
 
 public sealed class ProductCreateValidation : AbstractValidator<ProductCreateModel>
 {
@@ -52,7 +56,9 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
              .NotEmpty()
              .WithMessage("Category Id is required")
              .MustAsync(CategoryExistAsync)
-             .WithMessage("Category Id does not exist");
+             .WithMessage("Category Id does not exist")
+             .MustAsync(CategoryNotHaveSubCategoriesAsync)
+             .WithMessage("The category have sub-categories");
 
         When(i => !i.BrandId.IsNullOrEmpty(), () =>
         {
@@ -74,14 +80,24 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
             RuleFor(i => i.ProductColors)
             .Must((model, item, cancel) => CheckCountProductColorEqualCountProduct(model))
             .WithMessage("The number of product colors must be equal to the number of colors");
+
+
+            RuleForEach(i => i.ProductColors).ChildRules(productColor =>
+            {
+                productColor.RuleFor(i => i.Color)
+                .NotEmpty()
+                .WithMessage("Color is required");
+
+                productColor.When(i => i.ProductSizes.Count() > 0, () =>
+                {
+                    productColor.RuleFor(i => i.ProductSizes)
+                        .Must((model, item, cancel) => CheckCountProductSizeEqualCountProduct(model))
+                        .WithMessage("The number of product sizes must be equal to the number of sizes");
+                });
+            });
         });
 
-        When(i => i.ProductSizes.Count() > 0, () =>
-        {
-            RuleFor(i => i.ProductSizes)
-            .Must((model, item, cancel) => CheckCountProductSizeEqualCountProduct(model))
-            .WithMessage("The number of product sizes must be equal to the number of sizes");
-        });
+
 
 
         When(i => i.Features.Count() > 0, () =>
@@ -113,10 +129,9 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
 
     }
 
-    private bool CheckCountProductSizeEqualCountProduct(ProductCreateModel model)
+    private async Task<bool> CategoryNotHaveSubCategoriesAsync(string arg1, CancellationToken token)
     {
-        int count = model.ProductSizes.Sum(x => x.Count);
-        return count == model.StockQuantity;
+        return !(await _categoryValidation.CategoryHaveSubCategoriesAsync(arg1));
     }
 
     private bool CheckCountProductColorEqualCountProduct(ProductCreateModel model)
@@ -125,6 +140,11 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
         return count == model.StockQuantity;
     }
 
+    private bool CheckCountProductSizeEqualCountProduct(ProductCreateModel_ProductColors model)
+    {
+        int count = model.ProductSizes.Sum(x => x.Count);
+        return count == model.Count;
+    }
 
 
     private async Task<bool> BrandExistAsync(string arg1, CancellationToken token)

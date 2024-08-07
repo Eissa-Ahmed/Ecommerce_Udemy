@@ -9,6 +9,6 @@ public sealed class ProductSizes
     public string Id { get; set; } = null!;
     public string Size { get; set; } = null!;
     public int Count { get; set; }
-    public string ProductId { get; set; } = null!;
-    public Product Product { get; set; } = null!;
+    public string ProductColorId { get; set; } = null!;
+    public ProductColors ProductColors { get; set; } = null!;
 }

@@ -9,7 +9,6 @@ public sealed class ProductCreateResult
         Features = new List<ProductCreateResult_Features>();
         CareInstructions = new List<ProductCreateResult_CareInstructions>();
         ProductColors = new List<ProductCreateResult_ProductColors>();
-        ProductSizes = new List<ProductCreateResult_ProductSizes>();
     }
     public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
@@ -28,7 +27,6 @@ public sealed class ProductCreateResult
     public ICollection<ProductCreateResult_Features> Features { get; set; }
     public ICollection<ProductCreateResult_CareInstructions> CareInstructions { get; set; }
     public ICollection<ProductCreateResult_ProductColors> ProductColors { get; set; }
-    public ICollection<ProductCreateResult_ProductSizes> ProductSizes { get; set; }
 }
 
 public sealed class ProductCreateResult_Images
@@ -58,8 +56,15 @@ public sealed class ProductCreateResult_CareInstructions
 
 public sealed class ProductCreateResult_ProductColors
 {
+    public ProductCreateResult_ProductColors()
+    {
+        ProductSizes = new List<ProductCreateResult_ProductSizes>();
+
+    }
     public string Color { get; set; } = null!;
     public int Count { get; set; }
+
+    public ICollection<ProductCreateResult_ProductSizes> ProductSizes { get; set; }
 }
 
 public sealed class ProductCreateResult_ProductSizes

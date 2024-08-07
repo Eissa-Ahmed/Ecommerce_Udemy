@@ -24,7 +24,6 @@ public sealed class ProductSpecification : Specification<Product>
         AddInclude(x => x.Ratings);
         AddInclude(x => x.Features);
         AddInclude(x => x.CareInstructions);
-        AddInclude(x => x.ProductColors);
-        AddInclude(x => x.ProductSizes);
+        AddIInclude(x => x.Include(i => i.ProductColors).ThenInclude(i => i.ProductSizes));
     }
 }

@@ -51,4 +51,9 @@ public sealed class CategoryValidation : ICategoryValidation
         Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
         return category != null;
     }
+
+    public async Task<bool> CategoryHaveSubCategoriesAsync(string Id)
+    {
+        return await _unitOfWork.CategoryRepository.CategoryHaveSubCategoriesAsync(Id);
+    }
 }
