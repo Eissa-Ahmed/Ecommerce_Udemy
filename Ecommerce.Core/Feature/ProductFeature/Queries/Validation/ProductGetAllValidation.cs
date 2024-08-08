@@ -18,6 +18,11 @@ public sealed class ProductGetAllValidation : AbstractValidator<ProductGetAllMod
     {
         RuleFor(x => x.PageNumber).GreaterThan(0);
         RuleFor(x => x.PageSize).GreaterThan(0);
+        When(i => i.SortByPrice != null, () =>
+        {
+            RuleFor(x => x.SortByPrice).Must(x => x == "ASC" || x == "DESC" || x == "NAME")
+            .WithMessage("SortByPrice must be ASC or DESC or NAME");
+        });
         When(i => !i.CategoryId.IsNullOrEmpty(), () =>
         {
             RuleFor(x => x.CategoryId!)

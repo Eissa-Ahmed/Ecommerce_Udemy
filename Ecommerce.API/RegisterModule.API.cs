@@ -1,4 +1,5 @@
-﻿namespace Ecommerce.API;
+﻿
+namespace Ecommerce.API;
 
 public static class RegisterModule
 {
@@ -13,8 +14,22 @@ public static class RegisterModule
         registerSwaggerGen(builder);
         registerIdentity(builder);
         registerVersioning(builder);
+        registerCorsOrigin(builder);
         readFilesFromAppSettings(builder);
         return services;
+    }
+
+    private static void registerCorsOrigin(WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", policy =>
+            {
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+                policy.AllowAnyOrigin();
+            });
+        });
     }
 
     private static void readFilesFromAppSettings(WebApplicationBuilder builder)

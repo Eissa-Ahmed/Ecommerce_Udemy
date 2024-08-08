@@ -19,6 +19,9 @@ public class Specification<T> : ISpecification<T> where T : class
 
     public bool AsTracking { get; private set; } = false;
 
+    public List<Expression<Func<T, object>>> OrderBy { get; } = new List<Expression<Func<T, object>>>();
+
+    public List<Expression<Func<T, object>>> OrderByDescending { get; } = new List<Expression<Func<T, object>>>();
 
     protected void AddInclude(Expression<Func<T, object>> includeExpression)
     {
@@ -38,5 +41,14 @@ public class Specification<T> : ISpecification<T> where T : class
     public void ApplyTracking(bool tracking)
     {
         AsTracking = tracking;
+    }
+
+    public void ApplyOrdering(Expression<Func<T, object>> OrderBy)
+    {
+        this.OrderBy.Add(OrderBy);
+    }
+    public void ApplyOrderingDesc(Expression<Func<T, object>> OrderByDesc)
+    {
+        this.OrderByDescending.Add(OrderByDesc);
     }
 }

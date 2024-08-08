@@ -32,6 +32,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v2/swagger.json", "My API V2");
     });
 }
+app.UseCors("CorsPolicy");
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 

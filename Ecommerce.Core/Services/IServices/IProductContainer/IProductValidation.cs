@@ -2,4 +2,5 @@
 
 public interface IProductValidation
 {
+    public Task<bool> ProductIsExist(string Id);
 }

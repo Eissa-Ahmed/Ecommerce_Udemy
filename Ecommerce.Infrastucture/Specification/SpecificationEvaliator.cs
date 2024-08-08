@@ -16,6 +16,16 @@ public class SpecificationEvaliator<T> where T : class
             query = spec.Criterias.Aggregate(query, (current, criteria) => current.Where(criteria));
         }
 
+        if (spec.OrderBy.Count > 0)
+        {
+            query = spec.OrderBy.Aggregate(query, (current, orderBy) => current.OrderBy(orderBy));
+        }
+
+        if (spec.OrderByDescending.Count > 0)
+        {
+            query = spec.OrderByDescending.Aggregate(query, (current, orderByDesc) => current.OrderByDescending(orderByDesc));
+        }
+
         if (spec.IsPagingEnabled)
         {
             query = query.Skip((spec.PageNumber - 1) * spec.PageSize).Take(spec.PageSize);

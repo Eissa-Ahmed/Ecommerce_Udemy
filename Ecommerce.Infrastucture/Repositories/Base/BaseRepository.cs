@@ -1,5 +1,4 @@
-﻿
-namespace Ecommerce.Infrastucture.Repositories.Base;
+﻿namespace Ecommerce.Infrastucture.Repositories.Base;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
@@ -11,7 +10,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public async Task<T> CreateAsync(T entity)
     {
-        await _context.AddAsync(entity);
+        await _context.Set<T>().AddAsync(entity);
         await _context.SaveChangesAsync();
         return entity;
     }
@@ -36,6 +35,11 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async Task<T?> GetByIdAsync(ISpecification<T> specification)
     {
         return await ApplySpecification(specification).FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> IsExist(Expression<Func<T, bool>> expression)
+    {
+        return await _context.Set<T>().AnyAsync(expression);
     }
 
     public async Task<T> UpdateAsync(T entity)
