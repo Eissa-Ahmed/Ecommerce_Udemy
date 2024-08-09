@@ -6,5 +6,6 @@ public partial class ProductProfile : Profile
     {
         ApplyProductCreateMapper();
         ApplyProductGetAllMapper();
+        ApplyProductGetByIdMapper();
     }
 }
