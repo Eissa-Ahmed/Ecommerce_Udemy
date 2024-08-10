@@ -10,11 +10,13 @@ public sealed class Product
         Images = new List<Images>();
         ProductAttributes = new List<ProductAttributes>();
         Reviews = new List<Review>();
-        Ratings = new List<Rating>();
-        Favorite = new List<Favorite>();
         CareInstructions = new List<CareInstructions>();
         Features = new List<Features>();
-        ProductColors = new List<ProductColors>();
+        ProductVariant = new List<ProductVariant>();
+        ProductTagMapping = new List<ProductTagMapping>();
+        ProductDiscount = new List<ProductDiscount>();
+        CartItem = new List<CartItem>();
+        OrderItem = new List<OrderItem>();
     }
     public string Id { get; set; }
     public string Name { get; set; } = null!;
@@ -22,9 +24,7 @@ public sealed class Product
     public string MainImage { get; set; } = null!;
     public int StockQuantity { get; set; }
     public decimal Price { get; set; }
-    public int Discount { get; set; }
     public bool IsShow { get; set; }
-    public bool FreeShipping { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; } = null;
     public string CategoryId { get; set; } = null!;
@@ -33,10 +33,12 @@ public sealed class Product
     public Brand? Brand { get; set; } = null;
     public ICollection<Images> Images { get; set; }
     public ICollection<ProductAttributes> ProductAttributes { get; set; }
-    public ICollection<Favorite> Favorite { get; set; }
+    public ICollection<ProductDiscount> ProductDiscount { get; set; }
     public ICollection<Review> Reviews { get; set; }
-    public ICollection<Rating> Ratings { get; set; }
+    public ICollection<ProductTagMapping> ProductTagMapping { get; set; }
     public ICollection<Features> Features { get; set; }
+    public ICollection<ProductVariant> ProductVariant { get; set; }
     public ICollection<CareInstructions> CareInstructions { get; set; }
-    public ICollection<ProductColors> ProductColors { get; set; }
+    public ICollection<CartItem> CartItem { get; set; }
+    public ICollection<OrderItem> OrderItem { get; set; }
 }
