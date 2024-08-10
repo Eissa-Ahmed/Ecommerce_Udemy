@@ -15,6 +15,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Features> Features { get; set; }
     public DbSet<ProductColors> ProductColors { get; set; }
     public DbSet<ProductSizes> ProductSizes { get; set; }
+    public DbSet<Cart> Cart { get; set; }
+    public DbSet<CartItem> CartItem { get; set; }
     public ApplicationDbContext(DbContextOptions options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -19,6 +19,7 @@ public class ProductsController : ApplicationBaseController
     public async Task<IActionResult> GetByIdAsync(string Id)
     {
         return BaseResponse(await _mediator.Send(new ProductGetByIdModel(Id)));
+        //return NotFound();
     }
 
 }

@@ -24,7 +24,7 @@ public sealed class ProductGetByIdResult
     public string CategoryId { get; set; } = null!;
     public string? BrandId { get; set; } = null;
     public string? BrandName { get; set; } = null;
-    public double RoralRating { get; set; }
+    public double TotalRating { get; set; }
     public ICollection<ProductGetByIdResult_Images> Images { get; set; }
     public ICollection<ProductGetByIdResult_ProductAttributes> ProductAttributes { get; set; }
     public ICollection<ProductGetByIdResult_Review> Reviews { get; set; }

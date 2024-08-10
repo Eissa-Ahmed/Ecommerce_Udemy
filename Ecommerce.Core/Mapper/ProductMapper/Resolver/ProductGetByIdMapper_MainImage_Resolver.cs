@@ -11,7 +11,7 @@ public sealed class ProductGetByIdMapper_MainImage_Resolver : IValueResolver<Pro
 
     public string Resolve(Product source, ProductGetByIdResult destination, string destMember, ResolutionContext context)
     {
-        return $"{_settings.Value.ApiUrl}{source.Name}";
+        return $"{_settings.Value.ApiUrl}{source.MainImage}";
     }
 }
 

@@ -6,7 +6,7 @@ public partial class ProductProfile
     {
         CreateMap<Product, ProductGetByIdResult>()
             .ForMember(dest => dest.MainImage, opt => opt.MapFrom<ProductGetByIdMapper_MainImage_Resolver>())
-            .ForMember(dest => dest.RoralRating, opt => opt.MapFrom<ProductGetByIdMapper_Rating_Resolver>())
+            .ForMember(dest => dest.TotalRating, opt => opt.MapFrom<ProductGetByIdMapper_Rating_Resolver>())
             .ForMember(dest => dest.Images, opt => opt.MapFrom<ProductGetByIdMapper_Images_Resolver>())
             .ForMember(dest => dest.ProductAttributes, opt => opt.MapFrom(src => src.ProductAttributes))
             .ForMember(dest => dest.Ratings, opt => opt.MapFrom(src => src.Ratings))
