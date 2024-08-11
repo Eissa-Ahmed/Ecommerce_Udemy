@@ -10,6 +10,6 @@ public sealed class FeaturesConfiguration : IEntityTypeConfiguration<Features>
 
         entity.Property(i => i.Text)
             .IsRequired()
-            .HasMaxLength(250);
+            .HasMaxLength(500);
     }
 }

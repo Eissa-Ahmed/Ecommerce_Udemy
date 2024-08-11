@@ -9,5 +9,10 @@ public sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
         entity.HasKey(k => k.Id);
         entity.HasIndex(i => new { i.ProductId, i.UserId }).IsUnique();
 
+        entity.Property(p => p.Rating)
+            .IsRequired()
+            .HasAnnotation("MinValue", 1)
+            .HasAnnotation("MaxValue", 5);
+
     }
 }
