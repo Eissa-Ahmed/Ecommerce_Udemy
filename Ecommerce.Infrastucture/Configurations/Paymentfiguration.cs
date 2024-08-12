@@ -4,7 +4,7 @@ public sealed class Paymentfiguration : IEntityTypeConfiguration<Payment>
 {
     public void Configure(EntityTypeBuilder<Payment> entity)
     {
-        entity.ToTable(nameof(Order));
+        entity.ToTable(nameof(Payment));
 
         entity.HasKey(k => k.Id);
 
