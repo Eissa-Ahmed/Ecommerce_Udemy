@@ -1,7 +1,7 @@
 ﻿
 namespace Ecommerce.Infrastucture.Specification;
 
-public abstract class Specification<T> : ISpecification<T> where T : class
+public class Specification<T> : ISpecification<T> where T : class
 {
     public Expression<Func<T, bool>>? Criteria { get; } = null;
 

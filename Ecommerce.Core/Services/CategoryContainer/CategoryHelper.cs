@@ -1,8 +1,8 @@
-﻿namespace Ecommerce.Infrastucture.ApplicationHelper;
+﻿namespace Ecommerce.Application.Services.CategoryContainer;
 
-public static class Helper
+public sealed class CategoryHelper : ICategoryHelper
 {
-    public static List<Category> GetSubCategoriesHierarchy(List<Category> category, string? ParentCategoryId)
+    public List<Category> GetSubCategoriesHierarchy(List<Category> category, string? ParentCategoryId)
     {
         return category.Where(i => i.ParentCategoryId == ParentCategoryId)
             .Select(i => new Category
@@ -15,13 +15,13 @@ public static class Helper
                 SubCategories = GetSubCategoriesHierarchy(category, i.Id)
             }).ToList();
     }
-    public static Category GetCategory(Category category, List<Category> categories)
+    public Category GetCategory(Category category, List<Category> categories)
     {
         Category result = category;
         result.SubCategories = GetSubCategoriesHierarchy(categories, category.Id);
         return result;
     }
-    public static List<Category> GetCategories(List<Category> categories)
+    public List<Category> GetCategories(List<Category> categories)
     {
         return categories
             .Where(i => i.ParentCategoryId == null)

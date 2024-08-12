@@ -5,10 +5,12 @@ namespace Ecommerce.Application.Services.CategoryContainer;
 public sealed class CategoryServices : ICategoryServices
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICategoryHelper _categoryHelper;
 
-    public CategoryServices(IUnitOfWork unitOfWork)
+    public CategoryServices(IUnitOfWork unitOfWork, ICategoryHelper categoryHelper)
     {
         _unitOfWork = unitOfWork;
+        _categoryHelper = categoryHelper;
     }
 
     public Task<Category> AddSubCategoryInCategoryAsync(Category category)
@@ -48,7 +50,7 @@ public sealed class CategoryServices : ICategoryServices
     {
         ISpecification<Category> specification = new CategoryGetAllSpecification();
         IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specification);
-        return Helper.GetCategories(categories.ToList());
+        return _categoryHelper.GetCategories(categories.ToList());
     }
 
     public Task<Category> GetByIdAsync(string id)

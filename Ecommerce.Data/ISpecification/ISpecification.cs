@@ -2,12 +2,12 @@
 
 public interface ISpecification<T>
 {
-    Expression<Func<T, bool>>? Criteria { get; }
-    List<Expression<Func<T, object>>> OrderBy { get; }
-    List<Expression<Func<T, object>>> OrderByDescending { get; }
-    List<Func<IQueryable<T>, IIncludableQueryable<T, object>>> IIncludes { get; }
-    int PageNumber { get; }
-    int PageSize { get; }
-    bool IsPagingEnabled { get; }
-    bool AsTracking { get; }
+    public Expression<Func<T, bool>>? Criteria { get; }
+    public List<Expression<Func<T, object>>> OrderBy { get; }
+    public List<Expression<Func<T, object>>> OrderByDescending { get; }
+    public List<Func<IQueryable<T>, IIncludableQueryable<T, object>>> IIncludes { get; }
+    public int PageNumber { get; }
+    public int PageSize { get; }
+    public bool IsPagingEnabled { get; }
+    public bool AsTracking { get; }
 }

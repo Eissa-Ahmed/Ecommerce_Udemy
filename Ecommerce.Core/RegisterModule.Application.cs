@@ -35,6 +35,7 @@ public static class RegisterModule
 
         services.AddScoped<ICategoryServices, CategoryServices>();
         services.AddScoped<ICategoryValidation, CategoryValidation>();
+        services.AddScoped<ICategoryHelper, CategoryHelper>();
 
         services.AddScoped<IFileFactory, FileFactory>();
         services.AddScoped<IFileValidation, FileValidation>();
