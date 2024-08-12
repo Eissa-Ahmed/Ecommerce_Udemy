@@ -34,22 +34,24 @@ public sealed class CategoryValidation : ICategoryValidation
 
     public async Task<bool> CategoryIsExist_ById(string Id)
     {
-        List<Expression<Func<Category, bool>>> criterias = new List<Expression<Func<Category, bool>>>()
+        /*List<Expression<Func<Category, bool>>> criterias = new List<Expression<Func<Category, bool>>>()
         {
             i => i.Id == Id,
         };
         ISpecification<Category> specification = new CategorySpecification(criterias);
-        return await _unitOfWork.CategoryRepository.GetByIdAsync(specification) != null;
+        return await _unitOfWork.CategoryRepository.GetByIdAsync(specification) != null;*/
+        throw new NotImplementedException();
     }
     public async Task<bool> CategoryIsExist_ByName(string name)
     {
-        List<Expression<Func<Category, bool>>> criterias = new List<Expression<Func<Category, bool>>>()
+        /*List<Expression<Func<Category, bool>>> criterias = new List<Expression<Func<Category, bool>>>()
         {
             i => i.Name == name
         };
         ISpecification<Category> specification = new CategorySpecification(criterias);
         Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
-        return category != null;
+        return category != null;*/
+        throw new NotImplementedException();
     }
 
     public async Task<bool> CategoryHaveSubCategoriesAsync(string Id)
