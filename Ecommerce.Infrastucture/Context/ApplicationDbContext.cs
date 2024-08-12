@@ -23,7 +23,6 @@ public sealed class ApplicationDbContext : IdentityDbContext<User, Role, string>
     public DbSet<Notification> Notification { get; set; }
     public DbSet<AuditLog> AuditLog { get; set; }
     public DbSet<Coupon> Coupon { get; set; }
-    public DbSet<OrderCoupon> OrderCoupon { get; set; }
     public DbSet<Payment> Payment { get; set; }
     public DbSet<PaymentMethod> PaymentMethod { get; set; }
     public DbSet<ProductTag> ProductTag { get; set; }

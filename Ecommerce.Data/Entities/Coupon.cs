@@ -5,7 +5,7 @@ public sealed class Coupon
     public Coupon()
     {
         Id = Guid.NewGuid().ToString();
-        OrderCoupons = new List<OrderCoupon>();
+        Orders = new List<Order>();
     }
     public string Id { get; set; }
     public string Code { get; set; } = null!;
@@ -15,5 +15,5 @@ public sealed class Coupon
     public int UsageLimit { get; set; }
     public bool IsValid => DateTime.UtcNow >= ValidFrom && DateTime.UtcNow <= ValidTo;
 
-    public ICollection<OrderCoupon> OrderCoupons { get; set; }
+    public ICollection<Order> Orders { get; set; }
 }
