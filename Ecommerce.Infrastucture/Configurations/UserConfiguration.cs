@@ -8,8 +8,20 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
 
         entity
-            .HasMany(m => m.Favorites)
-            .WithOne()
+            .HasOne(o => o.Cart)
+            .WithOne(o => o.User)
+            .HasForeignKey<Cart>(i => i.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+            .HasOne(o => o.Wishlist)
+            .WithOne(o => o.User)
+            .HasForeignKey<Wishlist>(i => i.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+            .HasMany(m => m.Orders)
+            .WithOne(o => o.User)
             .HasForeignKey(i => i.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -20,8 +32,8 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Cascade);
 
         entity
-            .HasMany(m => m.Rating)
-            .WithOne()
+            .HasMany(m => m.SupportTickets)
+            .WithOne(o => o.User)
             .HasForeignKey(i => i.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -30,5 +42,23 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne()
             .HasForeignKey(i => i.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+            .HasMany(m => m.SupportTickets)
+            .WithOne(o => o.User)
+            .HasForeignKey(i => i.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+           .HasMany(m => m.AuditLog)
+           .WithOne(o => o.User)
+           .HasForeignKey(i => i.UserId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+        entity
+           .HasMany(m => m.Notifications)
+           .WithOne(o => o.User)
+           .HasForeignKey(i => i.UserId)
+           .OnDelete(DeleteBehavior.Cascade);
     }
 }
