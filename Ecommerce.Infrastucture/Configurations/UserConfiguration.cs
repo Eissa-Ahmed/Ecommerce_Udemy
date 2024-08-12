@@ -39,7 +39,7 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         entity
             .HasMany(m => m.Review)
-            .WithOne()
+            .WithOne(o => o.User)
             .HasForeignKey(i => i.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
