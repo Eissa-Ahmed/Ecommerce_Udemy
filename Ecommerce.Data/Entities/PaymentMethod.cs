@@ -8,7 +8,7 @@ public sealed class PaymentMethod
         IsActive = true;
     }
     public string Id { get; set; }
-    public string Name { get; set; } = null!;
+    public PaymentMethodName Name { get; set; }
     public bool IsActive { get; set; }
     public decimal AdditionalCoast { get; set; }
 }

@@ -11,7 +11,6 @@ public static class Helper
                 Name = i.Name,
                 ParentCategoryId = i.ParentCategoryId,
                 Products = i.Products,
-                CategoryAttributes = i.CategoryAttributes,
                 ParentCategory = i.ParentCategory,
                 SubCategories = GetSubCategoriesHierarchy(category, i.Id)
             }).ToList();
@@ -32,7 +31,6 @@ public static class Helper
                 Name = i.Name,
                 ParentCategoryId = i.ParentCategoryId,
                 Products = i.Products,
-                CategoryAttributes = i.CategoryAttributes,
                 ParentCategory = i.ParentCategory,
                 SubCategories = GetSubCategoriesHierarchy(categories, i.Id)
             })

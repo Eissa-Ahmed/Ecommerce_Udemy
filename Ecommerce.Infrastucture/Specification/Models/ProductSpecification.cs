@@ -17,7 +17,6 @@ public sealed class ProductSpecification : Specification<Product>
             ApplyOrderingDesc(orderByDesc!);
 
         ApplyPaging(pageNumber, pageSize);
-        AddInclude(x => x.Ratings);
 
     }
     /*public ProductSpecification(List<Expression<Func<Product, bool>>> criterias) : base(criterias)
@@ -32,9 +31,7 @@ public sealed class ProductSpecification : Specification<Product>
         AddInclude(x => x.Images);
         AddIInclude(x => x.Include(i => i.ProductAttributes).ThenInclude(i => i.Attributes));
         AddInclude(x => x.Reviews);
-        AddInclude(x => x.Ratings);
         AddInclude(x => x.Features);
         AddInclude(x => x.CareInstructions);
-        AddIInclude(x => x.Include(i => i.ProductColors).ThenInclude(i => i.ProductSizes));
     }
 }

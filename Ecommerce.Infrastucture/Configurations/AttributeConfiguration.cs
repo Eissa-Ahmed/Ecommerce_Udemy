@@ -6,6 +6,7 @@ public sealed class AttributeConfiguration : IEntityTypeConfiguration<Attributes
     {
         entity.ToTable(nameof(Attributes));
         entity.HasKey(k => k.Id);
+
         entity.HasIndex(i => i.Name).IsUnique();
 
 

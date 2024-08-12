@@ -30,5 +30,11 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
             .OnDelete(DeleteBehavior.Cascade);
 
 
+        entity.HasOne(i => i.Payment)
+            .WithOne(i => i.Order)
+            .HasForeignKey<Order>(i => i.PaymentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
     }
 }
