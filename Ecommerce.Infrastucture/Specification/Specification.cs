@@ -1,54 +1,53 @@
-﻿namespace Ecommerce.Infrastucture.Specification;
+﻿
+namespace Ecommerce.Infrastucture.Specification;
 
-public class Specification<T> : ISpecification<T> where T : class
+public abstract class Specification<T> : ISpecification<T> where T : class
 {
-    public Specification() { }
-    public Specification(List<Expression<Func<T, bool>>> criterias)
-    {
-        Criterias = criterias;
-    }
-    public List<Expression<Func<T, bool>>> Criterias { get; private set; } = new List<Expression<Func<T, bool>>>();
-    public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+    public Expression<Func<T, bool>>? Criteria { get; } = null;
+
+    public List<Expression<Func<T, object>>> OrderBy { get; } = new List<Expression<Func<T, object>>>();
+
+    public List<Expression<Func<T, object>>> OrderByDescending { get; } = new List<Expression<Func<T, object>>>();
 
     public List<Func<IQueryable<T>, IIncludableQueryable<T, object>>> IIncludes { get; } = new List<Func<IQueryable<T>, IIncludableQueryable<T, object>>>();
+
     public int PageNumber { get; private set; }
 
     public int PageSize { get; private set; }
 
     public bool IsPagingEnabled { get; private set; }
 
-    public bool AsTracking { get; private set; } = false;
+    public bool AsTracking { get; private set; }
 
-    public List<Expression<Func<T, object>>> OrderBy { get; } = new List<Expression<Func<T, object>>>();
-
-    public List<Expression<Func<T, object>>> OrderByDescending { get; } = new List<Expression<Func<T, object>>>();
-
-    protected void AddInclude(Expression<Func<T, object>> includeExpression)
+    protected Specification() { }
+    protected Specification(Expression<Func<T, bool>>? criteria = null)
     {
-        Includes.Add(includeExpression);
+        Criteria = criteria;
     }
+
     protected void AddIInclude(Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpression)
     {
         IIncludes.Add(includeExpression);
     }
 
-    public void ApplyPaging(int pageNumber, int pageSize)
+    protected void ApplyPaging(int pageNumber, int pageSize)
     {
-        PageSize = pageSize;
         PageNumber = pageNumber;
+        PageSize = pageSize;
         IsPagingEnabled = true;
     }
-    public void ApplyTracking(bool tracking)
+    protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
     {
-        AsTracking = tracking;
+        OrderBy.Add(orderByExpression);
     }
 
-    public void ApplyOrdering(Expression<Func<T, object>> OrderBy)
+    protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
     {
-        this.OrderBy.Add(OrderBy);
+        OrderByDescending.Add(orderByDescendingExpression);
     }
-    public void ApplyOrderingDesc(Expression<Func<T, object>> OrderByDesc)
+
+    protected void ApplyNoTracking()
     {
-        this.OrderByDescending.Add(OrderByDesc);
+        AsTracking = true;
     }
 }

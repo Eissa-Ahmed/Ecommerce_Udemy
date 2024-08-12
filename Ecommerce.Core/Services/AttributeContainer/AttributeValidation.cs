@@ -11,12 +11,13 @@ public sealed class AttributeValidation : IAttributeValidation
 
     public async Task<bool> AttributeIsExist(string attributeId)
     {
-        List<Expression<Func<Attributes, bool>>> criteria = new List<Expression<Func<Attributes, bool>>>()
+        /*List<Expression<Func<Attributes, bool>>> criteria = new List<Expression<Func<Attributes, bool>>>()
         {
             attribute => attribute.Id == attributeId
         };
         AttributesSpecification attributesSpecification = new AttributesSpecification(criteria);
         Attributes? attribute = await _unitOfWork.AttributesRepository.GetByIdAsync(attributesSpecification);
-        return attribute != null;
+        return attribute != null;*/
+        throw new NotImplementedException();
     }
 }

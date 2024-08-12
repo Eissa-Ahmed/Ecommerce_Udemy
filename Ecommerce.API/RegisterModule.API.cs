@@ -66,9 +66,10 @@ public static class RegisterModule
 
     private static void registerIdentity(WebApplicationBuilder builder)
     {
-        builder.Services.AddIdentity<User, IdentityRole>()
+        builder.Services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
         builder.Services.Configure<IdentityOptions>(opt =>
         {
             opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";

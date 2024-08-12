@@ -17,7 +17,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public async Task CreateManyAsync(List<T> entities)
     {
-        await _context.AddRangeAsync(entities);
+        await _context.Set<T>().AddRangeAsync(entities);
         await _context.SaveChangesAsync();
     }
 
