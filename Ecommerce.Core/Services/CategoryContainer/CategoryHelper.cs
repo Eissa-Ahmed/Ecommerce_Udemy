@@ -2,7 +2,7 @@
 
 public sealed class CategoryHelper : ICategoryHelper
 {
-    public List<Category> GetSubCategoriesHierarchy(List<Category> category, string? ParentCategoryId)
+    private List<Category> GetSubCategoriesHierarchy(List<Category> category, string? ParentCategoryId)
     {
         return category.Where(i => i.ParentCategoryId == ParentCategoryId)
             .Select(i => new Category

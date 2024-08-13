@@ -12,6 +12,20 @@ public sealed class CategoryServices : ICategoryServices
         _unitOfWork = unitOfWork;
         _categoryHelper = categoryHelper;
     }
+    public async Task<IReadOnlyList<Category>> GetAllAsync()
+    {
+        ISpecification<Category> specification = new CategoryGetAllSpecification();
+        IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specification);
+        return _categoryHelper.GetCategories(categories.ToList());
+    }
+    public async Task<Category> GetByIdAsync(string id)
+    {
+        ISpecification<Category> specificationGetAll = new CategoryGetAllSpecification();
+        ISpecification<Category> specificationGetById = new CategoryGetByIdSpecification(id);
+        IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specificationGetAll);
+        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specificationGetById);
+        return _categoryHelper.GetCategory(category!, categories.ToList());
+    }
 
     public Task<Category> AddSubCategoryInCategoryAsync(Category category)
     {
@@ -46,17 +60,9 @@ public sealed class CategoryServices : ICategoryServices
             await _unitOfWork.CategoryRepository.DeleteAsync(category!);
         }*/
 
-    public async Task<IReadOnlyList<Category>> GetAllAsync()
-    {
-        ISpecification<Category> specification = new CategoryGetAllSpecification();
-        IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specification);
-        return _categoryHelper.GetCategories(categories.ToList());
-    }
 
-    public Task<Category> GetByIdAsync(string id)
-    {
-        throw new NotImplementedException();
-    }
+
+
 
     public Task<Category> TransferProductsFromCurrentCategoryToNestedCategory(string idCurrentCategory, string idNestedCategory)
     {

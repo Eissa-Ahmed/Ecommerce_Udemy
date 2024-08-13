@@ -4,6 +4,6 @@ public sealed class CategoryGetAllSpecification : Specification<Category>
 {
     public CategoryGetAllSpecification(Expression<Func<Category, bool>>? criteria = null) : base(criteria)
     {
-        AddIInclude(i => i.Include(p => p.SubCategories).ThenInclude(p => p.SubCategories));
+        //AddIInclude(i => i.Include(p => p.SubCategories).ThenInclude(p => p.SubCategories));
     }
 }
