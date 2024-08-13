@@ -11,7 +11,7 @@ public sealed class CategoryValidation : ICategoryValidation
         _categoryServices = categoryServices;
     }
 
-    private async Task<bool> CategoryHasProduct(string Id)
+    public async Task<bool> CategoryHasProduct(string Id)
     {
         return await _unitOfWork.CategoryRepository.CategoryHasProduct(Id);
     }
@@ -38,14 +38,7 @@ public sealed class CategoryValidation : ICategoryValidation
     }
     public async Task<bool> CategoryIsExist_ByName(string name)
     {
-        /*List<Expression<Func<Category, bool>>> criterias = new List<Expression<Func<Category, bool>>>()
-        {
-            i => i.Name == name
-        };
-        ISpecification<Category> specification = new CategorySpecification(criterias);
-        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specification);
-        return category != null;*/
-        throw new NotImplementedException();
+        return await _unitOfWork.CategoryRepository.IsExist(i => i.Name == name);
     }
 
     public async Task<bool> CategoryHaveSubCategoriesAsync(string Id)

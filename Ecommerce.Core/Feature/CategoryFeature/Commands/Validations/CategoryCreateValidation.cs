@@ -1,4 +1,6 @@
-﻿namespace Ecommerce.Application.Feature.CategoryFeature.Commands.Validations;
+﻿
+
+namespace Ecommerce.Application.Feature.CategoryFeature.Commands.Validations;
 
 public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateModel>
 {
@@ -11,10 +13,21 @@ public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateM
 
     private void ApplyValidation()
     {
+
+
+        When(i => i.ParentId != null, () =>
+        {
+            RuleFor(i => i.ParentId)
+            .MustAsync(CategoryIsExist_ById!)
+            .WithMessage("Category not found")
+            .MustAsync(CategoryHasProduct!)
+            .WithMessage("Category has products");
+        });
+
         RuleFor(x => x.CategoryName)
             .NotEmpty()
             .WithMessage("Category name is required")
-            .MustAsync(CategoryIsExist)
+            .MustAsync(CategoryIsExist_ByName)
             .WithMessage("Category already exist");
 
         When(i => i.SubCategories.Count() > 0, () =>
@@ -25,7 +38,17 @@ public sealed class CategoryCreateValidation : AbstractValidator<CategoryCreateM
 
     }
 
-    private async Task<bool> CategoryIsExist(string arg1, CancellationToken token)
+    private async Task<bool> CategoryHasProduct(string arg1, CancellationToken token)
+    {
+        return !(await _categoryValidation.CategoryHasProduct(arg1));
+    }
+
+    private async Task<bool> CategoryIsExist_ById(string arg1, CancellationToken token)
+    {
+        return await _categoryValidation.CategoryIsExist_ById(arg1);
+    }
+
+    private async Task<bool> CategoryIsExist_ByName(string arg1, CancellationToken token)
     {
         return !(await _categoryValidation.CategoryIsExist_ByName(arg1));
     }

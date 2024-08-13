@@ -27,6 +27,7 @@ global using Ecommerce.Domain.Entities;
 global using Ecommerce.Domain.IRepositories.IUnitOfWork;
 global using Ecommerce.Domain.ISpecification;
 global using Ecommerce.Domain.Models;
+global using Ecommerce.Infrastucture.Specification.ModelsSpecifications.CategorySpecification;
 global using FluentValidation;
 global using MediatR;
 global using Microsoft.AspNetCore.Hosting;

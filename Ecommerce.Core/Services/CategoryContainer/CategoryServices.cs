@@ -1,6 +1,4 @@
-﻿using Ecommerce.Infrastucture.Specification.ModelsSpecifications.CategorySpecification;
-
-namespace Ecommerce.Application.Services.CategoryContainer;
+﻿namespace Ecommerce.Application.Services.CategoryContainer;
 
 public sealed class CategoryServices : ICategoryServices
 {
@@ -27,82 +25,26 @@ public sealed class CategoryServices : ICategoryServices
         return _categoryHelper.GetCategory(category!, categories.ToList());
     }
 
-    public Task<Category> AddSubCategoryInCategoryAsync(Category category)
+    public async Task<Category> CreateAsync(Category category)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.CategoryRepository.CreateAsync(category);
+        return await GetByIdAsync(category.Id);
     }
 
-    public Task<Category> CreateAsync(Category category)
+    public async Task DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        Category? category = await GetByIdAsync(id);
+        await _unitOfWork.CategoryRepository.DeleteAsync(category);
     }
 
-    public Task DeleteAsync(string id)
+
+    public async Task<Category> UpdateNameAsync(string id, string name)
     {
-        throw new NotImplementedException();
+        ISpecification<Category> specificationGetById = new CategoryGetByIdSpecification(id);
+        Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specificationGetById);
+        category!.Name = name;
+        await _unitOfWork.CategoryRepository.UpdateAsync(category);
+        return await GetByIdAsync(category.Id);
     }
 
-    /*    public async Task<Category> AddSubCategoryInCategoryAsync(Category category) // NotCompleted => Check Parent Category is Not Conatin a Products
-        {
-            Category result = await _unitOfWork.CategoryRepository.CreateAsync(category);
-            return result;
-        }
-
-        public async Task<Category> CreateAsync(Category category)
-        {
-            Category result = await _unitOfWork.CategoryRepository.CreateAsync(category);
-            return result;
-        }
-
-        public async Task DeleteAsync(string id)
-        {
-            Category? category = await GetByIdAsync(id);
-            await _unitOfWork.CategoryRepository.DeleteAsync(category!);
-        }*/
-
-
-
-
-
-    public Task<Category> TransferProductsFromCurrentCategoryToNestedCategory(string idCurrentCategory, string idNestedCategory)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Category> UpdateNameAsync(string id, string name)
-    {
-        throw new NotImplementedException();
-    }
-
-    /*  public async Task<Category> GetByIdAsync(string id)
-      {
-          List<Expression<Func<Category, bool>>> criterias = new List<Expression<Func<Category, bool>>>()
-          {
-              i => i.Id == id,
-          };
-
-          ISpecification<Category> specificationCategory = new CategorySpecification(criterias);
-          ISpecification<Category> specificationCategories = new CategorySpecification();
-          Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specificationCategory);
-          IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specificationCategories);
-          return Helper.GetCategory(category!, categories.ToList());
-      }
-
-      public Task<Category> TransferProductsFromCurrentCategoryToNestedCategory(string idCurrentCategory, string idNestedCategory) // NotCompleted
-      {
-          throw new NotImplementedException();
-      }
-
-      public async Task<Category> UpdateNameAsync(string id, string name)
-      {
-          List<Expression<Func<Category, bool>>> criterias = new List<Expression<Func<Category, bool>>>()
-          {
-              i => i.Id == id
-          };
-          ISpecification<Category> specificationCategory = new CategorySpecification(criterias, applyTracking: true);
-          Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specificationCategory);
-          category!.Name = name;
-          await _unitOfWork.SaveChangesAsync();
-          return await GetByIdAsync(id);
-      }*/
 }

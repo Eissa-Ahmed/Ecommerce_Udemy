@@ -6,9 +6,10 @@ public class CategoryController : ApplicationBaseController
     [HttpGet(CategoryRoutes.GetAll)]
     public async Task<IActionResult> GetAllAsync()
     {
-        var result = await _mediator.Send(new CategoryGetAllModel());
-        return BaseResponse(result);
+        return BaseResponse(await _mediator.Send(new CategoryGetAllModel()));
     }
+
+
     [HttpGet(CategoryRoutes.GetById)]
     public async Task<IActionResult> GetByIdAsync(string Id)
     {
@@ -31,12 +32,6 @@ public class CategoryController : ApplicationBaseController
     public async Task<IActionResult> UpdateAsync(string Id, string Name)
     {
         var result = await _mediator.Send(new CategoryUpdateNameModel(Id, Name));
-        return BaseResponse(result);
-    }
-    [HttpPut(CategoryRoutes.AddSubCategory)]
-    public async Task<IActionResult> AddSubCategoryToCategoryAsync(string IdParent, string SubCategoryName)
-    {
-        var result = await _mediator.Send(new CategoryAddSubCategoryModel(IdParent, SubCategoryName));
         return BaseResponse(result);
     }
 }
