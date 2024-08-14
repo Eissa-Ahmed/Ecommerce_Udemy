@@ -1,7 +1,6 @@
-﻿/*namespace Ecommerce.Application.Services.IServices.IRequestContainer;
+﻿namespace Ecommerce.Application.Services.IServices.IRequestContainer;
 
 public interface IRequestService
 {
     public string GetUserIdFromToken();
 }
-*/

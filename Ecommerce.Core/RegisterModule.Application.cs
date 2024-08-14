@@ -1,4 +1,8 @@
-﻿namespace Ecommerce.Application;
+﻿using Ecommerce.Application.Services.AuthenticationContainer;
+using Ecommerce.Application.Services.AuthenticationContainer.Token;
+using Ecommerce.Application.Services.RequestContainer;
+
+namespace Ecommerce.Application;
 
 public static class RegisterModule
 {
@@ -48,5 +52,9 @@ public static class RegisterModule
 
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IBrandValidation, BrandValidation>();
+
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IRequestService, RequestService>();
     }
 }

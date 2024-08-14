@@ -7,5 +7,7 @@ public interface IUnitOfWork : IDisposable
     IBrandRepository BrandRepository { get; }
     IAttributesRepository AttributesRepository { get; }
     Task<int> SaveChangesAsync();
-
+    Task<IDbContextTransaction> BeginTransactionAsync();
+    Task CommitTransactionAsync();
+    Task RollbackTransactionAsync();
 }

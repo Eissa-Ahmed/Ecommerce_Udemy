@@ -1,7 +1,6 @@
-﻿/*namespace Ecommerce.Application.Services.IServices.IAuthenticationContainer.IToken;
+﻿namespace Ecommerce.Application.Services.IServices.IAuthenticationContainer.IToken;
 
 public interface ITokenService
 {
-    public string GenerateToken(ApplicationUser user);
+    public string GenerateToken(User user, string role);
 }
-*/

@@ -1,6 +1,4 @@
-﻿/*using Ecommerce.Application.Services.IServices.IRequestContainer;
-
-namespace Ecommerce.Application.Services.RequestContainer;
+﻿namespace Ecommerce.Application.Services.RequestContainer;
 
 public sealed class RequestService : IRequestService
 {
@@ -23,4 +21,3 @@ public sealed class RequestService : IRequestService
         return token!;
     }
 }
-*/
