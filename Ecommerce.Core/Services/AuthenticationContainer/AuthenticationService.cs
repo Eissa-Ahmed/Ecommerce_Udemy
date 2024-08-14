@@ -3,28 +3,25 @@
 public sealed class AuthenticationService : IAuthenticationService
 {
     private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly RoleManager<Role> _roleManager;
     private readonly ITokenService _tokenService;
     private readonly IOptions<JWTModel> _jWTModel;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IRequestService _requestService;
+    private readonly IUnitOfWork _unitOfWork;
     public AuthenticationService(
         UserManager<User> userManager,
-        SignInManager<User> signInManager,
         ITokenService tokenService,
         IOptions<JWTModel> jWTModel,
         IHttpContextAccessor httpContextAccessor,
         IRequestService requestService,
-        RoleManager<Role> roleManager)
+        IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
         _tokenService = tokenService;
         _jWTModel = jWTModel;
         _httpContextAccessor = httpContextAccessor;
         _requestService = requestService;
-        _roleManager = roleManager;
+        _unitOfWork = unitOfWork;
     }
     public async Task<string?> RegisterAsync(RegisterModel model)
     {
@@ -127,30 +124,34 @@ public sealed class AuthenticationService : IAuthenticationService
         }*/
     private async Task createUser(RegisterModel model)
     {
-        IdentityResult result = new();
-        if (model.Password is not null)
+        using var transaction = await _unitOfWork.BeginTransactionAsync();
+        try
         {
-            result = await _userManager.CreateAsync(new User
+            User user = new User
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
                 UserName = model.UserName,
-            }, model.Password!);
-        }
-        else
-        {
-            result = await _userManager.CreateAsync(new User
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                UserName = model.UserName,
-            });
-        }
+                Cart = new Cart(),
+                Wishlist = new Wishlist()
+            };
+            IdentityResult identityResultCreateUser = await _userManager.CreateAsync(user, model.Password!);
 
-        if (!result.Succeeded)
-            throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+            if (!identityResultCreateUser.Succeeded)
+                throw new Exception(string.Join(", ", identityResultCreateUser.Errors.Select(e => e.Description)));
+
+            IdentityResult identityResultAddToRole = await _userManager.AddToRoleAsync(user, RolesType.User.ToString());
+            if (!identityResultAddToRole.Succeeded)
+                throw new Exception(string.Join(", ", identityResultAddToRole.Errors.Select(e => e.Description)));
+
+            await transaction.CommitAsync();
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw ex;
+        }
     }
 
     /*    private async Task<GoogleJsonWebSignature.Payload?> ValidateGoogleToken(string token)

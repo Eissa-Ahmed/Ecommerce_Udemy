@@ -4,6 +4,7 @@ public sealed class Cart
 {
     public Cart()
     {
+        Id = Guid.NewGuid().ToString();
         CartItems = new List<CartItem>();
         DateCreated = DateTime.UtcNow;
     }
