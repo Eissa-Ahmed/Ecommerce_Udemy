@@ -10,6 +10,7 @@ public class User : IdentityUser
         SupportTickets = new List<CustomerSupportTicket>();
         Notifications = new List<Notification>();
         AuditLog = new List<AuditLog>();
+        RefreshToken = new List<RefreshToken>();
         DateCreated = DateTime.UtcNow;
     }
     public string? FirstName { get; set; } = null;
@@ -26,4 +27,5 @@ public class User : IdentityUser
     public ICollection<CustomerSupportTicket> SupportTickets { get; set; }
     public ICollection<Notification> Notifications { get; set; }
     public ICollection<AuditLog> AuditLog { get; set; }
+    public ICollection<RefreshToken> RefreshToken { get; set; }
 }

@@ -3,6 +3,8 @@
 public sealed class AuthenticationService : IAuthenticationService
 {
     private readonly UserManager<User> _userManager;
+    private readonly NotificationFactory _notificationFactory;
+    private readonly EmailService _emailService;
     private readonly ITokenService _tokenService;
     private readonly IOptions<JWTModel> _jWTModel;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -14,7 +16,9 @@ public sealed class AuthenticationService : IAuthenticationService
         IOptions<JWTModel> jWTModel,
         IHttpContextAccessor httpContextAccessor,
         IRequestService requestService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        NotificationFactory notificationFactory,
+        EmailService emailService)
     {
         _userManager = userManager;
         _tokenService = tokenService;
@@ -22,21 +26,30 @@ public sealed class AuthenticationService : IAuthenticationService
         _httpContextAccessor = httpContextAccessor;
         _requestService = requestService;
         _unitOfWork = unitOfWork;
+        _notificationFactory = notificationFactory;
+        _emailService = emailService;
     }
     public async Task<string?> RegisterAsync(RegisterModel model)
     {
         await createUser(model);
         User? user = await _userManager.FindByEmailAsync(model.Email);
+        sendNotification(user!.Id);
+
         return null;
     }
     public async Task<AuthenticationModel> LoginAsync(LoginModel model)
     {
-        User? user = await _userManager.FindByEmailAsync(model.Email);
+        User? user = await _userManager.Users
+            .Where(u => u.Email == model.Email)
+            .Include(u => u.RefreshToken)
+            .FirstOrDefaultAsync();
+
         string role = _userManager.GetRolesAsync(user!).Result.FirstOrDefault()!;
 
         if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
             return new AuthenticationModel { Message = "Email or password is incorrect.", IsAuthenticated = false };
 
+        RefreshToken refreshToken = await _tokenService.GenerateRefreshToken(user);
         return new AuthenticationModel
         {
             IsAuthenticated = true,
@@ -44,8 +57,8 @@ public sealed class AuthenticationService : IAuthenticationService
             Email = user.Email!,
             Token = _tokenService.GenerateToken(user, role),
             TokenExpiration = DateTime.UtcNow.AddMinutes(_jWTModel.Value.ExpireMinutes),
-            RefreshToken = string.Empty,
-            RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(_jWTModel.Value.RefreshExpireMinutes)
+            RefreshToken = refreshToken.Token,
+            RefreshTokenExpiration = refreshToken.Expires
         };
     }
     /*    public async Task<AuthenticationModel> ContinueWithGoogleAsync(string token)
@@ -175,5 +188,9 @@ public sealed class AuthenticationService : IAuthenticationService
         Random random = new Random();
         return random.Next(100000, 999999).ToString();
     }
-
+    private void sendNotification(string id)
+    {
+        _notificationFactory.SetNotificationService(_emailService);
+        _notificationFactory.SendNotification("Welcome You In Krist", id);
+    }
 }

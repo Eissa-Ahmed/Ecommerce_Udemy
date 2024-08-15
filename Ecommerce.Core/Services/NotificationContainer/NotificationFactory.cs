@@ -1,11 +1,17 @@
-﻿using Ecommerce.Application.Services.IServices.INotificationContainer;
+﻿namespace Ecommerce.Application.Services.NotificationContainer;
 
-namespace Ecommerce.Application.Services.NotificationContainer;
-
-public sealed class NotificationFactory 
+public sealed class NotificationFactory
 {
+    private INotificationService? _notificationService = null;
+    public void SetNotificationService(INotificationService notificationService)
+    {
+        _notificationService = notificationService;
+    }
     public Task SendNotification(string message, string userId)
     {
-        throw new NotImplementedException();
+        if (_notificationService is not null)
+            return _notificationService!.SendNotification(message, userId);
+
+        return Task.CompletedTask;
     }
 }

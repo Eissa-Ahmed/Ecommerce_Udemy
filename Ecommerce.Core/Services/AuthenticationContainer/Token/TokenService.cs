@@ -2,10 +2,12 @@
 
 public sealed class TokenService : ITokenService
 {
+    private readonly UserManager<User> _userManager;
     private readonly IOptions<JWTModel> _jwtModel;
-    public TokenService(IOptions<JWTModel> jwtModel)
+    public TokenService(IOptions<JWTModel> jwtModel, UserManager<User> userManager)
     {
         _jwtModel = jwtModel;
+        _userManager = userManager;
     }
     public string GenerateToken(User user, string role)
     {
@@ -49,5 +51,30 @@ public sealed class TokenService : ITokenService
             new Claim("Role", role)
         };
         return claims;
+    }
+
+    public async Task<RefreshToken> GenerateRefreshToken(User user)
+    {
+        string refreshToken = GenerateRefreshTokenValue(user.Id);
+        RefreshToken refreshTokenModel = new RefreshToken
+        {
+            Token = refreshToken,
+            Expires = DateTime.UtcNow.AddMinutes(_jwtModel.Value.RefreshExpireMinutes),
+        };
+        if (user.RefreshToken.Any(i => i.IsActive))
+        {
+            user.RefreshToken
+                .Where(i => i.IsActive)
+                .ToList()
+                .ForEach(i => i.Revoked = DateTime.UtcNow);
+        }
+        user.RefreshToken.Add(refreshTokenModel);
+        await _userManager.UpdateAsync(user);
+        return refreshTokenModel;
+    }
+
+    private string GenerateRefreshTokenValue(string id)
+    {
+        return $"Krist_{id}_{DateTime.UtcNow.ToString("yyyy-MM-dd")}_{DateTime.UtcNow.ToString("HH:mm:ss")}";
     }
 }

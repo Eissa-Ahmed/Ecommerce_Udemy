@@ -37,6 +37,7 @@ public static class RegisterModule
         builder.Services.Configure<FileSettings>(builder.Configuration.GetSection(nameof(FileSettings)));
         builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection(nameof(ApplicationSettings)));
         builder.Services.Configure<JWTModel>(builder.Configuration.GetSection(nameof(JWTModel)));
+        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
     }
 
     private static void registerSwaggerGen(WebApplicationBuilder builder)

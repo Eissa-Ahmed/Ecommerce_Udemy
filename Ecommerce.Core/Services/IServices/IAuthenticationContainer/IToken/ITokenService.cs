@@ -3,4 +3,5 @@
 public interface ITokenService
 {
     public string GenerateToken(User user, string role);
+    public Task<RefreshToken> GenerateRefreshToken(User user);
 }
