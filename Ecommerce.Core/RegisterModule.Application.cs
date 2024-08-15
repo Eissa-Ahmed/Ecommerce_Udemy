@@ -56,5 +56,6 @@ public static class RegisterModule
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRequestService, RequestService>();
+
     }
 }
