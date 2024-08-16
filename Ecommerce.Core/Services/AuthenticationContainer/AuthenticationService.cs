@@ -50,6 +50,7 @@ public sealed class AuthenticationService : IAuthenticationService
             return new AuthenticationModel { Message = "Email or password is incorrect.", IsAuthenticated = false };
 
         RefreshToken refreshToken = await _tokenService.GenerateRefreshToken(user);
+
         return new AuthenticationModel
         {
             IsAuthenticated = true,
@@ -61,80 +62,61 @@ public sealed class AuthenticationService : IAuthenticationService
             RefreshTokenExpiration = refreshToken.Expires
         };
     }
-    /*    public async Task<AuthenticationModel> ContinueWithGoogleAsync(string token)
+    public async Task<AuthenticationModel> RefreshTokenAsync()
+    {
+        string? refreshToken = _httpContextAccessor.HttpContext!.Request.Cookies["refreshToken"];
+        if (refreshToken is null)
         {
-            var validateToken = await ValidateGoogleToken(token);
-            if (validateToken is null)
-                return new AuthenticationModel { Message = "Invalid Token", IsAuthenticated = false };
-
-            ApplicationUser? user = await _userManager.FindByEmailAsync(validateToken.Email);
-
-            if (user is null)
-            {
-                await createUser(new RegisterModel { Email = validateToken.Email, FirstName = validateToken.GivenName, LastName = validateToken.FamilyName });
-                user = await _userManager.FindByEmailAsync(validateToken.Email);
-            }
             return new AuthenticationModel
             {
-                IsAuthenticated = true,
-                Id = user.Id,
-                Email = user.Email,
-                Token = _tokenService.GenerateToken(user),
-                TokenExpiration = DateTime.UtcNow.AddMinutes(_jWTModel.ExpireMinutes),
-                RefreshToken = string.Empty,
-                RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(_jWTModel.RefreshExpireMinutes)
+                IsAuthenticated = false,
+                Message = "Invalid Refresh Token"
             };
         }
-        public async Task ForgetPasswordAsync(string email)
+        User? user = await _userManager.Users.Where(i => i.RefreshToken.Any(t => t.Token == refreshToken)).Include(t => t.RefreshToken).FirstOrDefaultAsync();
+
+        if (!user.RefreshToken.Any(i => i.Token == refreshToken && i.IsActive))
         {
-            ApplicationUser? user = _userManager.FindByEmailAsync(email).Result;
-            if (user is null)
-                throw new ExceptionUserNotFound();
-
-            string code = generateCode();
-            user.Codes.Add(new CodesEntity { Code = code });
-
-            await _notificationManager.Notify(code, user.Id);
-
-            IdentityResult result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-                throw new ExceptionUpdateUser("Failed to update user, When generate code");
-
+            return new AuthenticationModel
+            {
+                IsAuthenticated = false,
+                Message = "Expired Refresh Token"
+            };
         }
-        public async Task CheckCodeForgetPasswordAsync(string email, string code)
-        {
-            ApplicationUser? user = await _userManager.Users.Include(u => u.Codes).FirstOrDefaultAsync(u => u.Email == email);
-            if (user is null)
-                throw new ExceptionUserNotFound();
 
-            CodesEntity? codesEntity = user.Codes.FirstOrDefault(c => c.Code == code);
-            if (codesEntity is null || !codesEntity.IsActive)
-                throw new ExceptionCodeNotFoundOrNotActive();
+        string role = _userManager.GetRolesAsync(user!).Result.FirstOrDefault()!;
 
-            user.Codes.All(i => i.IsUsed = true);
-            IdentityResult result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-                throw new ExceptionUpdateUser("Failed to update user, When confirm code");
-        }
-        public async Task ConfirmForgetPasswordAsync(string email, string newPassword)
-        {
-            ApplicationUser? user = await _userManager.FindByEmailAsync(email);
-            if (user is null)
-                throw new ExceptionUserNotFound();
+        RefreshToken refreshTokenModel = await _tokenService.GenerateRefreshToken(user);
 
-            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            IdentityResult resultChangePassword = await _userManager.ResetPasswordAsync(user, token, newPassword);
-            if (!resultChangePassword.Succeeded)
-                throw new ExceptionUpdateUser(string.Join(",", resultChangePassword.Errors.Select(m => m.Description)));
-        }
-        public async Task ResetPasswordAsync(string oldPassword, string newPassword)
+        return new AuthenticationModel
         {
-            string userId = _requestService.GetUserIdFromToken();
-            ApplicationUser? user = await _userManager.FindByIdAsync(userId);
-            IdentityResult result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
-            if (result.Succeeded)
-                throw new ExceptionUpdateUser(string.Join(",", result.Errors.Select(m => m.Description)));
-        }*/
+            IsAuthenticated = true,
+            Id = user.Id!,
+            Email = user.Email!,
+            Token = _tokenService.GenerateToken(user, role),
+            TokenExpiration = DateTime.UtcNow.AddMinutes(_jWTModel.Value.ExpireMinutes),
+            RefreshToken = refreshTokenModel.Token,
+            RefreshTokenExpiration = refreshTokenModel.Expires
+        };
+    }
+    public async Task<bool> RevokeTokenAsync()
+    {
+        string? refreshToken = _httpContextAccessor.HttpContext!.Request.Cookies["refreshToken"];
+        User? user = await _userManager.Users.Where(i => i.RefreshToken.Any(t => t.Token == refreshToken)).Include(t => t.RefreshToken).FirstOrDefaultAsync();
+
+        if (user is null) return false;
+
+        RefreshToken refreshTokenModel = user.RefreshToken.FirstOrDefault(i => i.Token == refreshToken)!;
+        if (!refreshTokenModel.IsActive) return false;
+
+        refreshTokenModel.Revoked = DateTime.UtcNow;
+
+        _httpContextAccessor.HttpContext!.Response.Cookies.Delete("refreshToken");
+        user.RefreshToken = user.RefreshToken.Where(i => i.IsActive).ToList();
+        await _userManager.UpdateAsync(user);
+        return true;
+    }
+
     private async Task createUser(RegisterModel model)
     {
         using var transaction = await _unitOfWork.BeginTransactionAsync();
@@ -166,23 +148,6 @@ public sealed class AuthenticationService : IAuthenticationService
             throw ex;
         }
     }
-
-    /*    private async Task<GoogleJsonWebSignature.Payload?> ValidateGoogleToken(string token)
-        {
-            try
-            {
-                var settings = new GoogleJsonWebSignature.ValidationSettings
-                {
-                    Audience = new List<string> { _socialModel.Google.ClientId }
-                };
-                var payload = await GoogleJsonWebSignature.ValidateAsync(token, settings);
-                return payload;
-            }
-            catch
-            {
-                return null;
-            }
-        }*/
     private string generateCode()
     {
         Random random = new Random();
@@ -193,4 +158,6 @@ public sealed class AuthenticationService : IAuthenticationService
         _notificationFactory.SetNotificationService(_emailService);
         _notificationFactory.SendNotification("Welcome You In Krist", id);
     }
+
+
 }

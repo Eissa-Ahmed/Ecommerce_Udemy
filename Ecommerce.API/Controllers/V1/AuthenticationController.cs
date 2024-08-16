@@ -8,4 +8,10 @@ public class AuthenticationController : ApplicationBaseController
 
     [HttpPost(AuthenticationRoutes.Register)]
     public async Task<IActionResult> Register([FromBody] AuthenticationRegisterModel model) => BaseResponse(await _mediator.Send(model));
+
+    [HttpGet(AuthenticationRoutes.RefreshToken)]
+    public async Task<IActionResult> RefreshToken() => BaseResponse(await _mediator.Send(new AuthenticationRefreshTokenModel()));
+
+    [HttpPut(AuthenticationRoutes.RevokeToken)]
+    public async Task<IActionResult> RevokeToken() => BaseResponse(await _mediator.Send(new AuthenticationRevokeTokenModel()));
 }

@@ -4,10 +4,12 @@ public sealed class TokenService : ITokenService
 {
     private readonly UserManager<User> _userManager;
     private readonly IOptions<JWTModel> _jwtModel;
-    public TokenService(IOptions<JWTModel> jwtModel, UserManager<User> userManager)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public TokenService(IOptions<JWTModel> jwtModel, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
     {
         _jwtModel = jwtModel;
         _userManager = userManager;
+        _httpContextAccessor = httpContextAccessor;
     }
     public string GenerateToken(User user, string role)
     {
@@ -70,6 +72,12 @@ public sealed class TokenService : ITokenService
         }
         user.RefreshToken.Add(refreshTokenModel);
         await _userManager.UpdateAsync(user);
+        CookieOptions cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = refreshTokenModel.Expires
+        };
+        _httpContextAccessor.HttpContext!.Response.Cookies.Append("refreshToken", refreshTokenModel.Token, cookieOptions);
         return refreshTokenModel;
     }
 
