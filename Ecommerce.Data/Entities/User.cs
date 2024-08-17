@@ -11,6 +11,7 @@ public class User : IdentityUser
         Notifications = new List<Notification>();
         AuditLog = new List<AuditLog>();
         RefreshToken = new List<RefreshToken>();
+        Codes = new List<Codes>();
         DateCreated = DateTime.UtcNow;
     }
     public string? FirstName { get; set; } = null;
@@ -28,4 +29,5 @@ public class User : IdentityUser
     public ICollection<Notification> Notifications { get; set; }
     public ICollection<AuditLog> AuditLog { get; set; }
     public ICollection<RefreshToken> RefreshToken { get; set; }
+    public ICollection<Codes> Codes { get; set; }
 }

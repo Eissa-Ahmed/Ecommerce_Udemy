@@ -12,9 +12,9 @@ public sealed class EmailService : INotificationService
         _emailSettings = emailSettings;
     }
 
-    public async Task SendNotification(string message, string userId)
+    public async Task SendNotification(MessageModel message)
     {
-        string email = await GetEmailUser(userId);
+        string email = await GetEmailUser(message.UserId);
         MimeMessage mimeMessage = generateMessage(message, email);
 
         using var emailClient = new SmtpClient();
@@ -24,15 +24,15 @@ public sealed class EmailService : INotificationService
         await emailClient.DisconnectAsync(true);
     }
 
-    private MimeMessage generateMessage(string message, string email)
+    private MimeMessage generateMessage(MessageModel message, string email)
     {
         MimeMessage mimeMessage = new MimeMessage();
         mimeMessage.From.Add(new MailboxAddress(_emailSettings.Value.fromName, _emailSettings.Value.fromEmail));
         mimeMessage.To.Add(new MailboxAddress(email.Split('@')[0], email));
-        mimeMessage.Subject = "Notification";
+        mimeMessage.Subject = message.Title;
         mimeMessage.Body = new TextPart
         {
-            Text = message
+            Text = message.Message
         };
         return mimeMessage;
     }

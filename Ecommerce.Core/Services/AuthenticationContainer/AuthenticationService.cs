@@ -4,9 +4,9 @@ public sealed class AuthenticationService : IAuthenticationService
 {
     private readonly UserManager<User> _userManager;
     private readonly NotificationFactory _notificationFactory;
-    private readonly EmailService _emailService;
     private readonly ITokenService _tokenService;
     private readonly IOptions<JWTModel> _jWTModel;
+    private readonly IOptions<ApplicationSettings> _applicationSettings;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IRequestService _requestService;
     private readonly IUnitOfWork _unitOfWork;
@@ -17,8 +17,9 @@ public sealed class AuthenticationService : IAuthenticationService
         IHttpContextAccessor httpContextAccessor,
         IRequestService requestService,
         IUnitOfWork unitOfWork,
-        NotificationFactory notificationFactory,
-        EmailService emailService)
+        NotificationFactory notificationFactory
+,
+        IOptions<ApplicationSettings> applicationSettings)
     {
         _userManager = userManager;
         _tokenService = tokenService;
@@ -27,13 +28,13 @@ public sealed class AuthenticationService : IAuthenticationService
         _requestService = requestService;
         _unitOfWork = unitOfWork;
         _notificationFactory = notificationFactory;
-        _emailService = emailService;
+        _applicationSettings = applicationSettings;
     }
     public async Task<string?> RegisterAsync(RegisterModel model)
     {
         await createUser(model);
         User? user = await _userManager.FindByEmailAsync(model.Email);
-        sendNotification(user!.Id);
+        sendNotification(new MessageModel { UserId = user.Id, Message = "Welcome You In Krist", Title = "Hello User" }, MessageType.Email);
 
         return null;
     }
@@ -116,7 +117,28 @@ public sealed class AuthenticationService : IAuthenticationService
         await _userManager.UpdateAsync(user);
         return true;
     }
-
+    public async Task ForgotPasswordAsync(string email)
+    {
+        User? user = await _userManager.FindByEmailAsync(email);
+        if (user is null) return;
+        string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        string message = _applicationSettings.Value.UiUrl + "/reset-password?token=" + token + "&email=" + user.Email;
+        sendNotification(new MessageModel { UserId = user.Id, Message = message, Title = "Forgot Password" }, MessageType.Email);
+    }
+    public async Task<bool> TokenVerifyAsync(string email, string token)
+    {
+        User? user = await _userManager.FindByEmailAsync(email);
+        bool isTokenValid = await _userManager.VerifyUserTokenAsync(user!, TokenOptions.DefaultProvider, UserManager<User>.ResetPasswordTokenPurpose, token);
+        return isTokenValid;
+    }
+    public async Task ResetPasswordAsync(string email, string password, string token)
+    {
+        User? user = await _userManager.FindByEmailAsync(email);
+        if (user is null) return;
+        IdentityResult identityResult = await _userManager.ResetPasswordAsync(user, token, password);
+        if (!identityResult.Succeeded)
+            throw new Exception(string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+    }
     private async Task createUser(RegisterModel model)
     {
         using var transaction = await _unitOfWork.BeginTransactionAsync();
@@ -153,10 +175,9 @@ public sealed class AuthenticationService : IAuthenticationService
         Random random = new Random();
         return random.Next(100000, 999999).ToString();
     }
-    private void sendNotification(string id)
+    private void sendNotification(MessageModel message, MessageType messageType)
     {
-        _notificationFactory.SetNotificationService(_emailService);
-        _notificationFactory.SendNotification("Welcome You In Krist", id);
+        _notificationFactory.SendNotification(message, messageType);
     }
 
 

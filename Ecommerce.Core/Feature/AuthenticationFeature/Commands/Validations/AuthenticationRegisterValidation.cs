@@ -37,6 +37,10 @@ public sealed class AuthenticationRegisterValidation : AbstractValidator<Authent
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .WithMessage("Password is required");
+            .WithMessage("Password is required")
+            .MinimumLength(6)
+            .WithMessage("Password must be at least 6 characters long")
+            .MaximumLength(25)
+            .WithMessage("Password must be at most 25 characters long");
     }
 }

@@ -2,16 +2,23 @@
 
 public sealed class NotificationFactory
 {
-    private INotificationService? _notificationService = null;
-    public void SetNotificationService(INotificationService notificationService)
-    {
-        _notificationService = notificationService;
-    }
-    public Task SendNotification(string message, string userId)
-    {
-        if (_notificationService is not null)
-            return _notificationService!.SendNotification(message, userId);
+    private readonly UserManager<User> _userManager;
+    private readonly IOptions<EmailSettings> _emailSettings;
 
-        return Task.CompletedTask;
+    public NotificationFactory(UserManager<User> userManager, IOptions<EmailSettings> emailSettings)
+    {
+        _userManager = userManager;
+        _emailSettings = emailSettings;
+    }
+
+    public Task SendNotification(MessageModel message, MessageType messageType)
+    {
+        switch (messageType)
+        {
+            case MessageType.Email:
+                return new EmailService(_userManager, _emailSettings).SendNotification(message);
+            default:
+                return Task.CompletedTask;
+        }
     }
 }

@@ -4,7 +4,10 @@ public sealed class AuthenticationCommandHandler : ResponseHandler,
     IRequestHandler<AuthenticationLoginModel, ApplicationResponse<AuthenticationLoginResult>>,
     IRequestHandler<AuthenticationRefreshTokenModel, ApplicationResponse<AuthenticationLoginResult>>,
     IRequestHandler<AuthenticationRegisterModel, ApplicationResponse<string>>,
-    IRequestHandler<AuthenticationRevokeTokenModel, ApplicationResponse<string>>
+    IRequestHandler<AuthenticationRevokeTokenModel, ApplicationResponse<string>>,
+    IRequestHandler<AuthenticationForgetPasswordModel, ApplicationResponse<string>>,
+    IRequestHandler<AuthenticationTokenVerifyModel, ApplicationResponse<string>>,
+    IRequestHandler<AuthenticationResetPasswordModel, ApplicationResponse<string>>
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly IMapper _mapper;
@@ -50,5 +53,26 @@ public sealed class AuthenticationCommandHandler : ResponseHandler,
             return Success();
         else
             return BadRequest("Invalid token");
+    }
+
+    public async Task<ApplicationResponse<string>> Handle(AuthenticationForgetPasswordModel request, CancellationToken cancellationToken)
+    {
+        await _authenticationService.ForgotPasswordAsync(request.Email);
+        return Success();
+    }
+
+    public async Task<ApplicationResponse<string>> Handle(AuthenticationTokenVerifyModel request, CancellationToken cancellationToken)
+    {
+        bool isValid = await _authenticationService.TokenVerifyAsync(request.Email, request.Token);
+        if (!isValid)
+            return BadRequest("Invalid token");
+        else
+            return Success();
+    }
+
+    public async Task<ApplicationResponse<string>> Handle(AuthenticationResetPasswordModel request, CancellationToken cancellationToken)
+    {
+        await _authenticationService.ResetPasswordAsync(request.Email, request.Password, request.Token);
+        return Success();
     }
 }

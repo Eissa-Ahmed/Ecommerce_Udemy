@@ -14,4 +14,13 @@ public class AuthenticationController : ApplicationBaseController
 
     [HttpPut(AuthenticationRoutes.RevokeToken)]
     public async Task<IActionResult> RevokeToken() => BaseResponse(await _mediator.Send(new AuthenticationRevokeTokenModel()));
+
+    [HttpGet(AuthenticationRoutes.ForgetPassword)]
+    public async Task<IActionResult> ForgetPassword(string email) => BaseResponse(await _mediator.Send(new AuthenticationForgetPasswordModel(email)));
+
+    [HttpPost(AuthenticationRoutes.ResetPassword)]
+    public async Task<IActionResult> ResetPassword([FromBody] AuthenticationResetPasswordModel model) => BaseResponse(await _mediator.Send(model));
+
+    [HttpGet(AuthenticationRoutes.TokenVerify)]
+    public async Task<IActionResult> TokenVerify(string email, string token) => BaseResponse(await _mediator.Send(new AuthenticationTokenVerifyModel(token, email)));
 }

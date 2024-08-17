@@ -83,6 +83,9 @@ public static class RegisterModule
             opt.Password.RequireUppercase = false;
             opt.Password.RequiredLength = 6;
             opt.Password.RequiredUniqueChars = 0;
+
+            opt.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
+            opt.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultProvider;
         });
     }
 }
