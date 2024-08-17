@@ -67,7 +67,7 @@ public sealed class AuthenticationCommandHandler : ResponseHandler,
         if (!isValid)
             return BadRequest("Invalid token");
         else
-            return Success();
+            return Success("Valid token");
     }
 
     public async Task<ApplicationResponse<string>> Handle(AuthenticationResetPasswordModel request, CancellationToken cancellationToken)
