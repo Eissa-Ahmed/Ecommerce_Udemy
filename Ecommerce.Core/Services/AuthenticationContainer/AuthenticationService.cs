@@ -122,7 +122,7 @@ public sealed class AuthenticationService : IAuthenticationService
         User? user = await _userManager.FindByEmailAsync(email);
         if (user is null) return;
         string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        string message = _applicationSettings.Value.UiUrl + "/reset-password?token=" + token + "&email=" + user.Email;
+        string message = _applicationSettings.Value.UiUrl + "authentication/reset-password?token=" + token + "&email=" + user.Email;
         sendNotification(new MessageModel { UserId = user.Id, Message = message, Title = "Forgot Password" }, MessageType.Email);
     }
     public async Task<bool> TokenVerifyAsync(string email, string token)
