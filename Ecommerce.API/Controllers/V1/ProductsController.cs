@@ -7,9 +7,9 @@ public class ProductsController : ApplicationBaseController
     public async Task<IActionResult> CreateAsync([FromForm] ProductCreateModel model)
         => BaseResponse(await _mediator.Send(model));
 
-    [HttpGet(ProductRoutes.GetAll)]
-    public async Task<IActionResult> GetAllAsync(int PageNumber, int PageSize, string? CategoryId = null, string? BrandId = null, string? SortByPrice = null, string? Search = null)
-         => BaseResponse(await _mediator.Send(new ProductGetAllModel(PageNumber, PageSize, CategoryId, BrandId, SortByPrice, Search)));
+    [HttpPost(ProductRoutes.GetAll)]
+    public async Task<IActionResult> GetAllAsync([FromBody] ProductGetAllModel model)
+         => BaseResponse(await _mediator.Send(model));
 
     [HttpGet(ProductRoutes.GetById)]
     public async Task<IActionResult> GetByIdAsync(string Id)

@@ -3,7 +3,7 @@
 public static class ProductRoutes
 {
     private const string Base = "api/v{version:apiVersion}/products";
-    public const string GetAll = Base;
+    public const string GetAll = Base + "/all";
     public const string GetById = Base + "/{Id}";
     public const string Search = Base + "/{Name}";
     public const string Create = Base;

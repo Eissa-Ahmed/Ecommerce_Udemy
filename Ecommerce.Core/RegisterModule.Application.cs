@@ -1,6 +1,5 @@
 ﻿using Ecommerce.Application.Services.AuthenticationContainer;
 using Ecommerce.Application.Services.AuthenticationContainer.Token;
-using Ecommerce.Application.Services.NotificationContainer;
 using Ecommerce.Application.Services.RequestContainer;
 
 namespace Ecommerce.Application;
@@ -36,7 +35,6 @@ public static class RegisterModule
     {
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IProductValidation, ProductValidation>();
-        services.AddScoped<IProductHelper, ProductHelper>();
 
         services.AddScoped<ICategoryServices, CategoryServices>();
         services.AddScoped<ICategoryValidation, CategoryValidation>();

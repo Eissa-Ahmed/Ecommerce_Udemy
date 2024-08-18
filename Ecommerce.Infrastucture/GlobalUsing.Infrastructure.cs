@@ -3,6 +3,7 @@ global using Ecommerce.Domain.IRepositories;
 global using Ecommerce.Domain.IRepositories.IBase;
 global using Ecommerce.Domain.IRepositories.IUnitOfWork;
 global using Ecommerce.Domain.ISpecification;
+global using Ecommerce.Domain.Params;
 global using Ecommerce.Domain.StaticData;
 global using Ecommerce.Infrastucture.Context;
 global using Ecommerce.Infrastucture.Repositories.Base;

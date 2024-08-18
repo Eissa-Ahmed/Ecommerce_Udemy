@@ -1,16 +1,17 @@
-﻿namespace Ecommerce.Application.Services.ProductContainer;
+﻿using Ecommerce.Domain.Params;
+using Ecommerce.Infrastucture.Specification.ModelsSpecifications.ProductSpecification;
+
+namespace Ecommerce.Application.Services.ProductContainer;
 
 public sealed class ProductService : IProductService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileFactory _fileFactory;
-    private readonly IProductHelper _productHelper;
 
-    public ProductService(IUnitOfWork unitOfWork, IFileFactory fileFactory, IProductHelper productHelper)
+    public ProductService(IUnitOfWork unitOfWork, IFileFactory fileFactory)
     {
         _unitOfWork = unitOfWork;
         _fileFactory = fileFactory;
-        _productHelper = productHelper;
     }
 
     public async Task<Product> CreateAsync(Product product)
@@ -23,18 +24,15 @@ public sealed class ProductService : IProductService
 
     }
 
-    public async Task<Pagination<Product>> GetAllAsync(int pageNumber, int pageSize, string? sortByPrice = null, IEnumerable<Expression<Func<Product, bool>>>? criterias = null)
+    public async Task<Pagination<Product>> GetAllAsync(ProductGetAllParams productGetAllParams)
     {
-        /*Expression<Func<Product, object>>? orderBy, orderByDesc;
-        OrderByProduct(sortByPrice, out orderBy, out orderByDesc);
 
-        ISpecification<Product> ProductSpecification = new ProductSpecification(pageNumber, pageSize, criterias.ToList(), orderBy, orderByDesc);
+        ISpecification<Product> ProductSpecification = new ProductGetAllSpecification(productGetAllParams);
 
         IReadOnlyList<Product> products = await _unitOfWork.ProductRepository.GetAllAsync(ProductSpecification);
 
         int totalCount = await _unitOfWork.ProductRepository.CountAsync();
-        return new Pagination<Product>(products.ToList(), pageNumber, pageSize, totalCount);*/
-        throw new NotImplementedException();
+        return new Pagination<Product>(products.ToList(), productGetAllParams.PageNumber, productGetAllParams.PageSize, totalCount);
     }
     public async Task<Product?> GetByIdAsync(string id)
     {
