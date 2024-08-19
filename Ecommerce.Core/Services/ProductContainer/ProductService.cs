@@ -14,6 +14,10 @@ public sealed class ProductService : IProductService
     public async Task<Product> CreateAsync(Product product)
     {
         product.MainImage = product.Images.First().Name;
+
+        if (product.Price == 0 || product.Price == null)
+            product.Price = product.ProductVariant.Min(i => i.Price);
+
         await _unitOfWork.ProductRepository.CreateAsync(product);
         return await GetByIdAsync(product.Id);
     }
