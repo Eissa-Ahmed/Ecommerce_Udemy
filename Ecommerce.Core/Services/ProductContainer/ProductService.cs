@@ -39,16 +39,4 @@ public sealed class ProductService : IProductService
         throw new NotImplementedException();
     }
 
-    private void OrderByProduct(string? sortByPrice, out Expression<Func<Product, object>>? orderBy, out Expression<Func<Product, object>>? orderByDesc)
-    {
-        orderBy = null;
-        orderByDesc = null;
-        if (sortByPrice is not null)
-        {
-            if (sortByPrice == "ASC")
-                orderBy = i => i.Price;
-            else
-                orderByDesc = i => i.Price;
-        }
-    }
 }
