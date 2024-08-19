@@ -24,7 +24,8 @@ public partial class ProductProfile
             .ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features))
             .ForMember(dest => dest.CareInstructions, opt => opt.MapFrom(src => src.CareInstructions))
             .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
-            .ForMember(dest => dest.ProductAttributes, opt => opt.MapFrom(src => src.ProductAttributes));
+            .ForMember(dest => dest.ProductAttributes, opt => opt.MapFrom(src => src.ProductAttributes))
+            .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount.DiscountPercentage));
 
         CreateMap<Images, ProductCreateResult_Images>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom<ProductCreate_ConvertImagesToUrls_Resolver>());

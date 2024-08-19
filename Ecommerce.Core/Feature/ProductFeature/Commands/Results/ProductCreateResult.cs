@@ -16,8 +16,7 @@ public sealed class ProductCreateResult
     public string MainImage { get; set; } = null!;
     public int StockQuantity { get; set; }
     public decimal Price { get; set; }
-    public int Discount { get; set; }
-    public bool FreeShipping { get; set; }
+    public decimal Discount { get; set; }
     public DateTime CreatedDate { get; set; }
     public string CategoryId { get; set; } = null!;
     public string? BrandId { get; set; } = null;

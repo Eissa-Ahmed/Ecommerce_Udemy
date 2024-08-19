@@ -56,6 +56,19 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
             .WithMessage("Price must be greater than 0");
         });
 
+        When(i => i.ProductVariants.Count() != 0, () =>
+        {
+            RuleFor(i => i.Price)
+            .Empty()
+            .WithMessage("Price must be empty when add variants");
+        });
+
+
+        RuleFor(i => i.ProductVariants)
+            .Must((model, key, cancel) => CheckCountOfProductVariants(model))
+            .When(i => i.ProductVariants.Count() > 0)
+            .WithMessage("Variants StockQuantity must be equal product count");
+
         RuleFor(i => i.DiscountId)
             .MustAsync(DiscountExistAsync)
             .When(i => !i.DiscountId.IsNullOrEmpty())
@@ -76,10 +89,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
             .WithMessage("Tag does not exist");
         });
 
-        RuleFor(i => i.ProductVariants)
-            .Must((model, key, cancel) => CheckCountOfProductVariants(model))
-            .When(i => i.ProductVariants.Count() > 0)
-            .WithMessage("Variants StockQuantity must be equal product count");
+
 
         RuleForEach(i => i.ProductVariants).ChildRules(Variant =>
         {
@@ -87,9 +97,21 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
              .NotEmpty()
              .WithMessage("Size is required")
              .Must(x => x == "L" || x == "M" || x == "S" || x == "XS" || x == "XL" || x == "XXL" || x == "XXXL" || x == "XXXXL" || x == "XXXXXL" || x == "XXXXXXL")
-             .WithMessage("Size must be ");
+             .WithMessage("Size must be L, M, S, XS, XL, XXL, XXXL, XXXXL, XXXXXL");
+
+            Variant.RuleFor(i => i.Color)
+            .Must(c => c.StartsWith("#") && c.Length == 7)
+            .WithMessage("Color must be hex code");
+
+            Variant.RuleFor(i => i.Price)
+            .NotEmpty()
+            .WithMessage("Price is required")
+            .GreaterThan(0)
+            .WithMessage("Price must be greater than 0");
 
         });
+
+
 
         When(i => !i.BrandId.IsNullOrEmpty(), () =>
         {
@@ -189,3 +211,4 @@ public sealed class ProductCreateValidation_ProductAttribute : AbstractValidator
         return await _attributeValidation.AttributeIsExist(arg1);
     }
 }
+
