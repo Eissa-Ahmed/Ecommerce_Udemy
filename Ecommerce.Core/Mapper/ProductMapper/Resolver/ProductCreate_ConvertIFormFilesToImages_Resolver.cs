@@ -1,10 +1,10 @@
 ﻿namespace Ecommerce.Application.Mapper.ProductMapper.Resolver;
 
-public sealed class ProductCreateMapper_Images_Resolver : IValueResolver<ProductCreateModel, Product, ICollection<Images>>
+public sealed class ProductCreate_ConvertIFormFilesToImages_Resolver : IValueResolver<ProductCreateModel, Product, ICollection<Images>>
 {
     private readonly IFileFactory _fileFactory;
 
-    public ProductCreateMapper_Images_Resolver(IFileFactory fileFactory)
+    public ProductCreate_ConvertIFormFilesToImages_Resolver(IFileFactory fileFactory)
     {
         _fileFactory = fileFactory;
     }

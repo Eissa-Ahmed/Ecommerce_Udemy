@@ -25,7 +25,7 @@ public class SpecificationEvaliator<T> where T : class
             query = query.Skip(skip).Take(spec.PageSize);
         }
 
-        query = spec.IIncludes.Aggregate(query, (current, include) => include(current));
+        query = spec.IInclude != null ? spec.IInclude(query) : query;
         return query;
     }
 }

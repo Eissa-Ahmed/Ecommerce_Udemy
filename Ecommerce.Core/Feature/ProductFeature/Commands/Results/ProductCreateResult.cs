@@ -8,7 +8,7 @@ public sealed class ProductCreateResult
         ProductAttributes = new List<ProductCreateResult_ProductAttributes>();
         Features = new List<ProductCreateResult_Features>();
         CareInstructions = new List<ProductCreateResult_CareInstructions>();
-        ProductColors = new List<ProductCreateResult_ProductColors>();
+        ProductVariant = new List<ProductCreateResult_ProductVariant>();
     }
     public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
@@ -26,9 +26,19 @@ public sealed class ProductCreateResult
     public ICollection<ProductCreateResult_ProductAttributes> ProductAttributes { get; set; }
     public ICollection<ProductCreateResult_Features> Features { get; set; }
     public ICollection<ProductCreateResult_CareInstructions> CareInstructions { get; set; }
-    public ICollection<ProductCreateResult_ProductColors> ProductColors { get; set; }
+    public ICollection<ProductCreateResult_ProductVariant> ProductVariant { get; set; }
 }
 
+public sealed class ProductCreateResult_ProductVariant
+{
+    public string Id { get; set; } = null!;
+    public string? Color { get; set; } = null;
+    public string Size { get; set; } = null!;
+    public string? Material { get; set; } = null;
+    public decimal Price { get; set; }
+    public int StockQuantity { get; set; }
+    public string SKU { get; set; } = null!;
+}
 public sealed class ProductCreateResult_Images
 {
     public string Id { get; set; } = null!;
@@ -54,22 +64,4 @@ public sealed class ProductCreateResult_CareInstructions
     public string Text { get; set; } = null!;
 }
 
-public sealed class ProductCreateResult_ProductColors
-{
-    public ProductCreateResult_ProductColors()
-    {
-        ProductSizes = new List<ProductCreateResult_ProductSizes>();
-
-    }
-    public string Color { get; set; } = null!;
-    public int Count { get; set; }
-
-    public ICollection<ProductCreateResult_ProductSizes> ProductSizes { get; set; }
-}
-
-public sealed class ProductCreateResult_ProductSizes
-{
-    public string Size { get; set; } = null!;
-    public int Count { get; set; }
-}
 

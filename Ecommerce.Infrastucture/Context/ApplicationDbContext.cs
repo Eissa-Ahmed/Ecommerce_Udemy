@@ -12,7 +12,6 @@ public sealed class ApplicationDbContext : IdentityDbContext<User, Role, string>
     public DbSet<CareInstructions> CareInstructions { get; set; }
     public DbSet<Features> Features { get; set; }
     public DbSet<Discount> Discount { get; set; }
-    public DbSet<ProductDiscount> ProductDiscount { get; set; }
     public DbSet<Cart> Cart { get; set; }
     public DbSet<CartItem> CartItem { get; set; }
     public DbSet<Order> Order { get; set; }
@@ -25,8 +24,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<User, Role, string>
     public DbSet<Coupon> Coupon { get; set; }
     public DbSet<Payment> Payment { get; set; }
     public DbSet<PaymentMethod> PaymentMethod { get; set; }
-    public DbSet<ProductTag> ProductTag { get; set; }
-    public DbSet<ProductTagMapping> ProductTagMapping { get; set; }
+    public DbSet<Tag> ProductTag { get; set; }
+    public DbSet<ProductTag> ProductTagMapping { get; set; }
     public DbSet<ProductVariant> ProductVariant { get; set; }
     public DbSet<Address> Address { get; set; }
     public ApplicationDbContext(DbContextOptions options) : base(options) { }

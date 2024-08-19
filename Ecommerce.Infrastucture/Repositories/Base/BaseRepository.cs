@@ -32,7 +32,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return await ApplySpecification(specification).ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(ISpecification<T> specification)
+    public async Task<T> GetByIdAsync(ISpecification<T> specification)
     {
         return await ApplySpecification(specification).FirstOrDefaultAsync();
     }

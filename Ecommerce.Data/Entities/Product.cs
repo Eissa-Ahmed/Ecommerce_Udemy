@@ -13,12 +13,10 @@ public sealed class Product
         CareInstructions = new List<CareInstructions>();
         Features = new List<Features>();
         ProductVariant = new List<ProductVariant>();
-        ProductTagMappings = new List<ProductTagMapping>();
-        ProductDiscounts = new List<ProductDiscount>();
+        ProductTag = new List<ProductTag>();
         CartItem = new List<CartItem>();
         OrderItem = new List<OrderItem>();
-        ProductTags = new List<ProductTag>();
-        Discounts = new List<Discount>();
+        Tags = new List<Tag>();
     }
     public string Id { get; set; }
     public string Name { get; set; } = null!;
@@ -33,17 +31,13 @@ public sealed class Product
     public Category Category { get; set; } = null!;
     public string? BrandId { get; set; } = null;
     public Brand? Brand { get; set; } = null;
-    public Discount? HighestDiscount => Discounts
-        .Where(i => i.IsActive)
-        .OrderByDescending(i => i.DiscountPercentage)
-        .FirstOrDefault();
+    public string? DiscountId { get; set; }
+    public Discount? Discount { get; set; } = null;
     public ICollection<Images> Images { get; set; }
     public ICollection<ProductAttributes> ProductAttributes { get; set; }
-    public ICollection<ProductDiscount> ProductDiscounts { get; set; }
-    public ICollection<Discount> Discounts { get; set; }
     public ICollection<Review> Reviews { get; set; }
-    public ICollection<ProductTagMapping> ProductTagMappings { get; set; }
-    public ICollection<ProductTag> ProductTags { get; set; }
+    public ICollection<ProductTag> ProductTag { get; set; }
+    public ICollection<Tag> Tags { get; set; }
     public ICollection<Features> Features { get; set; }
     public ICollection<ProductVariant> ProductVariant { get; set; }
     public ICollection<CareInstructions> CareInstructions { get; set; }

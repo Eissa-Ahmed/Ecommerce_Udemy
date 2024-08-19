@@ -1,8 +1,4 @@
-﻿using Ecommerce.Application.Services.AuthenticationContainer;
-using Ecommerce.Application.Services.AuthenticationContainer.Token;
-using Ecommerce.Application.Services.RequestContainer;
-
-namespace Ecommerce.Application;
+﻿namespace Ecommerce.Application;
 
 public static class RegisterModule
 {
@@ -55,6 +51,12 @@ public static class RegisterModule
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRequestService, RequestService>();
+
+        services.AddScoped<ITagService, TagService>();
+        services.AddScoped<ITagValidation, TagValidation>();
+
+        services.AddScoped<IDiscountService, DiscountService>();
+        services.AddScoped<IDiscountValidation, DiscountValidation>();
 
         services.AddScoped<EmailService>();
         services.AddScoped<NotificationFactory>();

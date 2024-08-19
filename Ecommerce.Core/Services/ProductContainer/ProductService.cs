@@ -1,7 +1,4 @@
-﻿using Ecommerce.Domain.Params;
-using Ecommerce.Infrastucture.Specification.ModelsSpecifications.ProductSpecification;
-
-namespace Ecommerce.Application.Services.ProductContainer;
+﻿namespace Ecommerce.Application.Services.ProductContainer;
 
 public sealed class ProductService : IProductService
 {
@@ -16,12 +13,9 @@ public sealed class ProductService : IProductService
 
     public async Task<Product> CreateAsync(Product product)
     {
-
         product.MainImage = product.Images.First().Name;
         await _unitOfWork.ProductRepository.CreateAsync(product);
-        Product? result = await GetByIdAsync(product.Id);
-        return result!;
-
+        return await GetByIdAsync(product.Id);
     }
 
     public async Task<Pagination<Product>> GetAllAsync(ProductGetAllParams productGetAllParams)
@@ -34,14 +28,10 @@ public sealed class ProductService : IProductService
         int totalCount = await _unitOfWork.ProductRepository.CountAsync();
         return new Pagination<Product>(products.ToList(), productGetAllParams.PageNumber, productGetAllParams.PageSize, totalCount);
     }
-    public async Task<Product?> GetByIdAsync(string id)
+    public async Task<Product> GetByIdAsync(string id)
     {
-        /*List<Expression<Func<Product, bool>>> criterias = new List<Expression<Func<Product, bool>>>()
-        {
-            p => p.Id == id
-        };
-        ISpecification<Product> ProductSpecification = new ProductSpecification(criterias);
-        return await _unitOfWork.ProductRepository.GetByIdAsync(ProductSpecification);*/
+        ISpecification<Product> ProductSpecification = new ProductGetByIdSpecification(id);
+        return await _unitOfWork.ProductRepository.GetByIdAsync(ProductSpecification);
         throw new NotImplementedException();
     }
 

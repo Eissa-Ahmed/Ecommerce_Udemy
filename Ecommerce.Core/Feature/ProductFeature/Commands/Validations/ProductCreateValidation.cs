@@ -1,8 +1,4 @@
-﻿
-
-
-
-namespace Ecommerce.Application.Feature.ProductFeature.Commands.Validations;
+﻿namespace Ecommerce.Application.Feature.ProductFeature.Commands.Validations;
 
 public sealed class ProductCreateValidation : AbstractValidator<ProductCreateModel>
 {
@@ -10,14 +6,24 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
     private readonly IAttributeValidation _attributeValidation;
     private readonly IBrandValidation _brandValidation;
     private readonly ICategoryValidation _categoryValidation;
+    private readonly ITagValidation _tagValidation;
+    private readonly IDiscountValidation _discountValidation;
 
-    public ProductCreateValidation(IProductValidation productValidation, IAttributeValidation attributeValidation, IBrandValidation brandValidation, ICategoryValidation categoryValidation)
+    public ProductCreateValidation(
+        IProductValidation productValidation,
+        IAttributeValidation attributeValidation,
+        IBrandValidation brandValidation,
+        ICategoryValidation categoryValidation,
+        ITagValidation tagValidation,
+        IDiscountValidation discountValidation)
     {
         _productValidation = productValidation;
         _attributeValidation = attributeValidation;
         _brandValidation = brandValidation;
-        ApplyValidation();
         _categoryValidation = categoryValidation;
+        _tagValidation = tagValidation;
+        _discountValidation = discountValidation;
+        ApplyValidation();
     }
 
     private void ApplyValidation()
@@ -41,16 +47,19 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
               .GreaterThan(0)
               .WithMessage("Stock Quantity must be greater than 0");
 
-        RuleFor(i => i.Price)
-              .GreaterThan(0)
-              .WithMessage("Price must be greater than 0");
+        When(i => i.ProductVariants.Count() == 0, () =>
+        {
+            RuleFor(i => i.Price)
+            .NotEmpty()
+            .WithMessage("Price is required")
+            .GreaterThan(0)
+            .WithMessage("Price must be greater than 0");
+        });
 
-        RuleFor(i => i.Discount)
-             .GreaterThanOrEqualTo(0)
-             .WithMessage("Discount must be greater than or equal to 0")
-             .LessThanOrEqualTo(100)
-             .WithMessage("Discount must be less than or equal to 100");
-
+        RuleFor(i => i.DiscountId)
+            .MustAsync(DiscountExistAsync)
+            .When(i => !i.DiscountId.IsNullOrEmpty())
+            .WithMessage("Discount Id does not exist");
 
         RuleFor(i => i.CategoryId)
              .NotEmpty()
@@ -60,6 +69,28 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
              .MustAsync(CategoryNotHaveSubCategoriesAsync)
              .WithMessage("The category have sub-categories");
 
+
+        RuleForEach(i => i.ProductTagIds).ChildRules(tags =>
+        {
+            tags.RuleFor(i => i).MustAsync(TagIsExist)
+            .WithMessage("Tag does not exist");
+        });
+
+        RuleFor(i => i.ProductVariants)
+            .Must((model, key, cancel) => CheckCountOfProductVariants(model))
+            .When(i => i.ProductVariants.Count() > 0)
+            .WithMessage("Variants StockQuantity must be equal product count");
+
+        RuleForEach(i => i.ProductVariants).ChildRules(Variant =>
+        {
+            Variant.RuleFor(i => i.Size)
+             .NotEmpty()
+             .WithMessage("Size is required")
+             .Must(x => x == "L" || x == "M" || x == "S" || x == "XS" || x == "XL" || x == "XXL" || x == "XXXL" || x == "XXXXL" || x == "XXXXXL" || x == "XXXXXXL")
+             .WithMessage("Size must be ");
+
+        });
+
         When(i => !i.BrandId.IsNullOrEmpty(), () =>
         {
             RuleFor(i => i.BrandId!)
@@ -68,36 +99,6 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
              .MustAsync(BrandExistAsync)
              .WithMessage("Brand Id does not exist");
         });
-
-        RuleFor(i => i.Images)
-             .NotEmpty()
-             .WithMessage("Image is required")
-             .Must(images => images != null && images.Count() > 1)
-             .WithMessage("The number of images must be greater than 1.");
-
-        When(i => i.ProductColors.Count() > 0, () =>
-        {
-            RuleFor(i => i.ProductColors)
-            .Must((model, item, cancel) => CheckCountProductColorEqualCountProduct(model))
-            .WithMessage("The number of product colors must be equal to the number of colors");
-
-
-            RuleForEach(i => i.ProductColors).ChildRules(productColor =>
-            {
-                productColor.RuleFor(i => i.Color)
-                .NotEmpty()
-                .WithMessage("Color is required");
-
-                productColor.When(i => i.ProductSizes.Count() > 0, () =>
-                {
-                    productColor.RuleFor(i => i.ProductSizes)
-                        .Must((model, item, cancel) => CheckCountProductSizeEqualCountProduct(model))
-                        .WithMessage("The number of product sizes must be equal to the number of sizes");
-                });
-            });
-        });
-
-
 
 
         When(i => i.Features.Count() > 0, () =>
@@ -129,23 +130,31 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
 
     }
 
+    private async Task<bool> DiscountExistAsync(string arg1, CancellationToken token)
+    {
+        return await _discountValidation
+            .DiscountIsExist(arg1);
+    }
+
+    private bool CheckCountOfProductVariants(ProductCreateModel model)
+    {
+        int countOfVariants = 0;
+        foreach (var item in model.ProductVariants)
+        {
+            countOfVariants += item.StockQuantity;
+        }
+        return countOfVariants == model.StockQuantity;
+    }
+
+    private async Task<bool> TagIsExist(string arg1, CancellationToken token)
+    {
+        return await _tagValidation.TagIsExist(arg1);
+    }
+
     private async Task<bool> CategoryNotHaveSubCategoriesAsync(string arg1, CancellationToken token)
     {
         return !(await _categoryValidation.CategoryHaveSubCategoriesAsync(arg1));
     }
-
-    private bool CheckCountProductColorEqualCountProduct(ProductCreateModel model)
-    {
-        int count = model.ProductColors.Sum(x => x.Count);
-        return count == model.StockQuantity;
-    }
-
-    private bool CheckCountProductSizeEqualCountProduct(ProductCreateModel_ProductColors model)
-    {
-        int count = model.ProductSizes.Sum(x => x.Count);
-        return count == model.Count;
-    }
-
 
     private async Task<bool> BrandExistAsync(string arg1, CancellationToken token)
     {

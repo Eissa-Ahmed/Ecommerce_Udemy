@@ -1,8 +1,13 @@
 ﻿public enum ProductSize
 {
-    S = 0,
+    L = 0,
     M = 1,
-    L = 2,
+    S = 2,
     XL = 3,
-    XXL = 4
+    XS = 4,
+    XXL = 5,
+    XXXL = 6,
+    XXXXL = 7,
+    XXXXXL = 8,
+    XXXXXXL = 9
 }

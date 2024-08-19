@@ -114,7 +114,7 @@ namespace Ecommerce.Infrastucture.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductTag",
+                name: "Tag",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -122,7 +122,7 @@ namespace Ecommerce.Infrastucture.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductTag", x => x.Id);
+                    table.PrimaryKey("PK_Tag", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,7 +189,8 @@ namespace Ecommerce.Infrastucture.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    BrandId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    BrandId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DiscountId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,6 +207,12 @@ namespace Ecommerce.Infrastucture.Migrations
                         principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Product_Discount_DiscountId",
+                        column: x => x.DiscountId,
+                        principalTable: "Discount",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -382,6 +389,28 @@ namespace Ecommerce.Infrastucture.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Codes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Codes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Codes_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CustomerSupportTicket",
                 columns: table => new
                 {
@@ -420,6 +449,27 @@ namespace Ecommerce.Infrastucture.Migrations
                     table.PrimaryKey("PK_Notification", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Notification_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshToken",
+                columns: table => new
+                {
+                    Token = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshToken", x => x.Token);
+                    table.ForeignKey(
+                        name: "FK_RefreshToken_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -508,16 +558,15 @@ namespace Ecommerce.Infrastucture.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AttributeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AttributesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AttributeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductAttributes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductAttributes_Attributes_AttributesId",
-                        column: x => x.AttributesId,
+                        name: "FK_ProductAttributes_Attributes_AttributeId",
+                        column: x => x.AttributeId,
                         principalTable: "Attributes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -530,32 +579,7 @@ namespace Ecommerce.Infrastucture.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductDiscount",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DiscountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductDiscount", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductDiscount_Discount_DiscountId",
-                        column: x => x.DiscountId,
-                        principalTable: "Discount",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductDiscount_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductTagMapping",
+                name: "ProductTag",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -564,17 +588,17 @@ namespace Ecommerce.Infrastucture.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductTagMapping", x => x.Id);
+                    table.PrimaryKey("PK_ProductTag", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductTagMapping_ProductTag_TagId",
-                        column: x => x.TagId,
-                        principalTable: "ProductTag",
+                        name: "FK_ProductTag_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductTagMapping_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
+                        name: "FK_ProductTag_Tag_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tag",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -827,6 +851,11 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "ParentCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Codes_UserId",
+                table: "Codes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CustomerSupportTicket_UserId",
                 table: "CustomerSupportTicket",
                 column: "UserId");
@@ -895,9 +924,14 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductAttributes_AttributesId",
+                name: "IX_Product_DiscountId",
+                table: "Product",
+                column: "DiscountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductAttributes_AttributeId",
                 table: "ProductAttributes",
-                column: "AttributesId");
+                column: "AttributeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductAttributes_ProductId",
@@ -905,29 +939,25 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductDiscount_DiscountId",
-                table: "ProductDiscount",
-                column: "DiscountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductDiscount_ProductId",
-                table: "ProductDiscount",
+                name: "IX_ProductTag_ProductId",
+                table: "ProductTag",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductTagMapping_ProductId",
-                table: "ProductTagMapping",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductTagMapping_TagId",
-                table: "ProductTagMapping",
-                column: "TagId");
+                name: "IX_ProductTag_TagId_ProductId",
+                table: "ProductTag",
+                columns: new[] { "TagId", "ProductId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductVariant_ProductId",
                 table: "ProductVariant",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshToken_UserId",
+                table: "RefreshToken",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Review_ProductId_UserId",
@@ -1000,6 +1030,9 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "CartItem");
 
             migrationBuilder.DropTable(
+                name: "Codes");
+
+            migrationBuilder.DropTable(
                 name: "CustomerSupportTicket");
 
             migrationBuilder.DropTable(
@@ -1018,13 +1051,13 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "ProductAttributes");
 
             migrationBuilder.DropTable(
-                name: "ProductDiscount");
-
-            migrationBuilder.DropTable(
-                name: "ProductTagMapping");
+                name: "ProductTag");
 
             migrationBuilder.DropTable(
                 name: "ProductVariant");
+
+            migrationBuilder.DropTable(
+                name: "RefreshToken");
 
             migrationBuilder.DropTable(
                 name: "Review");
@@ -1045,10 +1078,7 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "Attributes");
 
             migrationBuilder.DropTable(
-                name: "Discount");
-
-            migrationBuilder.DropTable(
-                name: "ProductTag");
+                name: "Tag");
 
             migrationBuilder.DropTable(
                 name: "Product");
@@ -1067,6 +1097,9 @@ namespace Ecommerce.Infrastucture.Migrations
 
             migrationBuilder.DropTable(
                 name: "Category");
+
+            migrationBuilder.DropTable(
+                name: "Discount");
 
             migrationBuilder.DropTable(
                 name: "User");

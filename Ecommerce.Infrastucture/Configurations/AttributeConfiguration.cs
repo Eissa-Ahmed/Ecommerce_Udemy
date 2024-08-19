@@ -9,7 +9,10 @@ public sealed class AttributeConfiguration : IEntityTypeConfiguration<Attributes
 
         entity.HasIndex(i => i.Name).IsUnique();
 
-
+        entity.HasMany(m => m.ProductAttributes)
+            .WithOne(o => o.Attributes)
+            .HasForeignKey(i => i.AttributeId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
 }

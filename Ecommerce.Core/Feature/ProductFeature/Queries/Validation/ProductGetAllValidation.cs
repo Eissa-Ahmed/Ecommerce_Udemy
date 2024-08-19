@@ -9,9 +9,9 @@ public sealed class ProductGetAllValidation : AbstractValidator<ProductGetAllMod
     public ProductGetAllValidation(IProductValidation productValidation, ICategoryValidation categoryValidation, IBrandValidation brandValidation)
     {
         _productValidation = productValidation;
-        ApplyValidation();
         _categoryValidation = categoryValidation;
         _brandValidation = brandValidation;
+        ApplyValidation();
     }
 
     private void ApplyValidation()

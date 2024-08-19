@@ -10,6 +10,10 @@ public class UnitOfWork : IUnitOfWork
     public IBrandRepository BrandRepository { get; private set; }
     public IAttributesRepository AttributesRepository { get; private set; }
 
+    public ITagRepository TagRepository { get; private set; }
+
+    public IDiscountRepository DiscountRepository { get; private set; }
+
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -17,6 +21,8 @@ public class UnitOfWork : IUnitOfWork
         CategoryRepository = new CategoryRepository(context);
         BrandRepository = new BrandRepository(context);
         AttributesRepository = new AttributesRepository(context);
+        TagRepository = new TagRepository(context);
+        DiscountRepository = new DiscountRepository(context);
     }
 
     public async Task<int> SaveChangesAsync()

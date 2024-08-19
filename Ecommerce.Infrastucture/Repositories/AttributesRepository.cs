@@ -7,3 +7,4 @@ public sealed class AttributesRepository : BaseRepository<Attributes>, IAttribut
     {
     }
 }
+

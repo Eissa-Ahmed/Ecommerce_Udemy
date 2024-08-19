@@ -4,9 +4,14 @@ public sealed class ProductGetAllSpecification : Specification<Product>
 {
     public ProductGetAllSpecification(ProductGetAllParams productParams) : base(p =>
         (string.IsNullOrEmpty(productParams.CategoryId) || p.CategoryId == productParams.CategoryId) &&
-        (string.IsNullOrEmpty(productParams.BrandId) || p.CategoryId == productParams.BrandId)
+        (string.IsNullOrEmpty(productParams.BrandId) || p.CategoryId == productParams.BrandId) &&
+        p.IsShow
         )
     {
+        AddIInclude(i =>
+        i.Include(p => p.ProductVariant)
+        .Include(p => p.Discount));
+
         ApplyPaging(productParams.PageNumber, productParams.PageSize);
 
         if (productParams.Sort is not null)

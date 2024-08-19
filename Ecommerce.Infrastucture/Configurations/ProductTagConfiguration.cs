@@ -8,9 +8,7 @@ public sealed class ProductTagConfiguration : IEntityTypeConfiguration<ProductTa
 
         entity.HasKey(k => k.Id);
 
-        entity.Property(p => p.TagName)
-            .IsRequired()
-            .HasMaxLength(25);
+        entity.HasIndex(i => new { i.TagId, i.ProductId }).IsUnique();
 
     }
 }

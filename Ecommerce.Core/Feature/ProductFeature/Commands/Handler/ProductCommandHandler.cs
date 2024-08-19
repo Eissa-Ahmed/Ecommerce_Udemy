@@ -15,7 +15,8 @@ public sealed class ProductCommandHandler : ResponseHandler,
     public async Task<ApplicationResponse<ProductCreateResult>> Handle(ProductCreateModel request, CancellationToken cancellationToken)
     {
         Product product = _mapper.Map<Product>(request);
-        IEnumerable<ProductAttributes> productAttributes = _mapper.Map<IEnumerable<ProductAttributes>>(request.ProductAttributes);
+        /*IEnumerable<ProductAttributes> productAttributes = _mapper.Map<IEnumerable<ProductAttributes>>(request.ProductAttributes);
+        product.ProductAttributes = productAttributes.ToList();*/
         Product results = await _productService.CreateAsync(product);
         return Created(_mapper.Map<ProductCreateResult>(results));
     }

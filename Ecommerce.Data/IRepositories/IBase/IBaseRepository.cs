@@ -3,7 +3,7 @@
 public interface IBaseRepository<T> where T : class
 {
     Task<IReadOnlyList<T>> GetAllAsync(ISpecification<T> specification);
-    Task<T?> GetByIdAsync(ISpecification<T> specification);
+    Task<T> GetByIdAsync(ISpecification<T> specification);
     Task<bool> IsExist(Expression<Func<T, bool>> expression);
     Task<T> CreateAsync(T entity);
     Task<T> UpdateAsync(T entity);

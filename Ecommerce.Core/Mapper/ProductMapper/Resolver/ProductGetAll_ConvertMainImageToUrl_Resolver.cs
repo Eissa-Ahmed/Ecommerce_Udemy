@@ -1,10 +1,10 @@
 ﻿namespace Ecommerce.Application.Mapper.ProductMapper.Resolver;
 
-public sealed class ProductGetAllMapper_Resolver : IValueResolver<Product, ProductGetAllResult, string>
+public sealed class ProductGetAll_ConvertMainImageToUrl_Resolver : IValueResolver<Product, ProductGetAllResult, string>
 {
     private readonly IOptions<ApplicationSettings> _settings;
 
-    public ProductGetAllMapper_Resolver(IOptions<ApplicationSettings> settings)
+    public ProductGetAll_ConvertMainImageToUrl_Resolver(IOptions<ApplicationSettings> settings)
     {
         _settings = settings;
     }

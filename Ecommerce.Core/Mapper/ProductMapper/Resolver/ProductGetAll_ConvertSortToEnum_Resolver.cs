@@ -1,6 +1,4 @@
-﻿using Ecommerce.Domain.Params;
-
-namespace Ecommerce.Application.Mapper.ProductMapper.Resolver;
+﻿namespace Ecommerce.Application.Mapper.ProductMapper.Resolver;
 
 public sealed class ProductGetAll_ConvertSortToEnum_Resolver : IValueResolver<ProductGetAllModel, ProductGetAllParams, ProductSort?>
 {
@@ -10,5 +8,4 @@ public sealed class ProductGetAll_ConvertSortToEnum_Resolver : IValueResolver<Pr
         return (ProductSort)Enum.Parse(typeof(ProductSort), source.Sort);
     }
 }
-
 

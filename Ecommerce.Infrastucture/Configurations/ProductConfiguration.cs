@@ -25,7 +25,6 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasPrecision(8, 2)
             .HasAnnotation("MinValue", 1.0m);
 
-        entity.Ignore(i => i.HighestDiscount);
 
         entity
             .HasMany(m => m.Images)
@@ -77,19 +76,11 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
            .HasForeignKey(i => i.ProductId)
            .OnDelete(DeleteBehavior.Cascade);
 
-
-        entity.HasMany(m => m.Discounts)
+        entity.HasMany(m => m.Tags)
          .WithMany(m => m.Products)
-         .UsingEntity<ProductDiscount>(
-            j => j.HasOne(o => o.Discount).WithMany(m => m.ProductDiscounts).HasForeignKey(f => f.DiscountId),
-            i => i.HasOne(o => o.Product).WithMany(m => m.ProductDiscounts).HasForeignKey(f => f.ProductId)
-              );
-
-        entity.HasMany(m => m.ProductTags)
-         .WithMany(m => m.Products)
-         .UsingEntity<ProductTagMapping>(
+         .UsingEntity<ProductTag>(
             j => j.HasOne(j => j.Tag).WithMany(j => j.ProductTagMappings).HasForeignKey(j => j.TagId),
-            i => i.HasOne(i => i.Product).WithMany(i => i.ProductTagMappings).HasForeignKey(i => i.ProductId)
+            i => i.HasOne(i => i.Product).WithMany(i => i.ProductTag).HasForeignKey(i => i.ProductId)
               );
 
 

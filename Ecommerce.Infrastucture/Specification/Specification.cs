@@ -9,7 +9,7 @@ public class Specification<T> : ISpecification<T> where T : class
 
     public List<Expression<Func<T, object>>> OrderByDescending { get; } = new List<Expression<Func<T, object>>>();
 
-    public List<Func<IQueryable<T>, IIncludableQueryable<T, object>>> IIncludes { get; } = new List<Func<IQueryable<T>, IIncludableQueryable<T, object>>>();
+    public Func<IQueryable<T>, IIncludableQueryable<T, object>>? IInclude { get; private set; } = null;
 
     public int PageNumber { get; private set; }
 
@@ -27,7 +27,7 @@ public class Specification<T> : ISpecification<T> where T : class
 
     protected void AddIInclude(Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpression)
     {
-        IIncludes.Add(includeExpression);
+        IInclude = includeExpression;
     }
 
     protected void ApplyPaging(int pageNumber, int pageSize)

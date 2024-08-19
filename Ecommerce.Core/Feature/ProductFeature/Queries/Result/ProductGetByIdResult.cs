@@ -10,7 +10,7 @@ public sealed class ProductGetByIdResult
         Ratings = new List<ProductGetByIdResult_Rating>();
         Features = new List<ProductGetByIdResult_Features>();
         CareInstructions = new List<ProductGetByIdResult_CareInstructions>();
-        ProductColors = new List<ProductGetByIdResult_ProductColors>();
+        ProductVariant = new List<ProductGetByIdResult_ProductVariant>();
     }
     public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
@@ -31,7 +31,7 @@ public sealed class ProductGetByIdResult
     public ICollection<ProductGetByIdResult_Rating> Ratings { get; set; }
     public ICollection<ProductGetByIdResult_Features> Features { get; set; }
     public ICollection<ProductGetByIdResult_CareInstructions> CareInstructions { get; set; }
-    public ICollection<ProductGetByIdResult_ProductColors> ProductColors { get; set; }
+    public ICollection<ProductGetByIdResult_ProductVariant> ProductVariant { get; set; }
 
 }
 
@@ -83,24 +83,14 @@ public sealed class ProductGetByIdResult_CareInstructions
     public string Text { get; set; } = null!;
     public string ProductId { get; set; } = null!;
 }
-public sealed class ProductGetByIdResult_ProductColors
-{
-    public ProductGetByIdResult_ProductColors()
-    {
-        ProductSizes = new List<ProductGetByIdResult_ProductSizes>();
-    }
-    public string Id { get; set; } = null!;
-    public string Color { get; set; } = null!;
-    public int Count { get; set; }
-    public string ProductId { get; set; } = null!;
-    public ICollection<ProductGetByIdResult_ProductSizes> ProductSizes { get; set; }
 
-}
-
-public sealed class ProductGetByIdResult_ProductSizes
+public sealed class ProductGetByIdResult_ProductVariant
 {
     public string Id { get; set; } = null!;
+    public string? Color { get; set; } = null;
     public string Size { get; set; } = null!;
-    public int Count { get; set; }
-    public string ProductColorId { get; set; } = null!;
+    public string? Material { get; set; } = null;
+    public decimal Price { get; set; }
+    public int StockQuantity { get; set; }
+    public string SKU { get; set; } = null!;
 }

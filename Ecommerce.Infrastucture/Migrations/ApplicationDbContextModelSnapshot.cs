@@ -218,6 +218,35 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.ToTable("Category", (string)null);
                 });
 
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Codes", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Codes", (string)null);
+                });
+
             modelBuilder.Entity("Ecommerce.Domain.Entities.Coupon", b =>
                 {
                     b.Property<string>("Id")
@@ -533,6 +562,9 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsShow")
                         .HasColumnType("bit");
 
@@ -563,6 +595,8 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("DiscountId");
+
                     b.ToTable("Product", (string)null);
                 });
 
@@ -572,10 +606,6 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AttributeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AttributesId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -589,51 +619,14 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributesId");
+                    b.HasIndex("AttributeId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributes", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductDiscount", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("DiscountId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DiscountId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductDiscount", (string)null);
-                });
-
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductTag", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TagName")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductTag", (string)null);
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductTagMapping", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -650,9 +643,10 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("TagId", "ProductId")
+                        .IsUnique();
 
-                    b.ToTable("ProductTagMapping", (string)null);
+                    b.ToTable("ProductTag", (string)null);
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductVariant", b =>
@@ -775,6 +769,21 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Tag", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TagName")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tag", (string)null);
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.User", b =>
@@ -1070,6 +1079,17 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Codes", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.User", "User")
+                        .WithMany("Codes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Ecommerce.Domain.Entities.CustomerSupportTicket", b =>
                 {
                     b.HasOne("Ecommerce.Domain.Entities.User", "User")
@@ -1180,16 +1200,23 @@ namespace Ecommerce.Infrastucture.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Ecommerce.Domain.Entities.Discount", "Discount")
+                        .WithMany("Products")
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Discount");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductAttributes", b =>
                 {
                     b.HasOne("Ecommerce.Domain.Entities.Attributes", "Attributes")
-                        .WithMany()
-                        .HasForeignKey("AttributesId")
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("AttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1204,34 +1231,15 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductDiscount", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductTag", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Discount", "Discount")
-                        .WithMany("ProductDiscounts")
-                        .HasForeignKey("DiscountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Ecommerce.Domain.Entities.Product", "Product")
-                        .WithMany("ProductDiscounts")
+                        .WithMany("ProductTag")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Discount");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductTagMapping", b =>
-                {
-                    b.HasOne("Ecommerce.Domain.Entities.Product", "Product")
-                        .WithMany("ProductTagMappings")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Domain.Entities.ProductTag", "Tag")
+                    b.HasOne("Ecommerce.Domain.Entities.Tag", "Tag")
                         .WithMany("ProductTagMappings")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1364,6 +1372,11 @@ namespace Ecommerce.Infrastucture.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Attributes", b =>
+                {
+                    b.Navigation("ProductAttributes");
+                });
+
             modelBuilder.Entity("Ecommerce.Domain.Entities.Brand", b =>
                 {
                     b.Navigation("Products");
@@ -1388,7 +1401,7 @@ namespace Ecommerce.Infrastucture.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Discount", b =>
                 {
-                    b.Navigation("ProductDiscounts");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Order", b =>
@@ -1416,16 +1429,14 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.Navigation("ProductAttributes");
 
-                    b.Navigation("ProductDiscounts");
-
-                    b.Navigation("ProductTagMappings");
+                    b.Navigation("ProductTag");
 
                     b.Navigation("ProductVariant");
 
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.ProductTag", b =>
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Tag", b =>
                 {
                     b.Navigation("ProductTagMappings");
                 });
@@ -1437,6 +1448,8 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("AuditLog");
 
                     b.Navigation("Cart");
+
+                    b.Navigation("Codes");
 
                     b.Navigation("Notifications");
 

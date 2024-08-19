@@ -8,21 +8,32 @@ public sealed class ProductCreateModel : IRequest<ApplicationResponse<ProductCre
         ProductAttributes = new List<ProductCreateModel_ProductAttributes>();
         Features = new List<ProductCreateModel_Features>();
         CareInstructions = new List<ProductCreateModel_CareInstructions>();
-        ProductColors = new List<ProductCreateModel_ProductColors>();
+        ProductVariants = new List<ProductCreateModel_ProductVariant>();
+        ProductTagIds = new List<string>();
     }
     public string Name { get; set; } = null!;
     public string? Description { get; set; } = null;
     public int StockQuantity { get; set; }
-    public decimal Price { get; set; }
-    public int Discount { get; set; }
-    public bool FreeShipping { get; set; }
+    public decimal? Price { get; set; } = null;
+    public bool IsShow { get; set; }
     public string CategoryId { get; set; } = null!;
     public string? BrandId { get; set; } = null;
+    public string? DiscountId { get; set; }
+    public IEnumerable<string> ProductTagIds { get; set; }
     public IEnumerable<IFormFile> Images { get; set; }
     public IEnumerable<ProductCreateModel_ProductAttributes> ProductAttributes { get; set; }
+    public IEnumerable<ProductCreateModel_ProductVariant> ProductVariants { get; set; }
     public IEnumerable<ProductCreateModel_Features> Features { get; set; }
     public IEnumerable<ProductCreateModel_CareInstructions> CareInstructions { get; set; }
-    public IEnumerable<ProductCreateModel_ProductColors> ProductColors { get; set; }
+}
+
+public sealed class ProductCreateModel_ProductVariant
+{
+    public string? Color { get; set; } = null;
+    public string Size { get; set; } = null!;
+    public string? Material { get; set; } = null;
+    public decimal Price { get; set; }
+    public int StockQuantity { get; set; }
 }
 public sealed class ProductCreateModel_ProductAttributes
 {
@@ -37,20 +48,4 @@ public sealed class ProductCreateModel_CareInstructions
 {
     public string Text { get; set; } = null!;
 }
-public sealed class ProductCreateModel_ProductColors
-{
-    public ProductCreateModel_ProductColors()
-    {
-        ProductSizes = new List<ProductCreateModel_ProductSizes>();
-    }
-    public string Color { get; set; } = null!;
-    public int Count { get; set; }
-    public IEnumerable<ProductCreateModel_ProductSizes> ProductSizes { get; set; }
 
-}
-
-public sealed class ProductCreateModel_ProductSizes
-{
-    public string Size { get; set; } = null!;
-    public int Count { get; set; }
-}

@@ -8,6 +8,7 @@ public sealed class DiscountConfiguration : IEntityTypeConfiguration<Discount>
 
         entity.HasKey(k => k.Id);
 
+
         entity.Property(p => p.DiscountName)
             .IsRequired()
             .HasMaxLength(100);
@@ -15,5 +16,11 @@ public sealed class DiscountConfiguration : IEntityTypeConfiguration<Discount>
         entity.Property(p => p.DiscountPercentage)
             .HasAnnotation("MinValue", 1.0m)
             .HasAnnotation("MaxValue", 100.0m);
+
+        entity
+           .HasMany(m => m.Products)
+           .WithOne(o => o.Discount)
+           .HasForeignKey(i => i.DiscountId)
+           .OnDelete(DeleteBehavior.SetNull);
     }
 }

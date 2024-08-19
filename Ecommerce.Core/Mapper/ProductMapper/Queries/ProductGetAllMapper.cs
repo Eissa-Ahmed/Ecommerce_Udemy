@@ -12,7 +12,14 @@ public partial class ProductProfile
 
 
         CreateMap<Product, ProductGetAllResult>()
-            .ForMember(dest => dest.Rating, opt => opt.MapFrom<RatingProductResolver>())
-            .ForMember(dest => dest.MainImage, opt => opt.MapFrom<ProductGetAllMapper_Resolver>());
+            .ForMember(dest => dest.Rating, opt => opt.MapFrom<ProductGetAll_ConvertRatingtoDecimal_Resolver>())
+            .ForMember(dest => dest.MainImage, opt => opt.MapFrom<ProductGetAll_ConvertMainImageToUrl_Resolver>())
+            .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src => src.Discount == null ? 0 : src.Discount.DiscountPercentage))
+            .ForMember(dest => dest.ProductVariant, opt => opt.MapFrom(src => src.ProductVariant));
+
+        CreateMap<ProductVariant, ProductGetAllResult_ProductVariant>()
+            .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size.ToString()));
+
+
     }
 }

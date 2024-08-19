@@ -65,7 +65,13 @@ public static class Categories_SD
             new Category {Name = "Fashion", SubCategories = new List<Category> {
                 //Fashion > Men's Clothing
                 new Category {Name = "Men's Clothing", SubCategories = new List<Category> {
-                    new Category {Name = "Casual Wear",  },
+                    new Category {Name = "Casual Wear", SubCategories = new List<Category> {
+                        new Category {Name = "T-Shirts"},
+                        new Category {Name = "Shirts"},
+                        new Category {Name = "Jeans"},
+                        new Category {Name = "Trousers"},
+                        new Category {Name = "Shorts"},
+                    } },
                     new Category {Name = "Formal Wear"},
                     new Category {Name = "Watches"},
                     new Category {Name = "Sunglasses"},

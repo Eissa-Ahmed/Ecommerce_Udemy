@@ -4,6 +4,6 @@ public interface IProductService
 {
     Task<Product> CreateAsync(Product product);
     Task<Pagination<Product>> GetAllAsync(ProductGetAllParams productGetAllParams);
-    Task<Product?> GetByIdAsync(string id);
+    Task<Product> GetByIdAsync(string id);
     //Task<IReadOnlyList<Product>> SearchAsync(string name, string? categoryId = null, string? brandId = null);
 }

@@ -6,6 +6,8 @@ public interface IUnitOfWork : IDisposable
     ICategoryRepository CategoryRepository { get; }
     IBrandRepository BrandRepository { get; }
     IAttributesRepository AttributesRepository { get; }
+    ITagRepository TagRepository { get; }
+    IDiscountRepository DiscountRepository { get; }
     Task<int> SaveChangesAsync();
     Task<IDbContextTransaction> BeginTransactionAsync();
     Task CommitTransactionAsync();

@@ -7,5 +7,6 @@ public sealed class ProductAttributeConfiguration : IEntityTypeConfiguration<Pro
         entity.ToTable(nameof(ProductAttributes));
 
         entity.HasKey(k => k.Id);
+
     }
 }
