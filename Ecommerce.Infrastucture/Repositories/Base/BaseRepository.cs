@@ -21,9 +21,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         await _context.SaveChangesAsync();
     }
 
-    public virtual async Task DeleteAsync(T entity)
+    public virtual async Task DeleteAsync(string id)
     {
-        _context.Set<T>().Remove(entity);
+        T? entity = await _context.Set<T>().FindAsync(id);
+        _context.Set<T>().Remove(entity!);
         await _context.SaveChangesAsync();
     }
 

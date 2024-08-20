@@ -33,8 +33,7 @@ public sealed class CategoryServices : ICategoryServices
 
     public async Task DeleteAsync(string id)
     {
-        Category? category = await GetByIdAsync(id);
-        await _unitOfWork.CategoryRepository.DeleteAsync(category);
+        await _unitOfWork.CategoryRepository.DeleteAsync(id);
     }
 
 

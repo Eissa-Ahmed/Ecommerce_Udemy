@@ -1,65 +1,52 @@
 ﻿namespace Ecommerce.Application.Middleware;
 
-public sealed class ErrorHandlerMiddleware
+public class ErrorHandlerMiddleware
 {
     private readonly RequestDelegate _next;
-
     public ErrorHandlerMiddleware(RequestDelegate next)
     {
         _next = next;
     }
-    public async Task Invoke(HttpContext context)
+    public async Task InvokeAsync(HttpContext context)
     {
         try
         {
             await _next(context);
         }
-        catch (Exception ex)
+        catch (Exception error)
         {
-            HttpResponse response = context.Response;
+            var response = context.Response;
             response.ContentType = "application/json";
-            ApplicationResponse<string> applicationResponse = new() { Success = false };
 
-            switch (ex)
+            switch (error)
             {
                 case ValidationException e:
                     applicationResponse.Message = e.Message;
                     applicationResponse.StatusCode = HttpStatusCode.UnprocessableEntity;
-                    response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
                     break;
                 case UnauthorizedAccessException e:
                     applicationResponse.Message = e.Message;
                     applicationResponse.StatusCode = HttpStatusCode.Unauthorized;
-                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     break;
+
                 case KeyNotFoundException e:
                     applicationResponse.Message = e.Message;
                     applicationResponse.StatusCode = HttpStatusCode.NotFound;
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
                 case DbUpdateException e:
                     applicationResponse.Message = e.Message;
                     applicationResponse.StatusCode = HttpStatusCode.NotFound;
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
-                case ArgumentException e:
-                    applicationResponse.Message = e.Message;
-                    applicationResponse.StatusCode = HttpStatusCode.BadRequest;
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    break;
-                case Exception e:
-                    applicationResponse.Message = e.Message;
-                    applicationResponse.StatusCode = HttpStatusCode.BadRequest;
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    break;
+
+
                 default:
-                    applicationResponse.Message = ex.Message;
-                    applicationResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    responseModel.Message = "An unexpected error occurred.";
+                    responseModel.StatusCode = HttpStatusCode.InternalServerError;
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
 
-
-            string result = JsonSerializer.Serialize(applicationResponse);
+            var result = JsonSerializer.Serialize(responseModel);
             await response.WriteAsync(result);
         }
     }
