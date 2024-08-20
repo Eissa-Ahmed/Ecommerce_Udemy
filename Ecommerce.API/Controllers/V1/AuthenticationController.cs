@@ -21,6 +21,6 @@ public class AuthenticationController : ApplicationBaseController
     [HttpPost(AuthenticationRoutes.ResetPassword)]
     public async Task<IActionResult> ResetPassword([FromBody] AuthenticationResetPasswordModel model) => BaseResponse(await _mediator.Send(model));
 
-    [HttpGet(AuthenticationRoutes.TokenVerify)]
-    public async Task<IActionResult> TokenVerify(string email, string token) => BaseResponse(await _mediator.Send(new AuthenticationTokenVerifyModel(token, email)));
+    [HttpPost(AuthenticationRoutes.TokenVerify)]
+    public async Task<IActionResult> TokenVerify([FromBody] AuthenticationTokenVerifyModel model) => BaseResponse(await _mediator.Send(model));
 }

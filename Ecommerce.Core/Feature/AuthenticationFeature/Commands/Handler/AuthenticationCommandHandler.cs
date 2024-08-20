@@ -63,7 +63,7 @@ public sealed class AuthenticationCommandHandler : ResponseHandler,
 
     public async Task<ApplicationResponse<string>> Handle(AuthenticationTokenVerifyModel request, CancellationToken cancellationToken)
     {
-        bool isValid = await _authenticationService.TokenVerifyAsync(request.Email, request.Token);
+        bool isValid = await _authenticationService.TokenVerifyAsync(request.Email, request.Token.Replace(" ", "+"));
         if (!isValid)
             return BadRequest("Invalid token");
         else
@@ -72,7 +72,7 @@ public sealed class AuthenticationCommandHandler : ResponseHandler,
 
     public async Task<ApplicationResponse<string>> Handle(AuthenticationResetPasswordModel request, CancellationToken cancellationToken)
     {
-        await _authenticationService.ResetPasswordAsync(request.Email, request.Password, request.Token);
+        await _authenticationService.ResetPasswordAsync(request.Email, request.Password, request.Token.Replace(" ", "+"));
         return Success();
     }
 }

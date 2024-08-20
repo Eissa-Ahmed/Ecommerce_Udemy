@@ -40,28 +40,35 @@ public sealed class AuthenticationService : IAuthenticationService
     }
     public async Task<AuthenticationModel> LoginAsync(LoginModel model)
     {
-        User? user = await _userManager.Users
+        try
+        {
+            User? user = await _userManager.Users
             .Where(u => u.Email == model.Email)
             .Include(u => u.RefreshToken)
             .FirstOrDefaultAsync();
 
-        string role = _userManager.GetRolesAsync(user!).Result.FirstOrDefault()!;
+            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
+                return new AuthenticationModel { Message = "Email or password is incorrect.", IsAuthenticated = false };
 
-        if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
-            return new AuthenticationModel { Message = "Email or password is incorrect.", IsAuthenticated = false };
+            string role = _userManager.GetRolesAsync(user!).Result.FirstOrDefault()!;
 
-        RefreshToken refreshToken = await _tokenService.GenerateRefreshToken(user);
+            RefreshToken refreshToken = await _tokenService.GenerateRefreshToken(user);
 
-        return new AuthenticationModel
+            return new AuthenticationModel
+            {
+                IsAuthenticated = true,
+                Id = user.Id!,
+                Email = user.Email!,
+                Token = _tokenService.GenerateToken(user, role),
+                TokenExpiration = DateTime.UtcNow.AddMinutes(_jWTModel.Value.ExpireMinutes),
+                RefreshToken = refreshToken.Token,
+                RefreshTokenExpiration = refreshToken.Expires
+            };
+        }
+        catch (ArgumentException ex)
         {
-            IsAuthenticated = true,
-            Id = user.Id!,
-            Email = user.Email!,
-            Token = _tokenService.GenerateToken(user, role),
-            TokenExpiration = DateTime.UtcNow.AddMinutes(_jWTModel.Value.ExpireMinutes),
-            RefreshToken = refreshToken.Token,
-            RefreshTokenExpiration = refreshToken.Expires
-        };
+            throw ex;
+        }
     }
     public async Task<AuthenticationModel> RefreshTokenAsync()
     {
