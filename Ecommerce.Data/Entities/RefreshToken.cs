@@ -4,7 +4,6 @@ public class RefreshToken
 {
     public RefreshToken()
     {
-        Token = Guid.NewGuid().ToString();
         Created = DateTime.UtcNow;
     }
     public string UserId { get; set; } = null!;
