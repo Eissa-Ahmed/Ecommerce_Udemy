@@ -62,7 +62,6 @@ public static class Categories_SD
 
             //-------------------------------- Fashion ----------------------------------------
 
-            new Category {Name = "Fashion", SubCategories = new List<Category> {
                 //Fashion > Men's Clothing
                 new Category {Name = "Men's Clothing", SubCategories = new List<Category> {
                     new Category {Name = "Casual Wear", SubCategories = new List<Category> {
@@ -113,7 +112,6 @@ public static class Categories_SD
                     }},
                 }},
 
-            }},
             
 
             /*//-------------------------------- Home & Kitchen ----------------------------------------

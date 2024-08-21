@@ -18,7 +18,7 @@ public sealed class CategoryRepository : BaseRepository<Category>, ICategoryRepo
         return await _context.Categories.AsNoTracking().AnyAsync(i => i.SubCategories.Any(i => i.ParentCategoryId == Id));
     }
 
-    public override async Task DeleteAsync(Category category)
+    public async Task DeleteAsync(Category category)
     {
         if (category.SubCategories.Count > 0)
         {
