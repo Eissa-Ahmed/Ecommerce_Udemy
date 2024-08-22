@@ -32,6 +32,16 @@ public sealed class ProductService : IProductService
         int totalCount = await _unitOfWork.ProductRepository.CountAsync();
         return new Pagination<Product>(products.ToList(), productGetAllParams.PageNumber, productGetAllParams.PageSize, totalCount);
     }
+
+    public async Task<Pagination<Product>> GetAllBestSellerAsync(int pageNumber, int pageSize)
+    {
+        ProductGetAllBestSellerSpecification productGetAllBestSellerSpecification = new ProductGetAllBestSellerSpecification(pageNumber, pageSize);
+        IReadOnlyList<Product> products = await _unitOfWork.ProductRepository.GetAllAsync(productGetAllBestSellerSpecification);
+
+        int totalCount = await _unitOfWork.ProductRepository.CountAsync();
+        return new Pagination<Product>(products.ToList(), pageNumber, pageSize, totalCount);
+    }
+
     public async Task<Product> GetByIdAsync(string id)
     {
         ISpecification<Product> ProductSpecification = new ProductGetByIdSpecification(id);

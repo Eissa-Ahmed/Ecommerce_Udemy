@@ -9,8 +9,8 @@ public sealed class ProductGetAllSpecification : Specification<Product>
         )
     {
         AddIInclude(i =>
-        i.Include(p => p.ProductVariant)
-        .Include(p => p.Discount));
+        i.Include(p => p.Discount)
+        .Include(p => p.ProductVariant));
 
         ApplyPaging(productParams.PageNumber, productParams.PageSize);
 
