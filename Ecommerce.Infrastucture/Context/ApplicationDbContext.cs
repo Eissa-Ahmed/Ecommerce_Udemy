@@ -4,6 +4,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<User, Role, string>
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Brand> Brands { get; set; }
+    public DbSet<Subscription> Subscription { get; set; }
     public DbSet<Review> Review { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Attributes> Attributes { get; set; }

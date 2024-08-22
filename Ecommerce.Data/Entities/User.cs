@@ -21,6 +21,7 @@ public class User : IdentityUser
 
     public Cart? Cart { get; set; }
     public Wishlist? Wishlist { get; set; }
+    public Subscription? Subscription { get; set; }
 
     public ICollection<Address> Address { get; set; }
     public ICollection<Review> Review { get; set; }

@@ -14,6 +14,10 @@ public class UnitOfWork : IUnitOfWork
 
     public IDiscountRepository DiscountRepository { get; private set; }
 
+    public ISubscriptionRepository SubscriptionRepository { get; private set; }
+
+    public IReviewRepository ReviewRepository { get; private set; }
+
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -23,6 +27,8 @@ public class UnitOfWork : IUnitOfWork
         AttributesRepository = new AttributesRepository(context);
         TagRepository = new TagRepository(context);
         DiscountRepository = new DiscountRepository(context);
+        SubscriptionRepository = new SubscriptionRepository(context);
+        ReviewRepository = new ReviewRepository(context);
     }
 
     public async Task<int> SaveChangesAsync()

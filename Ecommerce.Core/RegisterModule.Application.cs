@@ -58,6 +58,12 @@ public static class RegisterModule
         services.AddScoped<IDiscountService, DiscountService>();
         services.AddScoped<IDiscountValidation, DiscountValidation>();
 
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserValidation, UserValidation>();
+
+        services.AddScoped<IReviewService, ReviewService>();
+        services.AddScoped<IReviewValidation, ReviewValidation>();
+
         services.AddScoped<EmailService>();
         services.AddScoped<NotificationFactory>();
 

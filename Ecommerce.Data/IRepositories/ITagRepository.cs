@@ -3,3 +3,4 @@
 public interface ITagRepository : IBaseRepository<Tag>
 {
 }
+
