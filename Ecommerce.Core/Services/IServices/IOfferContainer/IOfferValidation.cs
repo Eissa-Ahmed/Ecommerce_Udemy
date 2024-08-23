@@ -2,4 +2,5 @@
 
 public interface IOfferValidation
 {
+    Task<bool> DiscountIsExist(string id);
 }

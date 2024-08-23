@@ -10,4 +10,3 @@ public static class CategoryRoutes
     public const string Delete = Base + "/{Id}";
     public const string AddSubCategory = Base + "/subcategory";
 }
-

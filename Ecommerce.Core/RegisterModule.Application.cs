@@ -55,9 +55,6 @@ public static class RegisterModule
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<ITagValidation, TagValidation>();
 
-        services.AddScoped<IDiscountService, DiscountService>();
-        services.AddScoped<IDiscountValidation, DiscountValidation>();
-
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserValidation, UserValidation>();
 

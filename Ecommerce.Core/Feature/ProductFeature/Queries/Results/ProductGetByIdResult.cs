@@ -7,7 +7,6 @@ public sealed class ProductGetByIdResult
         Images = new List<ProductGetByIdResult_Images>();
         ProductAttributes = new List<ProductGetByIdResult_ProductAttributes>();
         Reviews = new List<ProductGetByIdResult_Review>();
-        Ratings = new List<ProductGetByIdResult_Rating>();
         Features = new List<ProductGetByIdResult_Features>();
         CareInstructions = new List<ProductGetByIdResult_CareInstructions>();
         ProductVariant = new List<ProductGetByIdResult_ProductVariant>();
@@ -28,7 +27,6 @@ public sealed class ProductGetByIdResult
     public ICollection<ProductGetByIdResult_Images> Images { get; set; }
     public ICollection<ProductGetByIdResult_ProductAttributes> ProductAttributes { get; set; }
     public ICollection<ProductGetByIdResult_Review> Reviews { get; set; }
-    public ICollection<ProductGetByIdResult_Rating> Ratings { get; set; }
     public ICollection<ProductGetByIdResult_Features> Features { get; set; }
     public ICollection<ProductGetByIdResult_CareInstructions> CareInstructions { get; set; }
     public ICollection<ProductGetByIdResult_ProductVariant> ProductVariant { get; set; }
@@ -58,15 +56,6 @@ public sealed class ProductGetByIdResult_Review
     public string UserId { get; set; } = null!;
     public string UserName { get; set; } = null!;
     public string Comment { get; set; } = null!;
-    public DateTime CreatedDate { get; set; }
-}
-public sealed class ProductGetByIdResult_Rating
-{
-    public string Id { get; set; } = null!;
-    public string ProductId { get; set; } = null!;
-    public string UserId { get; set; } = null!;
-    public string UserName { get; set; } = null!;
-    public int Score { get; set; }
     public DateTime CreatedDate { get; set; }
 }
 

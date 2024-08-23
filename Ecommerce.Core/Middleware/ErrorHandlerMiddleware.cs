@@ -68,17 +68,24 @@ public class ErrorHandlerMiddleware
                     responseModel.StatusCode = HttpStatusCode.BadRequest;
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
+
                 case ValidationException e:
                     responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.UnprocessableEntity;
                     response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
                     break;
+
                 case DbUpdateException e:
                     responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.BadRequest;
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
 
+                case AutoMapperMappingException e:
+                    responseModel.Message = e.Message;
+                    responseModel.StatusCode = HttpStatusCode.BadRequest;
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
 
                 default:
                     responseModel.Message = "Internal Server Error, Please try again later.";

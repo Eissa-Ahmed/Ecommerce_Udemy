@@ -9,7 +9,7 @@ public sealed class Discount
     }
     public string Id { get; set; }
     public string DiscountName { get; set; } = null!;
-    public string DiscountImageUrl { get; set; } = null!;
+    public string DiscountImageName { get; set; } = null!;
     public decimal DiscountPercentage { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }

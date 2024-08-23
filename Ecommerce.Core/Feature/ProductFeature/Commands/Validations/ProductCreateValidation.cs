@@ -7,7 +7,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
     private readonly IBrandValidation _brandValidation;
     private readonly ICategoryValidation _categoryValidation;
     private readonly ITagValidation _tagValidation;
-    private readonly IDiscountValidation _discountValidation;
+    private readonly IOfferValidation _offerValidation;
 
     public ProductCreateValidation(
         IProductValidation productValidation,
@@ -15,14 +15,14 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
         IBrandValidation brandValidation,
         ICategoryValidation categoryValidation,
         ITagValidation tagValidation,
-        IDiscountValidation discountValidation)
+        IOfferValidation offerValidation)
     {
         _productValidation = productValidation;
         _attributeValidation = attributeValidation;
         _brandValidation = brandValidation;
         _categoryValidation = categoryValidation;
         _tagValidation = tagValidation;
-        _discountValidation = discountValidation;
+        _offerValidation = offerValidation;
         ApplyValidation();
     }
 
@@ -154,7 +154,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
 
     private async Task<bool> DiscountExistAsync(string arg1, CancellationToken token)
     {
-        return await _discountValidation
+        return await _offerValidation
             .DiscountIsExist(arg1);
     }
 

@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Application.Services.IServices.ReviewContainer;
+﻿namespace Ecommerce.Application.Services.ReviewContainer;
 
 public sealed class ReviewService : IReviewService
 {

@@ -8,6 +8,7 @@ global using Ecommerce.Application.Feature.CategoryFeature.Commands.Models;
 global using Ecommerce.Application.Feature.CategoryFeature.Queries.Models;
 global using Ecommerce.Application.Feature.ProductFeature.Commands.Models;
 global using Ecommerce.Application.Feature.ProductFeature.Queries.Models;
+global using Ecommerce.Application.Feature.ReviewFeature.Queries.Models;
 global using Ecommerce.Application.Feature.UserFeature.Commands.Models;
 global using Ecommerce.Application.Feature.UserFeature.Queries.Models;
 global using Ecommerce.Application.Middleware;

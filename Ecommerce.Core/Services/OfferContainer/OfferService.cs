@@ -22,8 +22,8 @@ public sealed class OfferService : IOfferService
 
     public async Task<Pagination<Discount>> GetAllAsync(int pageNumber, int pageSize)
     {
-        DiscountGetAllSpecification discountGetAllSpecification = new(pageNumber, pageSize);
-        IReadOnlyList<Discount> discounts = await _unitOfWork.DiscountRepository.GetAllAsync(discountGetAllSpecification);
+        OffersGetAllSpecification offersGetAllSpecification = new(pageNumber, pageSize);
+        IReadOnlyList<Discount> discounts = await _unitOfWork.DiscountRepository.GetAllAsync(offersGetAllSpecification);
         int totalCount = await _unitOfWork.DiscountRepository.CountAsync();
 
         return new Pagination<Discount>(discounts.ToList(), pageNumber, pageSize, totalCount);

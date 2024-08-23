@@ -11,6 +11,6 @@ public sealed class UserValidation : IUserValidation
 
     public async Task<bool> EmailIsSubscribed(string email)
     {
-        return await _unitOfWork.SubscriptionRepository.IsExistByEmail(email);
+        return await _unitOfWork.SubscriptionRepository.IsExist(i => i.User.Email == email);
     }
 }

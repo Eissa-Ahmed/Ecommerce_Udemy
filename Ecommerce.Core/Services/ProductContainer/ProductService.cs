@@ -27,12 +27,14 @@ public sealed class ProductService : IProductService
     public async Task<Pagination<Product>> GetAllAsync(ProductGetAllParams productGetAllParams)
     {
 
+
         ISpecification<Product, Product> ProductSpecification = new ProductGetAllSpecification(productGetAllParams);
 
         IReadOnlyList<Product> products = await _unitOfWork.ProductRepository.GetAllAsync(ProductSpecification);
 
         int totalCount = await _unitOfWork.ProductRepository.CountAsync();
         return new Pagination<Product>(products.ToList(), productGetAllParams.PageNumber, productGetAllParams.PageSize, totalCount);
+
     }
 
     public async Task<Pagination<Product>> GetAllBestSellerAsync(int pageNumber, int pageSize)
@@ -46,9 +48,9 @@ public sealed class ProductService : IProductService
 
     public async Task<Product> GetByIdAsync(string id)
     {
+
         ISpecification<Product, Product> ProductSpecification = new ProductGetByIdSpecification(id);
         return await _unitOfWork.ProductRepository.GetByIdAsync(ProductSpecification);
-        throw new NotImplementedException();
     }
 
 }

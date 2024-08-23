@@ -7,9 +7,4 @@ public sealed class SubscriptionRepository : BaseRepository<Subscription>, ISubs
     {
         _context = context;
     }
-
-    public async Task<bool> IsExistByEmail(string email)
-    {
-        return await _context.Subscription.AnyAsync(i => i.User.Email == email);
-    }
 }
