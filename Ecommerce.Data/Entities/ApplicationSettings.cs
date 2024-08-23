@@ -1,8 +1,8 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-public sealed class AppSettings
+public sealed class ApplicationSettings
 {
-    public AppSettings()
+    public ApplicationSettings()
     {
         Id = Guid.NewGuid().ToString();
         SocialMediaAccounts = new SocialMediaAccounts();

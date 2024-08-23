@@ -11,7 +11,7 @@ public sealed class SeedAppSettings
     {
         if (!(await _context.AppSettings.AnyAsync()))
         {
-            AppSettings appSettings = new AppSettings
+            ApplicationSettings appSettings = new ApplicationSettings
             {
                 Address = "مصر , المنصورة - شارع قناة السويس",
                 Email = "admin@krist.com",

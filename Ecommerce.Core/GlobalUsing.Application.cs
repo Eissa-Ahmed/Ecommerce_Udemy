@@ -1,5 +1,6 @@
 ﻿global using AutoMapper;
 global using Ecommerce.Application.ApplicationValidation;
+global using Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Results;
 global using Ecommerce.Application.Feature.AuthenticationFeature.Commands.Models;
 global using Ecommerce.Application.Feature.AuthenticationFeature.Commands.Results;
 global using Ecommerce.Application.Feature.CategoryFeature.Commands.Models;
@@ -81,4 +82,3 @@ global using System.Reflection;
 global using System.Security.Claims;
 global using System.Text;
 global using System.Text.Json;
-

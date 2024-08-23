@@ -14,5 +14,5 @@ public sealed class SocialMediaAccounts
     public string? Instagram { get; set; } = null;
     public string? X { get; set; } = null;
     public string? Youtube { get; set; } = null;
-    public AppSettings AppSettings { get; set; } = null!;
+    public ApplicationSettings AppSettings { get; set; } = null!;
 }

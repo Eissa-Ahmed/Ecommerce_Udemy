@@ -2,6 +2,7 @@
 
 public sealed class ProductQueryHandler : ResponseHandler,
     IRequestHandler<ProductGetAllModel, ApplicationResponse<Pagination<ProductGetAllResult>>>,
+    IRequestHandler<ProductGetAllBestSellerModel, ApplicationResponse<Pagination<ProductGetAllResult>>>,
     IRequestHandler<ProductGetByIdModel, ApplicationResponse<ProductGetByIdResult>>
 {
     private readonly IProductService _productService;
@@ -23,6 +24,13 @@ public sealed class ProductQueryHandler : ResponseHandler,
     {
         Product? product = await _productService.GetByIdAsync(request.Id);
         ProductGetByIdResult result = _mapper.Map<ProductGetByIdResult>(product);
+        return Success(result);
+    }
+
+    public async Task<ApplicationResponse<Pagination<ProductGetAllResult>>> Handle(ProductGetAllBestSellerModel request, CancellationToken cancellationToken)
+    {
+        Pagination<Product> pagination = await _productService.GetAllBestSellerAsync(request.PageNumber, request.PageSize);
+        Pagination<ProductGetAllResult> result = _mapper.Map<Pagination<ProductGetAllResult>>(pagination);
         return Success(result);
     }
 };

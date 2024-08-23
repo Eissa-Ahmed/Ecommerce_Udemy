@@ -1,10 +1,10 @@
 ﻿namespace Ecommerce.Infrastucture.Configurations;
 
-public sealed class AppSettingsConfiguration : IEntityTypeConfiguration<AppSettings>
+public sealed class AppSettingsConfiguration : IEntityTypeConfiguration<ApplicationSettings>
 {
-    public void Configure(EntityTypeBuilder<AppSettings> entity)
+    public void Configure(EntityTypeBuilder<ApplicationSettings> entity)
     {
-        entity.ToTable(nameof(AppSettings));
+        entity.ToTable(nameof(ApplicationSettings));
 
         entity.HasKey(k => k.Id);
 
@@ -16,7 +16,7 @@ public sealed class AppSettingsConfiguration : IEntityTypeConfiguration<AppSetti
 
         entity.HasOne(i => i.SocialMediaAccounts)
             .WithOne(i => i.AppSettings)
-            .HasForeignKey<AppSettings>(i => i.SocialMediaAccountsId)
+            .HasForeignKey<ApplicationSettings>(i => i.SocialMediaAccountsId)
             .OnDelete(DeleteBehavior.Cascade);
 
     }

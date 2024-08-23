@@ -4,6 +4,7 @@ public sealed class ProductGetAllBestSellerSpecification : Specification<Product
 {
     public ProductGetAllBestSellerSpecification(int pageNumber, int pageSize)
     {
+        AddInclude(i => i.Include(p => p.ProductVariant));
         AddOrderByDescending(i => i.OrderItem.Count);
         ApplyPaging(pageNumber, pageSize);
     }
