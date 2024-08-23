@@ -2,9 +2,9 @@
 
 public sealed class ProductCreate_ConvertImagesToUrls_Resolver : IValueResolver<Images, ProductCreateResult_Images, string>
 {
-    private readonly IOptions<ApplicationSettings> _settings;
+    private readonly IOptions<ApplicationSettingModel> _settings;
 
-    public ProductCreate_ConvertImagesToUrls_Resolver(IOptions<ApplicationSettings> settings)
+    public ProductCreate_ConvertImagesToUrls_Resolver(IOptions<ApplicationSettingModel> settings)
     {
         _settings = settings;
     }

@@ -2,9 +2,9 @@
 
 public sealed class ProductGetByIdMapper_Images_Resolver : IValueResolver<Product, ProductGetByIdResult, ICollection<ProductGetByIdResult_Images>>
 {
-    private readonly IOptions<ApplicationSettings> _settings;
+    private readonly IOptions<ApplicationSettingModel> _settings;
 
-    public ProductGetByIdMapper_Images_Resolver(IOptions<ApplicationSettings> settings)
+    public ProductGetByIdMapper_Images_Resolver(IOptions<ApplicationSettingModel> settings)
     {
         _settings = settings;
     }

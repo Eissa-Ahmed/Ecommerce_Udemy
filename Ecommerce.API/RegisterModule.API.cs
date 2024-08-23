@@ -35,7 +35,7 @@ public static class RegisterModule
     private static void readFilesFromAppSettings(WebApplicationBuilder builder)
     {
         builder.Services.Configure<FileSettings>(builder.Configuration.GetSection(nameof(FileSettings)));
-        builder.Services.Configure<Domain.Models.ApplicationSettings>(builder.Configuration.GetSection(nameof(Domain.Models.ApplicationSettings)));
+        builder.Services.Configure<Domain.Models.ApplicationSettingModel>(builder.Configuration.GetSection(nameof(Domain.Models.ApplicationSettingModel)));
         builder.Services.Configure<JWTModel>(builder.Configuration.GetSection(nameof(JWTModel)));
         builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
     }

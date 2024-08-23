@@ -1,6 +1,4 @@
-﻿using Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Models;
-
-namespace Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Handler
+﻿namespace Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Handler
 {
     public sealed class ApplicationSettingsQueryHandler : ResponseHandler,
         IRequestHandler<ApplicationSettingsGetModel, ApplicationResponse<ApplicationSettingsGetResult>>
@@ -14,9 +12,9 @@ namespace Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Handl
             _mapper = mapper;
         }
 
-        public Task<ApplicationResponse<ApplicationSettingsGetResult>> Handle(ApplicationSettingsGetModel request, CancellationToken cancellationToken)
+        public async Task<ApplicationResponse<ApplicationSettingsGetResult>> Handle(ApplicationSettingsGetModel request, CancellationToken cancellationToken)
         {
-            return Success(_mapper.Map<>
+            return Success(_mapper.Map<ApplicationSettingsGetResult>(await _applicationSettingsService.GetAsync()));
         }
     }
 }

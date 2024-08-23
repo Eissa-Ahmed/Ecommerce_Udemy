@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.IRepositories;
 
-public interface IAppSettingsRepository : IBaseRepository<ApplicationSettings>
+public interface IApplicationSettingsRepository : IBaseRepository<ApplicationSettings>
 {
     Task<ApplicationSettings> GetAsync();
 }

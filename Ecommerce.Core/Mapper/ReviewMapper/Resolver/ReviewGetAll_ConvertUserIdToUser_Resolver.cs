@@ -3,9 +3,9 @@
 public sealed class ReviewGetAll_ConvertUserIdToUser_Resolver : IValueResolver<Review, ReviewGetAllResult, ReviewGetAllResult_User>
 {
     private readonly UserManager<User> _userManager;
-    private readonly IOptions<ApplicationSettings> _applicationSettings;
+    private readonly IOptions<ApplicationSettingModel> _applicationSettings;
 
-    public ReviewGetAll_ConvertUserIdToUser_Resolver(UserManager<User> userManager, IOptions<ApplicationSettings> applicationSettings)
+    public ReviewGetAll_ConvertUserIdToUser_Resolver(UserManager<User> userManager, IOptions<ApplicationSettingModel> applicationSettings)
     {
         _userManager = userManager;
         _applicationSettings = applicationSettings;
@@ -17,7 +17,7 @@ public sealed class ReviewGetAll_ConvertUserIdToUser_Resolver : IValueResolver<R
         return new ReviewGetAllResult_User
         {
             Emal = user!.Email!,
-            UserImageUrl = $"{_applicationSettings.Value.UiUrl}{user!.ImageName}",
+            UserImageUrl = $"{_applicationSettings.Value.ApiUrl}{user!.ImageName}",
             Name = user!.UserName!
         };
     }

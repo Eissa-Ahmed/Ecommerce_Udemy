@@ -3,6 +3,7 @@ global using Ecommerce.API;
 global using Ecommerce.API.Controllers.Base;
 global using Ecommerce.API.Routes;
 global using Ecommerce.Application;
+global using Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Models;
 global using Ecommerce.Application.Feature.AuthenticationFeature.Commands.Models;
 global using Ecommerce.Application.Feature.CategoryFeature.Commands.Models;
 global using Ecommerce.Application.Feature.CategoryFeature.Queries.Models;

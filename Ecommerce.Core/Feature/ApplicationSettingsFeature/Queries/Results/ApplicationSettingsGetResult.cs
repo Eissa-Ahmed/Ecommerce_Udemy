@@ -7,7 +7,6 @@ public sealed class ApplicationSettingsGetResult
     public string Address { get; set; } = null!;
     public string? PhoneNumber { get; set; } = null;
     public decimal MinimumFreeShipping { get; set; }
-    public string SocialMediaAccountsId { get; set; } = null!;
     public ApplicationSettingsGetResult_SocialMediaAccounts SocialMediaAccounts { get; set; } = null!;
 }
 

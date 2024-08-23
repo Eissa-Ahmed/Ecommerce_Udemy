@@ -1,5 +1,6 @@
 ﻿global using AutoMapper;
 global using Ecommerce.Application.ApplicationValidation;
+global using Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Models;
 global using Ecommerce.Application.Feature.ApplicationSettingsFeature.Queries.Results;
 global using Ecommerce.Application.Feature.AuthenticationFeature.Commands.Models;
 global using Ecommerce.Application.Feature.AuthenticationFeature.Commands.Results;

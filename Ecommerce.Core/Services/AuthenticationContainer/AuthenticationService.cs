@@ -6,7 +6,7 @@ public sealed class AuthenticationService : IAuthenticationService
     private readonly NotificationFactory _notificationFactory;
     private readonly ITokenService _tokenService;
     private readonly IOptions<JWTModel> _jWTModel;
-    private readonly IOptions<ApplicationSettings> _applicationSettings;
+    private readonly IOptions<ApplicationSettingModel> _applicationSetting;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IRequestService _requestService;
     private readonly IUnitOfWork _unitOfWork;
@@ -17,9 +17,8 @@ public sealed class AuthenticationService : IAuthenticationService
         IHttpContextAccessor httpContextAccessor,
         IRequestService requestService,
         IUnitOfWork unitOfWork,
-        NotificationFactory notificationFactory
-,
-        IOptions<ApplicationSettings> applicationSettings)
+        NotificationFactory notificationFactory,
+        IOptions<ApplicationSettingModel> applicationSetting)
     {
         _userManager = userManager;
         _tokenService = tokenService;
@@ -28,7 +27,7 @@ public sealed class AuthenticationService : IAuthenticationService
         _requestService = requestService;
         _unitOfWork = unitOfWork;
         _notificationFactory = notificationFactory;
-        _applicationSettings = applicationSettings;
+        _applicationSetting = applicationSetting;
     }
     public async Task<string?> RegisterAsync(RegisterModel model)
     {
@@ -129,7 +128,7 @@ public sealed class AuthenticationService : IAuthenticationService
         User? user = await _userManager.FindByEmailAsync(email);
         if (user is null) return;
         string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        string message = _applicationSettings.Value.UiUrl + "authentication/reset-password?token=" + token + "&email=" + user.Email;
+        string message = _applicationSetting.Value.UiUrl + "authentication/reset-password?token=" + token + "&email=" + user.Email;
         sendNotification(new MessageModel { UserId = user.Id, Message = message, Title = "Forgot Password" }, MessageType.Email);
     }
     public async Task<bool> TokenVerifyAsync(string email, string token)
