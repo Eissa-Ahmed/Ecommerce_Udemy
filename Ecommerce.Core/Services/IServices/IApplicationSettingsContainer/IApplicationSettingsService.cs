@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Application.Services.IServices.IAppSettingsContainer;
+﻿namespace Ecommerce.Application.Services.IServices.IApplicationSettingsContainer;
 
 public interface IApplicationSettingsService
 {

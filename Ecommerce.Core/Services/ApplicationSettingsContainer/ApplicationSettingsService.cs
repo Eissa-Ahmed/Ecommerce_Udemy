@@ -1,10 +1,10 @@
-﻿namespace Ecommerce.Application.Services.AppSettingsContainer;
+﻿namespace Ecommerce.Application.Services.ApplicationSettingsContainer;
 
-public sealed class AppSettingsService : IApplicationSettingsService
+public sealed class ApplicationSettingsService : IApplicationSettingsService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public AppSettingsService(IUnitOfWork unitOfWork)
+    public ApplicationSettingsService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

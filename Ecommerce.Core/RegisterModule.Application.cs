@@ -65,7 +65,7 @@ public static class RegisterModule
         services.AddScoped<IOfferService, OfferService>();
 
         services.AddScoped<IApplicationSettingsService, AppSettingsService>();
-        services.AddScoped<IAppSettingsValidation, AppSettingsValidation>();
+        services.AddScoped<IApplicationSettingsValidation, ApplicationSettingsValidation>();
 
         services.AddScoped<EmailService>();
         services.AddScoped<NotificationFactory>();
