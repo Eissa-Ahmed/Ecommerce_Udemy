@@ -18,6 +18,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IReviewRepository ReviewRepository { get; private set; }
 
+    public IAppSettingsRepository AppSettingsRepository { get; private set; }
+
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -29,6 +31,7 @@ public class UnitOfWork : IUnitOfWork
         DiscountRepository = new DiscountRepository(context);
         SubscriptionRepository = new SubscriptionRepository(context);
         ReviewRepository = new ReviewRepository(context);
+        AppSettingsRepository = new AppSettingsRepository(context);
     }
 
     public async Task<int> SaveChangesAsync()

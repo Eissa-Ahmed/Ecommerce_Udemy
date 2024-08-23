@@ -1,6 +1,3 @@
-using Ecommerce.Infrastucture.Seeder;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.RegisterModule_Api(builder);
@@ -23,8 +20,10 @@ using (var scope = app.Services.CreateScope())
     await _context.Database.MigrateAsync();
     SeedCategory _seedCategory = new SeedCategory(_context);
     SeedAdmin _seedAdmin = new SeedAdmin(_userManager, _roleManager, _context);
+    SeedAppSettings _seedAppSettings = new SeedAppSettings(_context);
     await _seedAdmin.SeedData();
     await _seedCategory.SeedData();
+    await _seedAppSettings.SeedData();
 }
 
 if (app.Environment.IsDevelopment())

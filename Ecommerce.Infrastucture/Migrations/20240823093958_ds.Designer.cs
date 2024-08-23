@@ -4,6 +4,7 @@ using Ecommerce.Infrastucture.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastucture.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240823093958_ds")]
+    partial class ds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,11 +72,11 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("LogoUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -84,14 +87,7 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SocialMediaAccountsId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SocialMediaAccountsId")
-                        .IsUnique();
 
                     b.ToTable("AppSettings", (string)null);
                 });
@@ -810,37 +806,6 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.SocialMediaAccounts", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Facebook")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Instagram")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LinkedIn")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tiktok")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Twitter")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("X")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Youtube")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SocialMediaAccounts");
-                });
-
             modelBuilder.Entity("Ecommerce.Domain.Entities.Subscription", b =>
                 {
                     b.Property<string>("Id")
@@ -1105,17 +1070,6 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.AppSettings", b =>
-                {
-                    b.HasOne("Ecommerce.Domain.Entities.SocialMediaAccounts", "SocialMediaAccounts")
-                        .WithOne("AppSettings")
-                        .HasForeignKey("Ecommerce.Domain.Entities.AppSettings", "SocialMediaAccountsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SocialMediaAccounts");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.AuditLog", b =>
@@ -1546,12 +1500,6 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("ProductVariant");
 
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.SocialMediaAccounts", b =>
-                {
-                    b.Navigation("AppSettings")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Tag", b =>

@@ -9,6 +9,7 @@ public interface IUnitOfWork : IDisposable
     ITagRepository TagRepository { get; }
     IReviewRepository ReviewRepository { get; }
     IDiscountRepository DiscountRepository { get; }
+    IAppSettingsRepository AppSettingsRepository { get; }
     ISubscriptionRepository SubscriptionRepository { get; }
     Task<int> SaveChangesAsync();
     Task<IDbContextTransaction> BeginTransactionAsync();

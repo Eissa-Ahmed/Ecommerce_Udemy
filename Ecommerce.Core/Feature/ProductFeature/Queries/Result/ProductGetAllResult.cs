@@ -11,6 +11,7 @@ public sealed class ProductGetAllResult
     public string Description { get; set; } = null!;
     public string MainImage { get; set; } = null!;
     public int StockQuantity { get; set; }
+    public bool IsFreeShipping { get; set; }
     public decimal Price { get; set; }
     public DateTime CreatedDate { get; set; }
     public string CategoryId { get; set; } = null!;

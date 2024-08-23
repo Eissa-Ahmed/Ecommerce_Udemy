@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Infrastucture.Seeder;
 
-public class SeedCategory
+public sealed class SeedCategory
 {
     private readonly ApplicationDbContext _context;
     public SeedCategory(ApplicationDbContext context)

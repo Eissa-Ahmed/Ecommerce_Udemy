@@ -16,6 +16,7 @@ public sealed class ProductCreateModel : IRequest<ApplicationResponse<ProductCre
     public int StockQuantity { get; set; }
     public decimal? Price { get; set; } = null;
     public bool IsShow { get; set; }
+    public bool IsFreeShipping { get; set; }
     public string CategoryId { get; set; } = null!;
     public string? BrandId { get; set; } = null;
     public string? DiscountId { get; set; }

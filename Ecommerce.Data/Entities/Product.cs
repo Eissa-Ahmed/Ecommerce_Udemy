@@ -25,6 +25,7 @@ public sealed class Product
     public int StockQuantity { get; set; }
     public decimal? Price { get; set; } = null;
     public bool IsShow { get; set; }
+    public bool IsFreeShipping { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; } = null;
     public string CategoryId { get; set; } = null!;
