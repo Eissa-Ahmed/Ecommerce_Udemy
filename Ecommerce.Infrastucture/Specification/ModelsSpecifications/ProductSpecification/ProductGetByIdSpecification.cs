@@ -1,10 +1,10 @@
 ﻿namespace Ecommerce.Infrastucture.Specification.ModelsSpecifications.ProductSpecification;
 
-public sealed class ProductGetByIdSpecification : Specification<Product>
+public sealed class ProductGetByIdSpecification : Specification<Product, Product>
 {
     public ProductGetByIdSpecification(string Id) : base(i => i.Id == Id)
     {
-        AddIInclude(i =>
+        AddInclude(i =>
         i.Include(p => p.Category)
         .Include(i => i.Brand)
         .Include(i => i.Images)

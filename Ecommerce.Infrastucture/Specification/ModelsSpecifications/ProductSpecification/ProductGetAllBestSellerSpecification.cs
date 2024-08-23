@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Infrastucture.Specification.ModelsSpecifications.ProductSpecification;
 
-public sealed class ProductGetAllBestSellerSpecification : Specification<Product>
+public sealed class ProductGetAllBestSellerSpecification : Specification<Product, Product>
 {
     public ProductGetAllBestSellerSpecification(int pageNumber, int pageSize)
     {

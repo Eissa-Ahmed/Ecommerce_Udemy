@@ -14,7 +14,7 @@ public static class RegisterModule
     private static void registerDependencyInjection(IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped(typeof(ISpecification<>), typeof(Specification<>));
+        services.AddScoped(typeof(ISpecification<,>), typeof(Specification<,>));
     }
 
     private static void registerStoreContext(IServiceCollection services, IConfigurationManager configuration)

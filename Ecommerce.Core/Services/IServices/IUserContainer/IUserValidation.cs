@@ -2,4 +2,5 @@
 
 public interface IUserValidation
 {
+    Task<bool> EmailIsSubscribed(string email);
 }

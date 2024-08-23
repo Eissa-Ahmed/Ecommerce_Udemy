@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Application.Feature.CategoryFeature.Queries.Validation;
+﻿namespace Ecommerce.Application.Feature.CategoryFeature.Queries.Validations;
 
 public sealed class CategoryGetByIdValiation : AbstractValidator<CategoryGetByIdModel>
 {

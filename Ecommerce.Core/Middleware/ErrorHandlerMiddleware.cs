@@ -22,56 +22,66 @@ public class ErrorHandlerMiddleware
             switch (error)
             {
                 case UnauthorizedAccessException e:
-                    responseModel.Message = "User is unauthorized.";
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.Unauthorized;
                     response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     break;
 
                 case ArgumentNullException e:
-                    responseModel.Message = "A required argument was null.";
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.BadRequest;
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
 
                 case ArgumentOutOfRangeException e:
-                    responseModel.Message = "An argument was out of range.";
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.BadRequest;
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
 
                 case InvalidOperationException e:
-                    responseModel.Message = "Operation is not valid.";
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.BadRequest;
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
 
                 case NotSupportedException e:
-                    responseModel.Message = "Operation is not supported.";
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.NotImplemented;
                     response.StatusCode = (int)HttpStatusCode.NotImplemented;
                     break;
 
                 case KeyNotFoundException e:
-                    responseModel.Message = "The specified key was not found.";
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.NotFound;
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
 
                 case TimeoutException e:
-                    responseModel.Message = "The operation timed out.";
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.RequestTimeout;
                     response.StatusCode = (int)HttpStatusCode.RequestTimeout;
                     break;
 
                 case HttpRequestException e:
-                    responseModel.Message = "There was an error with the HTTP request.";
+                    responseModel.Message = e.Message;
+                    responseModel.StatusCode = HttpStatusCode.BadRequest;
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+                case ValidationException e:
+                    responseModel.Message = e.Message;
+                    responseModel.StatusCode = HttpStatusCode.UnprocessableEntity;
+                    response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                    break;
+                case DbUpdateException e:
+                    responseModel.Message = e.Message;
                     responseModel.StatusCode = HttpStatusCode.BadRequest;
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
 
 
                 default:
-                    responseModel.Message = "An unexpected error occurred.";
+                    responseModel.Message = "Internal Server Error, Please try again later.";
                     responseModel.StatusCode = HttpStatusCode.InternalServerError;
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;

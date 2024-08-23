@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Infrastucture.Specification.ModelsSpecifications.CategorySpecification;
 
-public sealed class CategoryGetAllSpecification : Specification<Category>
+public sealed class CategoryGetAllSpecification : Specification<Category, Category>
 {
     public CategoryGetAllSpecification(Expression<Func<Category, bool>>? criteria = null) : base(criteria)
     {

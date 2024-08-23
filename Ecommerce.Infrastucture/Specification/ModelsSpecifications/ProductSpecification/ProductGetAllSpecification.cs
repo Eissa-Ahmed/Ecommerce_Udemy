@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Infrastucture.Specification.ModelsSpecifications.ProductSpecification;
 
-public sealed class ProductGetAllSpecification : Specification<Product>
+public sealed class ProductGetAllSpecification : Specification<Product, Product>
 {
     public ProductGetAllSpecification(ProductGetAllParams productParams) : base(p =>
         (string.IsNullOrEmpty(productParams.CategoryId) || p.CategoryId == productParams.CategoryId) &&
@@ -8,7 +8,7 @@ public sealed class ProductGetAllSpecification : Specification<Product>
         p.IsShow
         )
     {
-        AddIInclude(i =>
+        AddInclude(i =>
         i.Include(p => p.Discount)
         .Include(p => p.ProductVariant));
 

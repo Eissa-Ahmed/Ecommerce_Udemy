@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Infrastucture.Specification.Models.AttributeSpecification;
 
-public sealed class AttributesSpecification : Specification<Attributes>
+public sealed class AttributesSpecification : Specification<Attributes, Attributes>
 {
     public AttributesSpecification(List<Expression<Func<Attributes, bool>>> criterias, bool applyTracking = false) : base()
     {

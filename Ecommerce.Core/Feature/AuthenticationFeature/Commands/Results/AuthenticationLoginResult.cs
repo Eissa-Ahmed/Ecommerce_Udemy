@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Application.Feature.AuthenticationFeature.Commands.Result;
+﻿namespace Ecommerce.Application.Feature.AuthenticationFeature.Commands.Results;
 
 public sealed class AuthenticationLoginResult
 {

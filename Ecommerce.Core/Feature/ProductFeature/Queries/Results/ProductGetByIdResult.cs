@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Application.Feature.ProductFeature.Queries.Result;
+﻿namespace Ecommerce.Application.Feature.ProductFeature.Queries.Results;
 
 public sealed class ProductGetByIdResult
 {

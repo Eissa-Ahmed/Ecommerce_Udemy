@@ -12,14 +12,14 @@ public sealed class CategoryServices : ICategoryServices
     }
     public async Task<IReadOnlyList<Category>> GetAllAsync()
     {
-        ISpecification<Category> specification = new CategoryGetAllSpecification();
+        ISpecification<Category, Category> specification = new CategoryGetAllSpecification();
         IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specification);
         return _categoryHelper.GetCategories(categories.ToList());
     }
     public async Task<Category> GetByIdAsync(string id)
     {
-        ISpecification<Category> specificationGetAll = new CategoryGetAllSpecification();
-        ISpecification<Category> specificationGetById = new CategoryGetByIdSpecification(id);
+        ISpecification<Category, Category> specificationGetAll = new CategoryGetAllSpecification();
+        ISpecification<Category, Category> specificationGetById = new CategoryGetByIdSpecification(id);
         IReadOnlyList<Category> categories = await _unitOfWork.CategoryRepository.GetAllAsync(specificationGetAll);
         Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specificationGetById);
         return _categoryHelper.GetCategory(category!, categories.ToList());
@@ -39,7 +39,7 @@ public sealed class CategoryServices : ICategoryServices
 
     public async Task<Category> UpdateNameAsync(string id, string name)
     {
-        ISpecification<Category> specificationGetById = new CategoryGetByIdSpecification(id);
+        ISpecification<Category, Category> specificationGetById = new CategoryGetByIdSpecification(id);
         Category? category = await _unitOfWork.CategoryRepository.GetByIdAsync(specificationGetById);
         category!.Name = name;
         await _unitOfWork.CategoryRepository.UpdateAsync(category);

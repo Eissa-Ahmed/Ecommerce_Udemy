@@ -11,6 +11,13 @@ public sealed class UserService : IUserService
         _userManager = userManager;
     }
 
+    public async Task<ICollection<string>> GetAllUsersSubscribersAsync()
+    {
+        ISpecification<Subscription, string> userGetAllSubscribersSpecification = new UserGetAllSubscribersSpecification();
+        IReadOnlyList<string> usersId = await _unitOfWork.SubscriptionRepository.GetAllAsync(userGetAllSubscribersSpecification);
+        return usersId.ToList();
+    }
+
     public async Task<User> GetByIdAsync(string id)
     {
         User? user = await _userManager.Users.Where(i => i.Id == id)

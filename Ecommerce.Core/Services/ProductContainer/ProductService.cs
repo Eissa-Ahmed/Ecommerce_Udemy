@@ -4,11 +4,13 @@ public sealed class ProductService : IProductService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileFactory _fileFactory;
+    private readonly NotificationFactory _notificationFactory;
 
-    public ProductService(IUnitOfWork unitOfWork, IFileFactory fileFactory)
+    public ProductService(IUnitOfWork unitOfWork, IFileFactory fileFactory, NotificationFactory notificationFactory)
     {
         _unitOfWork = unitOfWork;
         _fileFactory = fileFactory;
+        _notificationFactory = notificationFactory;
     }
 
     public async Task<Product> CreateAsync(Product product)
@@ -25,7 +27,7 @@ public sealed class ProductService : IProductService
     public async Task<Pagination<Product>> GetAllAsync(ProductGetAllParams productGetAllParams)
     {
 
-        ISpecification<Product> ProductSpecification = new ProductGetAllSpecification(productGetAllParams);
+        ISpecification<Product, Product> ProductSpecification = new ProductGetAllSpecification(productGetAllParams);
 
         IReadOnlyList<Product> products = await _unitOfWork.ProductRepository.GetAllAsync(ProductSpecification);
 
@@ -44,7 +46,7 @@ public sealed class ProductService : IProductService
 
     public async Task<Product> GetByIdAsync(string id)
     {
-        ISpecification<Product> ProductSpecification = new ProductGetByIdSpecification(id);
+        ISpecification<Product, Product> ProductSpecification = new ProductGetByIdSpecification(id);
         return await _unitOfWork.ProductRepository.GetByIdAsync(ProductSpecification);
         throw new NotImplementedException();
     }

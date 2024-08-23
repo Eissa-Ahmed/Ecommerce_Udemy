@@ -1,8 +1,8 @@
 ﻿namespace Ecommerce.Infrastucture.Specification.ModelsSpecifications.BrandSpecification;
 
-public sealed class BrandGetAllSpecification : Specification<Brand>
+public sealed class BrandGetAllSpecification : Specification<Brand, Brand>
 {
-    public BrandGetAllSpecification(List<Expression<Func<Brand, bool>>> criterias, bool applyTracking = false) : base()
+    public BrandGetAllSpecification(Expression<Func<Brand, bool>> criteria, bool applyTracking = false) : base(criteria)
     {
     }
 

@@ -4,4 +4,5 @@ public interface IUserService
 {
     Task<User> GetByIdAsync(string id);
     Task UserSubscriptionAsync(string email);
+    Task<ICollection<string>> GetAllUsersSubscribersAsync();
 }

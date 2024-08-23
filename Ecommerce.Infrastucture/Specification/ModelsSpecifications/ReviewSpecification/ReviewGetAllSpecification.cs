@@ -1,11 +1,11 @@
 ﻿namespace Ecommerce.Infrastucture.Specification.ModelsSpecifications.ReviewSpecification;
 
-public sealed class ReviewGetAllSpecification : Specification<Review>
+public sealed class ReviewGetAllSpecification : Specification<Review, Review>
 {
     public ReviewGetAllSpecification(int pageNumber, int pageSize)
     {
         ApplyPaging(pageNumber, pageSize);
 
-        AddIInclude(i => i.Include(p => p.User));
+        AddInclude(i => i.Include(p => p.User));
     }
 }

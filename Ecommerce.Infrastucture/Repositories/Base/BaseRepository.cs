@@ -28,15 +28,23 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IReadOnlyList<T>> GetAllAsync(ISpecification<T> specification)
+    /*public async Task<IReadOnlyList<T>> GetAllAsync(ISpecification<T> specification)
+    {
+        return await ApplySpecification(specification).ToListAsync();
+    }*/
+    public async Task<IReadOnlyList<TResult>> GetAllAsync<TResult>(ISpecification<T, TResult> specification)
     {
         return await ApplySpecification(specification).ToListAsync();
     }
+    public async Task<TResult> GetByIdAsync<TResult>(ISpecification<T, TResult> specification)
+    {
+        return await ApplySpecification(specification).FirstAsync();
+    }
 
-    public async Task<T> GetByIdAsync(ISpecification<T> specification)
+    /*public async Task<T> GetByIdAsync(ISpecification<T> specification)
     {
         return await ApplySpecification(specification).FirstOrDefaultAsync();
-    }
+    }*/
 
     public async Task<bool> IsExist(Expression<Func<T, bool>> expression)
     {
@@ -50,8 +58,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entity;
     }
 
-    private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+    /*private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
         return SpecificationEvaliator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
+    }*/
+    private IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> spec)
+    {
+        return SpecificationEvaluator<T, TResult>.GetQuery(_context.Set<T>().AsQueryable(), spec);
     }
 }
