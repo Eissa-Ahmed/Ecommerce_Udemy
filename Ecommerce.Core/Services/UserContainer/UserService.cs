@@ -21,8 +21,8 @@ public sealed class UserService : IUserService
     public async Task<User> GetByIdAsync(string id)
     {
         User? user = await _userManager.Users.Where(i => i.Id == id)
-            .Include(i => i.Cart)
-            .Include(i => i.Wishlist)
+            .Include(i => i.Cart).ThenInclude(i => i.CartItems)
+            .Include(i => i.Wishlist).ThenInclude(i => i.WishlistItems)
             .Include(i => i.Subscription)
             .Include(i => i.Review)
             .Include(i => i.Address)
