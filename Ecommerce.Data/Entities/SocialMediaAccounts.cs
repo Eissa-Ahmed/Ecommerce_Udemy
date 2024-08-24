@@ -8,7 +8,6 @@ public sealed class SocialMediaAccounts
     }
     public string Id { get; set; }
     public string? Facebook { get; set; } = null;
-    public string? Twitter { get; set; } = null;
     public string? Tiktok { get; set; } = null;
     public string? LinkedIn { get; set; } = null;
     public string? Instagram { get; set; } = null;
