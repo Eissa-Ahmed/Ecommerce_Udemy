@@ -77,7 +77,7 @@ public class Specification<T, TResult> : ISpecification<T, TResult> where T : cl
 
     public bool IsPagingEnabled { get; private set; }
 
-    public bool AsTracking { get; private set; }
+    public bool AsTracking { get; private set; } = false;
 
 
     protected Specification() { }
@@ -111,11 +111,6 @@ public class Specification<T, TResult> : ISpecification<T, TResult> where T : cl
     protected void ApplySelector(Expression<Func<T, TResult>> selector)
     {
         Selector = selector;
-    }
-
-    protected void ApplyNoTracking()
-    {
-        AsTracking = false;
     }
 
     protected void ApplyTracking()
