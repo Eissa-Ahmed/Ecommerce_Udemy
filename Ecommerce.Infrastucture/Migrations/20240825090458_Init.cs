@@ -54,7 +54,7 @@ namespace Ecommerce.Infrastucture.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ParentCategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -90,6 +90,7 @@ namespace Ecommerce.Infrastucture.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DiscountName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DiscountImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiscountPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -111,6 +112,23 @@ namespace Ecommerce.Infrastucture.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentMethod", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SocialMediaAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Facebook = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tiktok = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkedIn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Instagram = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    X = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Youtube = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SocialMediaAccounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,6 +204,7 @@ namespace Ecommerce.Infrastucture.Migrations
                     StockQuantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: true),
                     IsShow = table.Column<bool>(type: "bit", nullable: false),
+                    IsFreeShipping = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -233,6 +252,28 @@ namespace Ecommerce.Infrastucture.Migrations
                         name: "FK_Payment_PaymentMethod_PaymentMethodId",
                         column: x => x.PaymentMethodId,
                         principalTable: "PaymentMethod",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationSettings",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MinimumFreeShipping = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SocialMediaAccountsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationSettings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApplicationSettings_SocialMediaAccounts_SocialMediaAccountsId",
+                        column: x => x.SocialMediaAccountsId,
+                        principalTable: "SocialMediaAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -470,6 +511,25 @@ namespace Ecommerce.Infrastucture.Migrations
                     table.PrimaryKey("PK_RefreshToken", x => x.Token);
                     table.ForeignKey(
                         name: "FK_RefreshToken_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscription",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscription", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscription_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -775,6 +835,12 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ApplicationSettings_SocialMediaAccountsId",
+                table: "ApplicationSettings",
+                column: "SocialMediaAccountsId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -838,12 +904,6 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "IX_CartItem_ProductId",
                 table: "CartItem",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Category_Name",
-                table: "Category",
-                column: "Name",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Category_ParentCategoryId",
@@ -971,6 +1031,12 @@ namespace Ecommerce.Infrastucture.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Subscription_UserId",
+                table: "Subscription",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "User",
                 column: "NormalizedEmail");
@@ -1004,6 +1070,9 @@ namespace Ecommerce.Infrastucture.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationSettings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -1063,7 +1132,13 @@ namespace Ecommerce.Infrastucture.Migrations
                 name: "Review");
 
             migrationBuilder.DropTable(
+                name: "Subscription");
+
+            migrationBuilder.DropTable(
                 name: "WishlistItem");
+
+            migrationBuilder.DropTable(
+                name: "SocialMediaAccounts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
