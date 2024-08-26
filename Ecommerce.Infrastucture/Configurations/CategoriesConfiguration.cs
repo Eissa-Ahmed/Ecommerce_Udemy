@@ -7,7 +7,7 @@ public sealed class CategoriesConfiguration : IEntityTypeConfiguration<Category>
         entity.ToTable(nameof(Category));
 
         entity.HasKey(k => k.Id);
-        entity.HasIndex(i => i.Name).IsUnique();
+        //entity.HasIndex(i => i.Name).IsUnique();
 
 
         entity

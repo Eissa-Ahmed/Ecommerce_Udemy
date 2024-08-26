@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastucture.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240819103842_Init")]
+    [Migration("20240825090458_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -65,6 +65,38 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Address", (string)null);
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.ApplicationSettings", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("MinimumFreeShipping")
+                        .HasColumnType("decimal(18,2)")
+                        .HasAnnotation("MinValue", 0);
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMediaAccountsId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SocialMediaAccountsId")
+                        .IsUnique();
+
+                    b.ToTable("ApplicationSettings", (string)null);
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Attributes", b =>
@@ -206,15 +238,12 @@ namespace Ecommerce.Infrastucture.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParentCategoryId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.HasIndex("ParentCategoryId");
 
@@ -316,6 +345,10 @@ namespace Ecommerce.Infrastucture.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DiscountName")
                         .IsRequired()
@@ -568,6 +601,9 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Property<string>("DiscountId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsFreeShipping")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsShow")
                         .HasColumnType("bit");
 
@@ -772,6 +808,54 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.SocialMediaAccounts", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Facebook")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instagram")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkedIn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tiktok")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("X")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Youtube")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SocialMediaAccounts");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Subscription", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Subscription", (string)null);
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Tag", b =>
@@ -1018,6 +1102,17 @@ namespace Ecommerce.Infrastucture.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.ApplicationSettings", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.SocialMediaAccounts", "SocialMediaAccounts")
+                        .WithOne("AppSettings")
+                        .HasForeignKey("Ecommerce.Domain.Entities.ApplicationSettings", "SocialMediaAccountsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SocialMediaAccounts");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.AuditLog", b =>
@@ -1294,6 +1389,17 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Subscription", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.User", "User")
+                        .WithOne("Subscription")
+                        .HasForeignKey("Ecommerce.Domain.Entities.Subscription", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Ecommerce.Domain.Entities.Wishlist", b =>
                 {
                     b.HasOne("Ecommerce.Domain.Entities.User", "User")
@@ -1439,6 +1545,12 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("Reviews");
                 });
 
+            modelBuilder.Entity("Ecommerce.Domain.Entities.SocialMediaAccounts", b =>
+                {
+                    b.Navigation("AppSettings")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Ecommerce.Domain.Entities.Tag", b =>
                 {
                     b.Navigation("ProductTagMappings");
@@ -1461,6 +1573,8 @@ namespace Ecommerce.Infrastucture.Migrations
                     b.Navigation("RefreshToken");
 
                     b.Navigation("Review");
+
+                    b.Navigation("Subscription");
 
                     b.Navigation("SupportTickets");
 
