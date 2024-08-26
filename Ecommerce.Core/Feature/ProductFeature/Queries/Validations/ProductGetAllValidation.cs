@@ -23,13 +23,13 @@ public sealed class ProductGetAllValidation : AbstractValidator<ProductGetAllMod
             RuleFor(x => x.Sort).Must(x => x == "ASC" || x == "DESC" || x == "NAME")
             .WithMessage("SortByPrice must be ASC or DESC or NAME");
         });
-        When(i => !i.CategoryId.IsNullOrEmpty(), () =>
+        When(i => i.CategoryId != null, () =>
         {
             RuleFor(x => x.CategoryId!)
             .MustAsync(CategoryIsExist)
             .WithMessage("Category is not exist");
         });
-        When(i => !i.BrandId.IsNullOrEmpty(), () =>
+        When(i => i.BrandId != null, () =>
         {
             RuleFor(x => x.BrandId!)
             .MustAsync(BrandIsExist)

@@ -7,8 +7,35 @@ public static class RegisterModule
         registerDependencyInjection(services);
         registerAutoMapper(services);
         registerMediator(services);
+        registerJwtToken(services, configuration);
         registerFluentValidation(services);
         return services;
+    }
+
+    private static void registerJwtToken(IServiceCollection services, IConfigurationManager configuration)
+    {
+        string? audience = configuration.GetSection("JWTModel:Audience").Value;
+        string? issuer = configuration.GetSection("JWTModel:Issuer").Value;
+        string? key = configuration.GetSection("JWTModel:Key").Value;
+        services.AddAuthentication(auth =>
+        {
+            auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(opt =>
+        {
+            opt.RequireHttpsMetadata = false;
+            opt.SaveToken = true;
+            opt.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = issuer!,
+                ValidateAudience = true,
+                ValidAudience = audience!,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
+            };
+        });
     }
 
     private static void registerFluentValidation(IServiceCollection services)
@@ -29,6 +56,9 @@ public static class RegisterModule
 
     private static void registerDependencyInjection(IServiceCollection services)
     {
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IProductValidation, ProductValidation>();
 

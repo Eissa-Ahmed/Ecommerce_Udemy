@@ -19,6 +19,7 @@ global using Ecommerce.Application.Feature.ReviewFeature.Queries.Results;
 global using Ecommerce.Application.Feature.UserFeature.Commands.Models;
 global using Ecommerce.Application.Feature.UserFeature.Queries.Models;
 global using Ecommerce.Application.Feature.UserFeature.Queries.Results;
+global using Ecommerce.Application.Filter;
 global using Ecommerce.Application.Mapper.OfferMapper.Resolver;
 global using Ecommerce.Application.Mapper.ProductMapper.Resolver;
 global using Ecommerce.Application.Mapper.ReviewMapper.Resolver;
@@ -68,6 +69,8 @@ global using Ecommerce.Infrastucture.Specification.ModelsSpecifications.UserSpec
 global using FluentValidation;
 global using MailKit.Net.Smtp;
 global using MediatR;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Identity;

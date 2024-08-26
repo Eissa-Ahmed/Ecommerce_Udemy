@@ -4,12 +4,6 @@ builder.Services.RegisterModule_Api(builder);
 builder.Services.RegisterModule_Application(builder.Configuration);
 builder.Services.RegisterModule_Infrastructure(builder.Configuration);
 
-/*   .AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-});*/
-
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -40,6 +34,8 @@ app.UseCors("CorsPolicy");
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseStaticFiles();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

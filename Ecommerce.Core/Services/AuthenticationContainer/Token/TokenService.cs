@@ -38,7 +38,7 @@ public sealed class TokenService : ITokenService
         SigningCredentials signingCredentials = new
         (
             symmetricSecurityKey,
-            SecurityAlgorithms.HmacSha256
+            SecurityAlgorithms.HmacSha256Signature
         );
         return signingCredentials;
     }

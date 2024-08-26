@@ -34,7 +34,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
               .Length(6, 100)
               .WithMessage("Name must be between 6 and 100 characters");
 
-        When(i => !i.Description.IsNullOrEmpty(), () =>
+        When(i => i.Description != null, () =>
         {
             RuleFor(x => x.Description)
               .NotEmpty()
@@ -71,7 +71,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
 
         RuleFor(i => i.DiscountId)
             .MustAsync(DiscountExistAsync)
-            .When(i => !i.DiscountId.IsNullOrEmpty())
+            .When(i => i.DiscountId != null)
             .WithMessage("Discount Id does not exist");
 
         RuleFor(i => i.CategoryId)
@@ -113,7 +113,7 @@ public sealed class ProductCreateValidation : AbstractValidator<ProductCreateMod
 
 
 
-        When(i => !i.BrandId.IsNullOrEmpty(), () =>
+        When(i => i.BrandId != null, () =>
         {
             RuleFor(i => i.BrandId!)
              .NotEmpty()

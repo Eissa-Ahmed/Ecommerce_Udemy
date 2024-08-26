@@ -1,4 +1,5 @@
-﻿
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 namespace Ecommerce.API;
 
 public static class RegisterModule
@@ -18,6 +19,8 @@ public static class RegisterModule
         readFilesFromAppSettings(builder);
         return services;
     }
+
+
 
     private static void registerCorsOrigin(WebApplicationBuilder builder)
     {
@@ -47,6 +50,33 @@ public static class RegisterModule
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "API v1", Version = "v1.0", Description = "API v1" });
             c.SwaggerDoc("v2", new OpenApiInfo { Title = "API v2", Version = "v2.0", Description = "API v2" });
+            c.EnableAnnotations();
+
+            c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer ........')",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                //Type = SecuritySchemeType.ApiKey,
+                Scheme = JwtBearerDefaults.AuthenticationScheme
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = JwtBearerDefaults.AuthenticationScheme
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header
+                    },
+                    new string[] { }
+                }
+            });
         });
     }
 
